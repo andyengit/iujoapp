@@ -1,58 +1,59 @@
 .button {
-  border: 1px solid white;
+  border: 1px solid #212121;
   border-radius: 5px;
   background-color: transparent;
-  color: white;
-  padding-top: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-bottom: 0.5rem;
-  font-size: 16px;
-  letter-spacing: 0.8px;
+  color: #212121;
+  padding-top: 0.4rem;
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+  padding-bottom: 0.4rem;
+  font-size: 14px;
+  letter-spacing: 0.6px;
   transition: 0.3s;
   cursor: pointer;
+  margin: 0.3rem;
 }
 
 .button:hover {
   border: 1px solid transparent;
-  color: #212121;
-  background-color: white;
-}
-
-.black {
-  color: #212121;
-  border: 1px solid #212121;
-}
-
-.black:hover {
-  background-color: #212121ee;
   color: white;
+  background-color: #212121;
+}
+
+.white {
+  color: white;
+  border: 1px solid white;
+}
+
+.white:hover {
+  background-color: #f1f2f3ee;
+  color: #212121;
 }
 
 .red {
-  border: 1px solid #78281F;
-  color: #78281F;
+  border: 1px solid #78281f;
+  color: #78281f;
 }
 
 .red:hover {
-  background-color: #78281Fee;
+  background-color: #78281fee;
   color: white;
 }
 
 .green {
-  border: 1px solid #1B5E20;
-  color: #1B5E20;
+  border: 1px solid #1b5e20;
+  color: #1b5e20;
 }
 .green:hover {
-  background-color: #1B5E20ee;
+  background-color: #1b5e20ee;
   color: white;
 }
 
 .orange {
-  border: 1px solid #D84315;
-  color: #D84315;
+  border: 1px solid #d84315;
+  color: #d84315;
 }
 .orange:hover {
-  background-color: #D84315ee;
+  background-color: #d84315ee;
   color: white;
 }

@@ -10,34 +10,40 @@ import Tag from "../Tag/Tag.Model";
 import User from "../User/User.Model";
 import createData from "./seeds";
 
-//USER - POST
-User.hasMany(Post, { foreignKey: "userId" });
-Post.belongsTo(User, { foreignKey: "userId" });
+const PostRelations = () => {
+  //USER - POST
+  User.hasMany(Post, { foreignKey: "userId" });
+  Post.belongsTo(User, { foreignKey: "userId" });
 
-//USER - LOG
-User.hasMany(Log, { foreignKey: "userId" });
-Log.belongsTo(User, { foreignKey: "userId" });
+  //POST - TAG
+  Post.hasMany(Tag, { foreignKey: "postId" });
+  Tag.belongsTo(Post, { foreignKey: "postId" });
 
-//POST - TAG
-Post.hasMany(Tag, { foreignKey: "postId" });
-Tag.belongsTo(Post, { foreignKey: "postId" });
+  //IMAGE - POST
+  Image.hasMany(Post, { foreignKey: "imageId" });
+  Post.belongsTo(Image, { foreignKey: "imageId", onDelete: "CASCADE" });
+};
+
+const userRelations = () => {
+  //USER - LOG
+  User.hasMany(Log, { foreignKey: "userId" });
+  Log.belongsTo(User, { foreignKey: "userId" });
+};
 
 //IMAGE - SERVICE
 Image.hasMany(Service, { foreignKey: "imageId" });
 Service.belongsTo(Image, { foreignKey: "imageId" });
 
-//IMAGE - POST
-Image.hasMany(Post, { foreignKey: "imageId" });
-Post.belongsTo(Image, { foreignKey: "imageId" });
-
 //IMAGE - EVENT
 Image.hasMany(Event, { foreignKey: "imageId" });
 Event.belongsTo(Image, { foreignKey: "imageId" });
 
-export const sync = () => {
-  database
+const sync = async () => {
+  return await database
     .sync({ force: true })
     .then(() => {
+      PostRelations();
+      userRelations();
       createData();
       return {
         status: true,
@@ -45,6 +51,12 @@ export const sync = () => {
       };
     })
     .catch((error) => {
-      return { status: false, message: "Unable to connect to the database." };
+      console.log(error);
+      return {
+        status: false,
+        message: `Unable to connect to the database:`,
+      };
     });
 };
+
+export { sync, PostRelations };

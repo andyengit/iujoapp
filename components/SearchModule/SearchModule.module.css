@@ -1,0 +1,27 @@
+.container {
+  padding: 1rem;
+  width: 100%;
+  min-height: 20rem;
+  border: 1px solid #21212122;
+  border-radius: 10px;
+}
+
+.search {
+  margin-bottom: 3rem;
+  border: 1px solid #212121;
+  border-radius: 25px;
+  padding: 3px 8px 3px 8px;
+}
+
+.inputSearch {
+  width: 100%;
+  border: 0 solid transparent;
+  outline: none;
+  font-size: 18px;
+}
+
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

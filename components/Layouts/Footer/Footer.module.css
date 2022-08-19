@@ -1,0 +1,8 @@
+.footer {
+  width: 100%;
+  min-height: 10rem;
+  background-color: #212121;
+  color: white;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
