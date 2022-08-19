@@ -1,0 +1,36 @@
+.content {
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 100%;
+  min-height: 15rem;
+  display: flex;
+  align-items: center;
+}
+
+.grid {
+  padding: 2rem;
+  width: 100%;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 4fr 1fr;
+}
+
+.posts {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+}
+
+.more {
+  border: 1px solid #21212122;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.more:hover {
+  background-color: #f1f2f3;
+}

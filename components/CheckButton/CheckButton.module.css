@@ -1,0 +1,24 @@
+.checkBox {
+  display: flex;
+  align-items: center;
+}
+
+.check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid #212121;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0.6rem;
+}
+
+.checked {
+  background-color: #212121;
+}
+
+.label {
+  font-size: 16px;
+}

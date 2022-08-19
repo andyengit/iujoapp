@@ -1,0 +1,13 @@
+.tag {
+  border: 1px solid #212121;
+  padding: 4px 8px 4px 8px;
+  border-radius: 20px;
+}
+
+.none {
+  height: 1.4rem;
+  width: 4rem;
+  padding: 4px 8px 4px 8px;
+  border-radius: 20px;
+  background-color: #21212133;
+}

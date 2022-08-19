@@ -1,0 +1,6 @@
+.loading {
+  height: 2rem;
+  width: 100%;
+  background-color: #00000022;
+  border-radius: 6px;
+}

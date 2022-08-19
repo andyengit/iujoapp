@@ -1,10 +1,10 @@
-import {sync} from "../../../services/database/relations";
+import { sync } from "../../../services/database/relations";
 
-const Success = () => {
+const Success = ({ data }) => {
   return (
     <div>
       <h1>Success</h1>
-      <p>You have successfully setup your account.</p>
+      <p>{data.message}</p>
     </div>
   );
 };
@@ -12,10 +12,10 @@ const Success = () => {
 export default Success;
 
 export async function getServerSideProps(context) {
-  sync();
+  const response = await sync();
   return {
     props: {
-      data: true,
+      data: response,
     },
   };
 }

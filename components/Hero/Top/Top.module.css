@@ -1,0 +1,35 @@
+.headerHero {
+  width: 100%;
+  height: 5rem;
+  overflow: hidden;
+  padding: 0.5rem;
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.link {
+  color: #f1f2f3;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.5s;
+  word-wrap: wrap;
+}
+
+.link:hover {
+  border-bottom: 2px solid #f1f2f3;
+}
+
+.image {
+  min-width: 208.25px;
+}
+
+@media only screen and (max-width: 600px) {
+  .link {
+    display: none;
+  }
+}

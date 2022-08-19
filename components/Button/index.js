@@ -1,38 +1,36 @@
-import styles from "./Button.module.css"
-import {useRouter} from "next/router";
+import styles from "./Button.module.css";
+import { useRouter } from "next/router";
 
-const Button = ({title, path = "", onClick, color = "white", type}) => {
-
+const Button = ({ title, path = "", onClick, color = "black", type }) => {
   const CustomColor = () => {
-    if (color === "black") {
-      return styles.button + " " + styles.black;
-    } else if (color === 'red') {
+    if (color === "white") {
+      return styles.button + " " + styles.white;
+    } else if (color === "red") {
       return styles.button + " " + styles.red;
-    } else if (color === 'green') {
+    } else if (color === "green") {
       return styles.button + " " + styles.green;
-    } else if (color === 'orange') {
+    } else if (color === "orange") {
       return styles.button + "  " + styles.orange;
     } else {
-      return styles.button
-
+      return styles.button;
     }
-  }
+  };
 
   const router = useRouter();
 
   const handleClick = () => {
     if (!!onClick) {
-      onClick()
+      onClick();
     }
     if (path !== "") {
-      router.push(path)
+      router.push(path);
     }
-
-  }
+  };
   return (
     <button onClick={handleClick} type={type} className={CustomColor()}>
       {title}
-    </button>);
+    </button>
+  );
 };
 
 export default Button;

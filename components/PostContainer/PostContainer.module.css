@@ -1,0 +1,47 @@
+.postContainer {
+  min-width: 10rem;
+  width: 100%;
+  min-height: 12rem;
+  padding: 1rem;
+  max-width: 50rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 1px solid #21212122;
+  border-radius: 10px;
+}
+.about {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.autorImage {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #00000022;
+}
+
+.autorData {
+  width: 50%;
+  min-width: 10rem;
+  max-width: 18rem;
+}
+
+.share {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tags {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}

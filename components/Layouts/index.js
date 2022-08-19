@@ -13,13 +13,11 @@ const Layouts = ({ children }) => {
         <meta name="description" content="Pagina educacional de Iujo" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       {router.asPath === "/" || <Header />}
-      <main className="main">
-        {children}
-      </main>
-      <Footer/>
-    </>);
+      <main className="main">{children}</main>
+      <Footer />
+    </>
+  );
 };
 
 export default Layouts;
