@@ -1,6 +1,5 @@
 export const handleApiError = {
   onError: (err, req, res, next) => {
-    console.error(err.stack);
     res.status(500).end("Something broke!");
   },
   onNoMatch: (req, res) => {

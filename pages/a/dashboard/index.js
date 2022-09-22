@@ -1,12 +1,24 @@
 import styles from "./dashboard.module.css";
-import PostContainer from "../../../components/PostContainer";
 import CreatePostContainer from "../../../components/CreatePostContainer";
 import SearchModule from "../../../components/SearchModule";
+import usePosts from "../../../hooks/usePosts";
+import {useEffect} from "react";
 
 const Dashboard = () => {
-  return (
-    <div className={styles.grid}>
-      <div className={styles.profile}>
+
+  const {getPosts, renderPosts} = usePosts();
+  
+  useEffect(() => {
+    getPosts();
+  }, [])
+
+  const renderProfile = (type) => {
+  
+    let styled = styles.profile;
+    if (type === 2) styled = styles.profile2;
+
+    return (
+      <div className={styled}>
         <div className={styles.top}>
           <div className={styles.image}></div>
           <div className={styles.service}>
@@ -16,12 +28,18 @@ const Dashboard = () => {
         <div className={styles.data}>
           <p>description</p>
         </div>
-      </div>
+      </div>)
+  }
+
+  return (
+    <div className={styles.grid}>
+      {renderProfile(1)}
       <div className={styles.posts}>
-        <CreatePostContainer />
-        <PostContainer />
+	{renderProfile(2)}
+        <CreatePostContainer getPosts={getPosts} />
+	{renderPosts()}
       </div>
-      <div>
+      <div className={styles.search}>
         <SearchModule />
       </div>
     </div>

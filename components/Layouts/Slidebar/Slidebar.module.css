@@ -1,0 +1,14 @@
+.slidebar{
+  position: absolute;
+  color: white;
+  background-color: #212121;
+  width:40rem ;
+  height: 100vh;
+  top: 0;
+  left: 100vw;
+  z-index: 10000;
+}
+
+.active{
+  right: 0;
+}

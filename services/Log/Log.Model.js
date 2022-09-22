@@ -1,7 +1,20 @@
 import { DataTypes, Model } from "sequelize";
 import database from "../database/index";
+require("../database/relations")
+import User from "../User/User.Model";
 
-class Log extends Model {}
+class Log extends Model {
+  static async setLog({module, event, entityId , userId}) {
+    return await this.create({
+      module,
+      event,
+      entityId,
+      userId,
+    }, { 
+      include: [{model: User}] 
+    })  
+  }
+}
 
 Log.init(
   {

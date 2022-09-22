@@ -1,8 +1,9 @@
 import SettingsLinks from "../../../../components/SettingsLinks";
+import styles from "../Settings.module.css";
 
 const Account = () => {
   return (
-    <div>
+    <div className={styles.container}>
       <SettingsLinks />
     </div>
   );

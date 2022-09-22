@@ -9,6 +9,7 @@ const Content = () => {
         <div className={styles.image}>
           <Image
             src={"/img/maria.svg"}
+            priority
             height={512}
             width={512}
             objectFit="content"

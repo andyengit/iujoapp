@@ -1,14 +1,21 @@
-FROM node:16-alpine
+FROM node:18-alpine
+RUN mkdir -p /app
 
+# Set /app as the working directory
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-RUN npm install @next/swc-linux-x64-gnu
-RUN npm install @next/swc-linux-x64-gnux32
-RUN npm install @next/swc-linux-x64-musl
+# Copy package.json and package-lock.json
+# to the /app working directory
+COPY package*.json /app
+
+# Install dependencies in /app
 RUN yarn install
 
+# Copy the rest of our Next.js folder into /app
+COPY . /app
 
-COPY . .
+# Ensure port 3000 is accessible to our system
+EXPOSE 3000
 
+# Run yarn dev, as we would via the command line 
 CMD ["yarn", "dev"]

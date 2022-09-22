@@ -14,6 +14,12 @@
   margin: 0.3rem;
 }
 
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 .button:hover {
   border: 1px solid transparent;
   color: white;

@@ -10,6 +10,7 @@ Tag.init(
       validate: {
         notContains: " ",
       },
+      allowNull: false,
     },
   },
   {

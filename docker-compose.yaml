@@ -27,20 +27,15 @@ services:
     ports:
       - "8080:80"
     restart: always
-  app:
-    container_name: nextjs
-    image: docker-nextjs-dev
-    depends_on:
-      - mysql-db
-    build: .
-    ports:
-      - "3000:3000"
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: web
+    restart: always
     volumes:
-      - ./pages:/app/pages
-      - ./components:/app/components
-      - ./public:/app/public
-      - ./styles:/app/styles
-      - ./services:/app/services
-      - ./hooks:/app/hooks
-      - ./utils:/app/utils
-      - ./:/app/
+      - ./:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - 3000:3000

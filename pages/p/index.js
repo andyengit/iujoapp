@@ -1,17 +1,21 @@
 import styles from "./Posts.module.css";
-import PostContainer from "../../components/PostContainer";
 import SearchModule from "../../components/SearchModule";
+import usePosts from "../../hooks/usePosts";
+import { useEffect } from "react"
 
 const Posts = () => {
+  
+  const { getPosts, renderPosts } = usePosts();
+
+  useEffect(()=> {
+    getPosts();
+  }, [])
+  
   return (
     <div className={styles.container}>
       <div className={styles.leftside}></div>
       <div className={styles.content}>
-        <PostContainer />
-        <PostContainer />
-        <PostContainer />
-        <PostContainer />
-        <PostContainer />
+        {renderPosts()}
       </div>
       <div className={styles.rightside}>
         <SearchModule />

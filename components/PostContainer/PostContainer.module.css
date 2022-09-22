@@ -11,6 +11,7 @@
   border-radius: 10px;
 }
 .about {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -27,9 +28,16 @@
 }
 
 .autorData {
+  display: flex;
+  flex-direction: column;
   width: 50%;
   min-width: 10rem;
   max-width: 18rem;
+}
+
+.date{
+  font-size:12px;
+  opacity:60%;
 }
 
 .share {
@@ -37,11 +45,70 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 3rem;
+}
+
+.shareButton{
+  align-self: flex-end;
 }
 
 .tags {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   gap: 6px;
+}
+
+.title{
+  font-size: 18px;
+  margin: 0;
+  padding: 0;
+  color: #212121;
+} 
+
+.content{
+  margin: 0;
+  margin-top:6px;
+  font-size: 15px;
+  padding: 0;
+  word-break: content;
+  opacity: 85%;
+}
+
+.options{
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.edit{
+  color: #212121aa;
+  cursor: pointer;
+}
+
+.delete{
+  color: #C0392Baa;
+  cursor: pointer;
+}
+
+.delete:hover{
+  color: #C0392B;
+}
+
+.edit:hover{
+  color: #212121;
+}
+
+@media (max-width: 768px) {
+  .postContainer {
+    border: 1px solid transparent;
+    border-bottom: 1px solid #21212122;
+    border-radius: 0px;
+  }
 }

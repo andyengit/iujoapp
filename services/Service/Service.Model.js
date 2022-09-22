@@ -9,7 +9,7 @@ Service.init(
       type: DataTypes.STRING(15),
       allowNull: false,
     },
-    cordinator: {
+    coordinator: {
       type: DataTypes.STRING(60),
       allowNull: false,
     },

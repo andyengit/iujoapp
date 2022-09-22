@@ -5,6 +5,7 @@ const Input = ({
   description = "Descripcion",
   color = "black",
   type = "text",
+  onChange,
 }) => {
   const className =
     color !== "black" ? styles.inputBox + " " + styles[color] : styles.inputBox;
@@ -13,7 +14,7 @@ const Input = ({
   return (
     <div className={className}>
       <label>{title}</label>
-      <input type={type} />
+      <input type={type} onChange={onChange} />
       <p>{descriptionRender}</p>
     </div>
   );

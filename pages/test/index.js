@@ -3,15 +3,17 @@ import Button from "../../components/Button";
 import CheckButton from "../../components/CheckButton";
 import Input from "../../components/Input";
 import PostContainer from "../../components/PostContainer";
+import useAuth from "../../hooks/useAuth";
 
 const Test = () => {
   const [check, setCheck] = useState(false);
-
+  const auth = useAuth();
+  
   return (
     <div>
-      <Button color="orange" title={"Name"} />
       <CheckButton state={check} setState={setCheck} />
-      <Input title="Hola marica" />
+      <Input title="Hola maricasssssss" />
+      <Button onClick={auth.test} />
       <PostContainer />
     </div>
   );

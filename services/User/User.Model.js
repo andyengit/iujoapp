@@ -1,7 +1,28 @@
 import {DataTypes, Model} from 'sequelize';
 import database from "../database/index";
+require("../database/relations");
+import Group from "../Group/Group.Model";
+import UsersServices from "../UsersServices/UsersServices.Model";
 
-class User extends Model {}
+class User extends Model {
+  static async getUser(username){
+    return await this.findAll({
+      where: {username: username},
+      attributes: ['id', 'name','status', 'email', 'username','groupId'],
+      include: [
+	      {model: Group ,as: "group"},
+        {model: UsersServices}
+      ]
+    });
+  }
+
+  static async getUserPassword(username){
+    return await this.findAll({
+      where: {username: username}, 
+      attributes: ['id', 'name','status', 'password']
+    });
+  }
+}
 
 User.init({
   id: {
@@ -18,11 +39,6 @@ User.init({
     type: DataTypes.STRING(20),
     allowNull: false,
     unique: true,
-  },
-  role: {
-    type: DataTypes.STRING(3),
-    allowNull: false,
-    defaultValue: false
   },
   password: {
     type: DataTypes.STRING(255),

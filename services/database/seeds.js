@@ -1,8 +1,28 @@
 import User from "../User/User.Model";
 import Log from "../Log/Log.Model";
+import Group from "../Group/Group.Model";
+import Service from "../Service/Service.Model";
+
 require("./relations");
 
 const createData = async () => {
+
+  await Group.create({
+    id: 1,
+    name: "Administrador",
+    isAdmin: true,
+    postApprover: true,
+  })
+
+  await Service.create({
+    id: 1,
+    name: "UPP",
+    coordinator: "Jorge",
+    email: "jorge@iujo.com",
+    phone: "123456789",
+    description: "Servicio de UPP",
+  })
+
   await User.create(
     {
       id: 1,
@@ -10,10 +30,10 @@ const createData = async () => {
       username: "admin",
       password: "admin",
       email: "example@iujo.edu.ve",
-      role: "ADM",
       status: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
+      groupId: 1,
       Logs: {
         module: "USER",
         event: "CREATE",
@@ -21,7 +41,7 @@ const createData = async () => {
         createdAt: new Date(),
       },
     },
-    { include: [Log] }
+    { include: [Log, {model: Group, as: "group"}] }
   );
 };
 

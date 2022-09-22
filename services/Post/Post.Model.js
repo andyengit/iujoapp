@@ -1,53 +1,62 @@
 import { DataTypes, Model } from "sequelize";
 import database from "../database/index";
-import { PostRelations } from "../database/relations";
+require("../database/relations");
 import User from "../User/User.Model";
 import Image from "../Image/Image.Model";
 import Tag from "../Tag/Tag.Model";
+import Service from "../Service/Service.Model";
 
 class Post extends Model {
   static async getPosts(options = { limit: 5, offset: 0 }) {
-    PostRelations();
     const { limit, offset } = options;
     const { count, rows } = await this.findAndCountAll({
-      attributes: ["id", "title", "content"],
+      attributes: ["id", "title", "content","updatedAt"],
       order: [["updatedAt", "DESC"]],
       limit,
       offset,
       include: [
-        { model: User, attributes: ["id", "name"] },
+        { model: User, attributes: ["id", "name"], as: "autor" },
         { model: Image },
-        { model: Tag },
+        { model: Tag, attributes: ['name'] , as: 'tags'},
+        { model: Service }
       ],
     });
-    const newRows = rows.map((row) => row.dataValues);
-    return { count, rows: newRows };
+    return { count, rows };
   }
 
   static async createPost(data) {
-    PostRelations();
+
+    const tags = await data.tags.map((el) => {return {name: el}});
+
     return await this.create(
       {
         title: data.title,
         content: data.content,
         userId: data.userId,
-        imageId: data.imageId,
+        imageId: data.imageId || null,
         createAt: new Date(),
         updateAt: new Date(),
+	tags: tags || null,
+	serviceId: data.serviceId || null
       },
       {
-        include: [{ model: User }, { model: Image }],
+	include: [
+	{ model: User, as: "autor"}, 
+	{ model: Tag, as: 'tags' },
+	{ model: Service },
+	{ model: Image }] 
       }
     );
   }
 
-  static async updatePost(data) {
-    const postData = await this.findOne({ where: { id: data.id } });
-    let newData = { ...postData };
-    if (Post) {
-      newData = { ...newData, ...data, updateAt: new Date() };
-      return await this.update(newData, { where: { id: data.id } });
-    }
+  static async updatePost(id, data) {
+      const postData = await this.findOne({ where: { id: id } });
+      if (postData) {
+        const {dataValues} = postData
+        const newData = {...dataValues, ...data, updateAt: new Date()}
+        await this.update(newData, { where: { id: id } });
+        return newData;
+      }
   }
 
   static async deletePost(id) {
@@ -65,6 +74,10 @@ Post.init(
       type: DataTypes.TEXT("long"),
       allowNull: false,
     },
+    anchored: {
+      type: DataTypes.BOOLEAN(),
+      defaultValue: false
+    }
   },
   {
     timestamps: true,
