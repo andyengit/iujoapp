@@ -18,11 +18,48 @@ class Post extends Model {
         { model: User, attributes: ["id", "name"], as: "autor" },
         { model: Image },
         { model: Tag, attributes: ['name'] , as: 'tags'},
-        { model: Service }
+        { model: Service, attributes: ['name'] }
       ],
     });
     return { count, rows };
   }
+ 
+  static async getPostsByService(options = { limit: 5, offset: 0, id }) {
+    const { limit, offset, id } = options;
+    const { count, rows } = await this.findAndCountAll({
+      attributes: ["id", "title", "content","updatedAt"],
+      where: {serviceId: id},
+      order: [["updatedAt", "DESC"]],
+      limit,
+      offset,
+      include: [
+        { model: User, attributes: ["id", "name"], as: "autor" },
+        { model: Image },
+        { model: Tag, attributes: ['name'] , as: 'tags'},
+        { model: Service, attributes: ['name'] }
+      ],
+    });
+    return { count, rows };
+  }
+
+  static async getPostsByUser(options = { limit: 5, offset: 0, id }) {
+    const { limit, offset, id } = options;
+    const { count, rows } = await this.findAndCountAll({
+      attributes: ["id", "title", "content","updatedAt"],
+      where: {userId: id},
+      order: [["updatedAt", "DESC"]],
+      limit,
+      offset,
+      include: [
+        { model: User, attributes: ["id", "name"], as: "autor" },
+        { model: Image },
+        { model: Tag, attributes: ['name'] , as: 'tags'},
+        { model: Service, attributes: ['name'] }
+      ],
+    });
+    return { count, rows };
+  }
+
 
   static async createPost(data) {
 
@@ -36,16 +73,16 @@ class Post extends Model {
         imageId: data.imageId || null,
         createAt: new Date(),
         updateAt: new Date(),
-	tags: tags || null,
-	serviceId: data.serviceId || null
+        tags: tags || null,
+        serviceId: data.serviceId || null
       },
-      {
-	include: [
-	{ model: User, as: "autor"}, 
-	{ model: Tag, as: 'tags' },
-	{ model: Service },
-	{ model: Image }] 
-      }
+        {
+          include: [
+          { model: User, as: "autor"}, 
+          { model: Tag, as: 'tags' },
+          { model: Service },
+          { model: Image }] 
+        }
     );
   }
 

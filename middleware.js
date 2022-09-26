@@ -1,12 +1,21 @@
 import { NextResponse } from 'next/server'
 import { NextRequest } from 'next/server'
+import { verifyToken } from './utils/handleToken'
 
 // This function can be marked `async` if using `await` inside
-export function middleware(NextRequest) {
-  console.log("HOLA")  
-  // if (request.nextUrl.pathname.startsWith('/about')) {
-  //   return NextResponse.rewrite(new URL('/about-2', request.url))
-  // }
+export async function middleware(NextRequest) {
+
+  const token = NextRequest.cookies.get('sessionJWT')
+  const verify = await verifyToken(token)
+
+  if (NextRequest.nextUrl.pathname.startsWith('/auth/login')) {
+    if (verify) return NextResponse.redirect(new URL('/a/dashboard', NextRequest.url))
+    return NextResponse.next()
+  }
+
+  if (!verify){
+    return NextResponse.redirect(new URL('/auth/login', NextRequest.url))
+  }
 
   // if (request.nextUrl.pathname.startsWith('/dashboard')) {
   //   return NextResponse.rewrite(new URL('/dashboard/user', request.url))
@@ -29,6 +38,7 @@ export function middleware(NextRequest) {
   // // Deleting cookies
   // response.cookies.delete('vercel')
   // response.cookies.clear()
+  
   return NextResponse.next()
 }
 

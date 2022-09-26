@@ -21,10 +21,10 @@ Group.hasMany(User, { foreignKey: "groupId"});
 User.belongsTo(Group, { foreignKey: "groupId", as: "group"});
 
 User.hasMany(UsersServices, {foreignKey: "userId"});
-UsersServices.belongsTo(User, {foreignKey: "userId"});
+UsersServices.belongsTo(User, {foreignKey: "userId", as: "services"});
 
 Service.hasMany(UsersServices, {foreignKey: "serviceId"});
-UsersServices.belongsTo(Service, {foreignKey: "serviceId"});
+UsersServices.belongsTo(Service, {foreignKey: "serviceId", as: "users"});
 
 //POST - TAG
 Post.hasMany(Tag, { foreignKey: "postId", as: "tags"});

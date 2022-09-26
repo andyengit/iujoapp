@@ -6,11 +6,13 @@ import { useState } from "react";
 import {FiEdit} from "react-icons/fi";
 import {AiFillDelete} from "react-icons/ai";
 import CreatePostContainer from "../CreatePostContainer";
+import useAuth from "../../hooks/useAuth";
 
 const PostContainer = ({data, getPosts, deletePost}) => {
 
   const [showPopUp, setShowPopUp] = useState(false);
   const [typePopUp, setTypePopUp] = useState("");
+  const {dataUser} = useAuth();
   
   const handleEdit = () => {
     setTypePopUp("EDIT");
@@ -42,8 +44,29 @@ const PostContainer = ({data, getPosts, deletePost}) => {
     })
   }
 
+  const showOptions = () => {
+
+    if (dataUser && dataUser.id === data.autor.id) {
+
+    return (
+      <div className={styles.options}>
+        <FiEdit className={styles.edit} onClick={handleEdit}/>
+        <AiFillDelete className={styles.delete} onClick={deletePostButton}/>
+      </div>)
+    }
+  }
+
+  const showAutor = ({autor, updatedAt, Service}) => {
+    return (
+      <div className={styles.autorData}>
+        <span>{!Service ? autor.name : Service.name}</span>
+        <span className={styles.date}>{updatedAt.slice(0,10)}{Service && " - " + autor.name}</span>
+      </div>
+    )
+  }
+
   if (data && Object.keys(data).length > 0) {
-  const { title, autor, content, image, tags , updatedAt } = data;
+  const { title, autor, content, image, tags , updatedAt, Service } = data;
     return (
       <div className={styles.postContainer}>
         {showPopUp && <PopUp 
@@ -53,14 +76,8 @@ const PostContainer = ({data, getPosts, deletePost}) => {
           closePopUp={handleEdit}/>}
                 <div className={styles.about}>
                   <div className={styles.autorImage}></div>
-                  <div className={styles.autorData}>
-                    <span>{autor.name}</span>
-                    <span className={styles.date}>{updatedAt.slice(0,10)}</span>
-                  </div>
-            <div className={styles.options}>
-              <FiEdit className={styles.edit} onClick={handleEdit}/>
-              <AiFillDelete className={styles.delete} onClick={deletePostButton}/>
-            </div>
+                  {showAutor({autor,updatedAt, Service})}
+                  {showOptions()}
                 </div>
           <div>
             <p className={styles.title}>{title}</p>
@@ -70,7 +87,7 @@ const PostContainer = ({data, getPosts, deletePost}) => {
           <div className={styles.share}>
           <div className={styles.shareButton}>Compartir</div>
           <div className={styles.tags}>
-	    {tags && tags.map((tag,index) => <Tag key={index} name={tag.name} />)}
+            {tags && tags.map((tag,index) => <Tag key={index} name={tag.name} />)}
           </div>
         </div>
       </div>

@@ -1,47 +1,90 @@
 import axios from 'axios'
 import { useState } from 'react'
 import PostContainer from "../components/PostContainer";
+import useAuth from "../hooks/useAuth";
+import useNotification from "../hooks/useNotification";
 
 const usePosts = () => {
 
-  const [posts, setPosts] = useState([])
-  const rows = posts.rows
-  const preview = [1,2,3]
+  const notification = useNotification();
+  const [posts, setPosts] = useState([]);
+  const {token} = useAuth();
+  const rows = posts.rows;
+  const preview = [1,2,3];
   
-  const getPosts = async () => {
-    axios.get('/api/posts')
+  const getPosts = async (data = {page : 0}) => {
+    let url = '/api/posts?';
+    if (data.page !== undefined) url+= `page=${data.page}`;
+    if (data.limit !== undefined) url+= `&limit=${data.limit}`;
+    if (data.userId !== undefined) url += `&user=${data.userId}`;
+    if (data.serviceId !== undefined) url +=`&service=${data.serviceId}`;
+    console.log(url)
+    axios.get(url)
       .then(res => setPosts(res.data))
       .catch(err => {
-	console.log(err);
+        console.log(err);
       })
   }
 
-  const updatePost = async (id, data, callback,catchCallback) => {
-    axios.put(`/api/posts/${id}`, data)
-      .then(() => {
-        callback && callback()
+  const config = {
+    headers: {
+      Authorization: `Bareer ${token}`,
+      "content-type":
+        "multipart/form-data; boundary=--------------------------999619143332017334035581",
+    },
+  };
+
+  const updatePost = async (id, data, callback,catchCallback, fn) => {
+    axios.put(`/api/posts/${id}`, data, config)
+      .then((res) => {
+        if (res.data.status === 201){
+          callback && callback()
+          notification.setNotification(res.data.message)
+        } else {
+          notification.setNotification(res.data.message, "ERROR")
+        }
       })
       .catch(err => {
-	      catchCallback && catchCallback() 
+	      catchCallback && catchCallback()
+        notification.setNotification(err.response.data.message)
+      })
+      .finally(() => {
+        fn && fn()
       })
   }
 
   const deletePost = async (id, callback, catchCallback) => {
-    axios.delete(`/api/posts/${id}`)
-      .then(() => {
-        callback && callback()
+    axios.delete(`/api/posts/${id}`, {...config})
+      .then((res) => {
+        if (res.data.status === 201){
+          callback && callback()
+          notification.setNotification(res.data.message)
+        } else {
+          notification.setNotification(res.data.message, "ERROR")
+        }
       })
-      .catch(() => {
-        catchCallback && catchCallback()
+      .catch(err => {
+	      catchCallback && catchCallback()
+        notification.setNotification(err.response.data.message)
       })
   }
 
-  const createPost = async (post, callback , catchCallback) => {
-    axios.post('/api/posts', post)
-      .then(() => {
-	callback &&  callback()
-      }).catch(() => {
-	catchCallback && catchCallback()
+  const createPost = async (post, callback , catchCallback, fn) => {
+    axios.post('/api/posts', post, config)
+      .then((res) => {
+        if (res.data.status === 201){
+          callback && callback()
+          notification.setNotification(res.data.message)
+        } else {
+          notification.setNotification(res.data.message, "ERROR")
+        }
+      })
+      .catch(err => {
+	      catchCallback && catchCallback()
+        notification.setNotification(err.response.data.message)
+      })
+      .finally(() => {
+        fn && fn()
       })
   }
 

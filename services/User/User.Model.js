@@ -11,7 +11,7 @@ class User extends Model {
       attributes: ['id', 'name','status', 'email', 'username','groupId'],
       include: [
 	      {model: Group ,as: "group"},
-        {model: UsersServices}
+        {model: UsersServices, attributes: ['serviceId']}
       ]
     });
   }

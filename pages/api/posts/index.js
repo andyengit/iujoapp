@@ -1,15 +1,22 @@
 import nc from "next-connect";
-import { handleApiError, onNoMethod } from "../../../utils/handleApiError";
+import { handleApiError, onNoMethod, notAuthorized } from "../../../utils/handleApiError";
 import PostController from "../../../services/Post/Post.Controller";
 
+
 const handler = nc(handleApiError)
-  .get(async (req, res) => {
-    const { page } = req.query;
-    res.json(await PostController.getPosts({page: page || 0 }));
+
+handler.get(async (req, res) => {
+    const { page, user, service, limit } = req.query;
+    console.log(req.query)
+    res.json(await PostController.getPosts({page: page || 0, userId : user || false, serviceId: service || false, limit: limit || 5}));
   })
-  .post(async (req, res) => {
-    res.json(await PostController.createPost(req.body));
+handler.use(notAuthorized);
+handler.post(async (req, res) => {
+    console.log(req.body)
+    const value = await PostController.createPost(req.body);
+    console.log(value)
+    res.status(value.status).json(value);
   })
-  .use(onNoMethod);
+handler.use(onNoMethod);
 
 export default handler;

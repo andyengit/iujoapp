@@ -21,6 +21,11 @@ const Footer = () => {
             <a>Dashboard</a>
           </Link>
         </li>
+        <li>
+          <Link href="/auth/logout">
+            <a>Logout</a>
+          </Link>
+        </li>
       </ul>
       <ul>
         <li>

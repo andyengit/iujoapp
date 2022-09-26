@@ -1,7 +1,13 @@
 import { DataTypes, Model } from "sequelize";
 import database from "../database/index";
 
-class Service extends Model {}
+class Service extends Model {
+  static async getService(name){
+    return await this.findAll({
+      where: {name: name}
+    });
+  }
+}
 
 Service.init(
   {

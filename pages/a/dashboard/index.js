@@ -3,14 +3,18 @@ import CreatePostContainer from "../../../components/CreatePostContainer";
 import SearchModule from "../../../components/SearchModule";
 import usePosts from "../../../hooks/usePosts";
 import {useEffect} from "react";
+import useAuth from "../../../hooks/useAuth";
 
 const Dashboard = () => {
 
   const {getPosts, renderPosts} = usePosts();
-  
+  const {dataUser} = useAuth();
+
   useEffect(() => {
-    getPosts();
-  }, [])
+    if (dataUser !== null){
+      getPosts({userId : dataUser.id});
+    }
+  }, [dataUser])
 
   const renderProfile = (type) => {
   
@@ -22,7 +26,7 @@ const Dashboard = () => {
         <div className={styles.top}>
           <div className={styles.image}></div>
           <div className={styles.service}>
-            <p>Bienvenido, IUJO</p>
+            <p>Bienvenido, {dataUser && dataUser.name} </p>
           </div>
         </div>
         <div className={styles.data}>
@@ -35,9 +39,9 @@ const Dashboard = () => {
     <div className={styles.grid}>
       {renderProfile(1)}
       <div className={styles.posts}>
-	{renderProfile(2)}
+        {renderProfile(2)}
         <CreatePostContainer getPosts={getPosts} />
-	{renderPosts()}
+        {renderPosts()}
       </div>
       <div className={styles.search}>
         <SearchModule />

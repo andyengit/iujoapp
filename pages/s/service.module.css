@@ -35,8 +35,10 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding-bottom: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid #21212155;
+  gap: 1rem;
 }
 
 .service > p {
@@ -47,6 +49,52 @@
   font-weight: 900;
 }
 
+.data {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
 .data > p {
   color: #212121cc;
+}
+
+@media (max-width: 1000px) {
+  .grid{
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .profile{
+    display: none;
+  }
+
+  .profile2{
+    display: flex;
+    flex-direction: column;
+  } 
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    padding: 0;
+  }
+
+  .posts {
+    gap: 0;
+  }
+
+  .profile{
+    display: none;
+  }
+
+  .profile2{
+    display: none;
+  }
+
+  .search{
+    display: none;
+  }
 }
