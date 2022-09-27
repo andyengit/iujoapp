@@ -19,7 +19,6 @@ export const notAuthorized = async (req, res, next) => {
     token = await token.slice(7,token.length)
     const verify = await verifyToken(token)
     if (!verify){
-      console.log("SIN AUTORIZACION")
       return res.status(401).end("No tienes permisos para esta accion");
     }
     if(req.body !== ""){
@@ -29,7 +28,6 @@ export const notAuthorized = async (req, res, next) => {
     }
     next()
   }catch(error){
-    console.log("AQIO")
     return res.status(401).end("No tienes permisos para esta accion");
   }
 }

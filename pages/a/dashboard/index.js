@@ -7,12 +7,13 @@ import useAuth from "../../../hooks/useAuth";
 
 const Dashboard = () => {
 
-  const {getPosts, renderPosts} = usePosts();
+  const {getPosts, renderPosts , setDefaultParams} = usePosts();
   const {dataUser} = useAuth();
 
   useEffect(() => {
     if (dataUser !== null){
       getPosts({userId : dataUser.id});
+      setDefaultParams({userId : dataUser.id});
     }
   }, [dataUser])
 

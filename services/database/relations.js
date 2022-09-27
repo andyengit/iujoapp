@@ -61,10 +61,9 @@ export const sync = async () => {
       };
     })
     .catch((error) => {
-      console.log(error);
       return {
         status: false,
-        message: `Unable to connect to the database:`,
+        message: `Unable to connect to the database: ${error.toString()}`,
       };
     });
 };

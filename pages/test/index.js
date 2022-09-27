@@ -11,14 +11,12 @@ const Test = () => {
   const auth = useAuth();
   const {status, setNotification} = useNotification();
 
-  console.log(status)
-  
   return (
     <div>
       <CheckButton state={check} setState={setCheck} />
       <Input title="Hola maricasssssss" />
       <Button title="TEST" onClick={() => setNotification("t am muasdaso asdkljaskld askdjalsd asdasjdklasjdlsa")} />
-      <PostContainer />
+      <PostContainer data={{title: "Titulo", content: "Contenido muchocontenidoayu asdklaj lsjdl ajsldkjalskjdlkasj lkas dkasjldj alsjdlkas ldkjalskdj lkasjdlk alsdjla jsdlkajs ldkja", autor: {name: "Ander"}, updatedAt: "Hoy", image: '/img/controlestudio.jpg'}}/>
     </div>
   );
 };

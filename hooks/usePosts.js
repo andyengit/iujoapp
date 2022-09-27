@@ -8,21 +8,22 @@ const usePosts = () => {
 
   const notification = useNotification();
   const [posts, setPosts] = useState([]);
+  const [defaultParams, setDefaultParams] = useState({});
   const {token} = useAuth();
   const rows = posts.rows;
   const preview = [1,2,3];
   
-  const getPosts = async (data = {page : 0}) => {
+  const getPosts = async (reqdata = {page : 0}) => {
+    const data = {...reqdata, ...defaultParams};
     let url = '/api/posts?';
     if (data.page !== undefined) url+= `page=${data.page}`;
     if (data.limit !== undefined) url+= `&limit=${data.limit}`;
     if (data.userId !== undefined) url += `&user=${data.userId}`;
     if (data.serviceId !== undefined) url +=`&service=${data.serviceId}`;
-    console.log(url)
     axios.get(url)
       .then(res => setPosts(res.data))
       .catch(err => {
-        console.log(err);
+        notification.setNotification(err.response.data.message)
       })
   }
 
@@ -65,12 +66,17 @@ const usePosts = () => {
       })
       .catch(err => {
 	      catchCallback && catchCallback()
-        notification.setNotification(err.response.data.message)
+        notification.setNotification(err.response.data.message, "ERROR")
       })
   }
 
   const createPost = async (post, callback , catchCallback, fn) => {
-    axios.post('/api/posts', post, config)
+    const form = new FormData();
+    form.append("file", post.image);
+    form.append("title", post.title);
+    form.append("content", post.content);
+    form.append("tags", JSON.stringify(post.tags));
+    axios.post('/api/posts', form, config)
       .then((res) => {
         if (res.data.status === 201){
           callback && callback()
@@ -81,7 +87,7 @@ const usePosts = () => {
       })
       .catch(err => {
 	      catchCallback && catchCallback()
-        notification.setNotification(err.response.data.message)
+        notification.setNotification(err.response.data.message, "ERROR")
       })
       .finally(() => {
         fn && fn()
@@ -105,6 +111,7 @@ const usePosts = () => {
     createPost,
     updatePost,
     renderPosts,
+    setDefaultParams
   }
 }
 

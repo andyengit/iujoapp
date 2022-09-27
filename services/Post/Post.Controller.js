@@ -6,21 +6,16 @@ import Log from "../Log/Log.Model";
 class PostController {
   static async getPosts(options = { page: 0, limit: 5, userId, serviceId }) {
     try{
-      console.log(options)
       const optionsClean = await cleanData(options);
-      console.log(optionsClean)
       if (optionsClean.userId){
-        console.log("USER")
         return await Post.getPostsByUser({id: optionsClean.userId, limit: parseInt(optionsClean.limit) || 5, offset: !! optionsClean.page ? optionsClean.page * 5 : 0 });
       }
       if (optionsClean.serviceId){
-        console.log("SERVICIO")
         return await Post.getPostsByService({id: optionsClean.serviceId, limit: parseInt(optionsClean.limit) || 5, offset: !! optionsClean.page ? optionsClean.page * 5 : 0 });
       }
-      console.log("AFUERA")
       return await Post.getPosts({limit: parseInt(optionsClean.limit) || 5, offset: !! optionsClean.page ? optionsClean.page * 5 : 0 });
     }catch(e){
-      console.log(e)
+      return {message: error.message, status: 400};
     }
   }
 
@@ -32,7 +27,7 @@ class PostController {
         return {message: check, status: 200};
       }
       let value = await Post.createPost(data);
-      await Log.setLog({module: "POST", event: "CREATE",userId: data.userId, entityId: value.dataValues.id }) 
+      await Log.setLog({module: "POST", event: "CREATE", userId: data.userId, entityId: value.dataValues.id }) 
       return { message: "Post creado correctamente", status: 201 };
     } catch (error) {
       return {message: error.message, status: 400};

@@ -10,7 +10,7 @@ import TextLoading from "../../components/TextLoading";
 
 const Service = () => {
   
-  const {getPosts, renderPosts} = usePosts();
+  const {getPosts, renderPosts, setDefaultParams} = usePosts();
   const { query: { servicePath }, push} = useRouter();
   const auth = useAuth();
 
@@ -23,6 +23,7 @@ const Service = () => {
         .then(({data}) => {
           setService(data.service)
           getPosts({serviceId: data.service.id})
+          setDefaultParams({serviceId: data.service.id})
         })
         .catch(() => {
           push('/oops')
@@ -66,7 +67,7 @@ const Service = () => {
         {postEnable && (
           <CreatePostContainer 
           mode="CREATE"
-          getPosts={getPosts} 
+          getPosts={getPosts}
           service={{name: service.name, id: service.id}}/>
         )}
         {renderPosts()}   

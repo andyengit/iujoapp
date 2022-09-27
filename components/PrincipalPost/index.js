@@ -17,7 +17,7 @@ const PrincipalPost = () => {
       <div className={styles.grid}>
         <div className={styles.posts}>
           {posts && posts.rows ? posts.rows.map((post) => (
-            <PostContainer key={post.id} data={post} />
+            <PostContainer key={post.id} data={post} modeParam={true} />
           )) : 
             <>
               <PostContainer/> 
