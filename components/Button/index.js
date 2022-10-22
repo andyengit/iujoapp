@@ -1,6 +1,6 @@
 import styles from "./Button.module.css";
 
-const Button = ({ title, path = "", onClick, color = "black", state = true }) => {
+const Button = ({ title, path = "", onClick, color = "black", type , state = true }) => {
   const CustomColor = () => {
     let colors = "";
 
@@ -22,7 +22,7 @@ const Button = ({ title, path = "", onClick, color = "black", state = true }) =>
   };
 
   return (
-    <button onClick={onClick} className={CustomColor()}>
+    <button onClick={onClick} type={type} className={CustomColor()}>
       {title}
     </button>
   );

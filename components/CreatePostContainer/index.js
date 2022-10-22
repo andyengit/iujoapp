@@ -9,6 +9,7 @@ import { FiImage } from 'react-icons/fi';
 import useAuth from '../../hooks/useAuth';
 import { AiOutlineClose} from 'react-icons/ai'; 
 import Image from "next/image";
+import useNotification from "../../hooks/useNotification";
 
 const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, service }) => {
   const MODE = {
@@ -21,7 +22,7 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
     WAITING: styles.waiting,
     BLOCKED: "BLOCKED"
   }
-
+  const { setNotification } = useNotification();
   const [title, setTitle] = useState(data ? data.title : "");
   const [content, setContent] = useState(data ? data.content : "");
   const [stateButton, setStateButton] = useState(false);
@@ -29,6 +30,7 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
   const [tags, setTags] = useState(data ? data.tags : []);
   const [tag, setTag] = useState("");
   const [serviceId, setServiceId] = useState(service ? service.id : null)
+  const [deleteTags, setDeleteTags] = useState([]);
   const [image, setImage] = useState(null);
   const [firstImage, setFirstImage] = useState(data && data.image ? true : false)
 
@@ -48,31 +50,47 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
     setImage(target.files[0]);
   }
 
-
   const handleAddTag = () => {
-    if (tag.length < 3) return true;
+    if (tag.length < 3) {
+      setNotification("La etiqueta tiene que contener mas de 3 caracteres", "ERROR")
+      return true;
+    }
 
     const newTag = tag.trim().replace(/ /g, "-");
 
-    if (newTag.length > 15) return true;
-    if (tags.includes(newTag)) return true;
-
-    if (newTag.length > 0) {
-      setTags([...tags, newTag]);
-      setTag("");
+    if (tags.length >= 5){
+      setNotification("El limite de etiquetas son 5", "ERROR")
+      return true
     }
+
+    if (newTag.length > 15) {
+      setNotification("La etiqueta no puede contener mas de 15 caracteres (contando espacios)", "ERROR")
+      return true;
+    }
+    if (tags.map(el => el.name.toLowerCase()).includes(newTag.toLowerCase())) {
+      setNotification("La etiqueta ya esta incluida", "ERROR")
+      return true;
+    }
+
+    setTags([...tags, {name: newTag}]);
+    setTag("");
   }
 
   const handleRemoveTag = (tag) => {
     setTags(tags.filter((t) => t !== tag));
+    if (tag.id !== undefined){
+      setDeleteTags(current => [...current, tag.id])
+    }
   }
 
   const handleUpdate = async () => {
     setStatus(STATUS.WAITING)
-    updatePost(data.id, { title, content }, () => {
+    updatePost(data.id, { title, content, deleteTags, tags }, () => {
       setTitle("");
       setContent("");
       setTags([]);
+      setDeleteTags([])
+      setImage(null)
       closePopUp();
       getPosts();
     }, () => { }, () => {
@@ -86,6 +104,7 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
       setTitle("");
       setContent("");
       setTags([]);
+      setImage(null)
       getPosts();
     }, () => { }, () => {
       setStatus(STATUS.OK);
@@ -110,6 +129,7 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
         <div className={styles.status + ' ' + status + ' ' + styleLoading.animation}></div>)}
       <input
         className={styles.title}
+        name="title"
         placeholder="Titulo de la publicacion..."
         onChange={(e) => setTitle(e.target.value)}
         value={title} />
@@ -117,7 +137,9 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
         className={styles.content}
         placeholder="Contenido de la publicacion..."
         onChange={(e) => setContent(e.target.value)}
-        value={content} />
+        value={content}
+        name="content"
+      />
       {image && (
         <div className={styles.previewImage}>
           <AiOutlineClose
@@ -139,7 +161,7 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
           <div className={styles.showTags}>
             {tags.map((tag, index) => (
               <div key={index} className={styles.tagElement}>
-                <p>{tag}</p>
+                <p>{tag.name}</p>
                 <button
                   className={styles.remove}
                   onClick={() => handleRemoveTag(tag)}>x</button>
@@ -151,19 +173,17 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
         <div className={styles.adds}>
           <div className={styles.uploadImage}>
             <FiImage size="2rem" className={styles.image} />
-            <input type="file" className={styles.hidden} onChange={handleImage} />
+            <input type="file" name="file" className={styles.hidden} onChange={handleImage} />
           </div>
-          <div>
-            <div className={styles.tags}>
-              <input
-                placeholder="Etiquetas"
-                onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
-                onChange={({ target }) => setTag(target.value)}
-                value={tag} />
-              <button
-                className={styles.add}
-                onClick={handleAddTag}>+</button>
-            </div>
+          <div className={styles.tags}>
+            <input
+              placeholder="Etiquetas"
+              onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
+              onChange={({ target }) => setTag(target.value)}
+              value={tag} />
+            <button
+              className={styles.add}
+              onClick={handleAddTag}>+</button>
           </div>
         </div>
         <Button

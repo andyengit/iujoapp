@@ -2,23 +2,23 @@ import styles from "./dashboard.module.css";
 import CreatePostContainer from "../../../components/CreatePostContainer";
 import SearchModule from "../../../components/SearchModule";
 import usePosts from "../../../hooks/usePosts";
-import {useEffect} from "react";
+import { useEffect } from "react";
 import useAuth from "../../../hooks/useAuth";
 
 const Dashboard = () => {
 
-  const {getPosts, renderPosts , setDefaultParams} = usePosts();
-  const {dataUser} = useAuth();
+  const { getPosts, RenderPosts, setDefaultParams } = usePosts();
+  const { dataUser } = useAuth();
 
   useEffect(() => {
-    if (dataUser !== null){
-      getPosts({userId : dataUser.id});
-      setDefaultParams({userId : dataUser.id});
+    if (dataUser !== null) {
+      getPosts({ userId: dataUser.id });
+      setDefaultParams({ userId: dataUser.id });
     }
   }, [dataUser])
 
   const renderProfile = (type) => {
-  
+
     let styled = styles.profile;
     if (type === 2) styled = styles.profile2;
 
@@ -42,10 +42,10 @@ const Dashboard = () => {
       <div className={styles.posts}>
         {renderProfile(2)}
         <CreatePostContainer getPosts={getPosts} />
-        {renderPosts()}
+        <RenderPosts wait={dataUser}/>
       </div>
       <div className={styles.search}>
-        <SearchModule />
+        <SearchModule getPosts={getPosts} setDefaultParams={setDefaultParams} defaultParams={setDefaultParams}/>
       </div>
     </div>
   );

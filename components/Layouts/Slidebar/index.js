@@ -10,6 +10,10 @@ const Slidebar = ({status, handleSlidebar}) => {
     INACTIVE : styles.slidebar
   }
 
+  const changeState = () => {
+    handleSlidebar(!status)
+  }
+
   return (<div className={status ? STATUS.ACTIVE : STATUS.INACTIVE}>
       <div className={styles.top}>
         <div className={styles.menu}>
@@ -18,14 +22,14 @@ const Slidebar = ({status, handleSlidebar}) => {
         </div>
         {SlidebarLinks.map((link, index) => (
           <Link href={link.path} key={index}>
-            <a className={styles.link}>{link.name}</a>
+            <a className={styles.link} onClick={changeState}>{link.name}</a>
           </Link>))}
       </div>
       <div className={styles.bottom}>
         <Link href="/a/settings">
-          <a>OPCIONES</a>
+          <a onClick={changeState}>OPCIONES</a>
         </Link>
-        <p>© 2021 IUJO. Todos los derechos reservados.</p>
+        <p>© 2022 IUJO. Todos los derechos reservados.</p>
       </div>
     </div>)
 }

@@ -15,15 +15,6 @@ const createData = async () => {
     postApprover: true,
   })
 
-  await Service.create({
-    id: 1,
-    name: "UPP",
-    coordinator: "Jorge",
-    email: "jorge@iujo.com",
-    phone: "123456789",
-    description: "Servicio de UPP",
-  })
-
   await User.create(
     {
       id: 1,
@@ -42,12 +33,21 @@ const createData = async () => {
         createdAt: new Date(),
       },
     },
-    { include: [Log, {model: Group, as: "group"}] }
+    { include: [Log, { model: Group, as: "group" }] }
   );
+
+  await Service.create({
+    id: 1,
+    name: "UPP",
+    email: "jorge@iujo.com",
+    phone: "123456789",
+    description: "Servicio de UPP",
+  })
 
   UsersServices.create({
     userId: 1,
     serviceId: 1,
+    isCoordinator: 1
   })
 
   await User.create(
@@ -68,7 +68,7 @@ const createData = async () => {
         createdAt: new Date(),
       },
     },
-    { include: [Log, {model: Group, as: "group"}] }
+    { include: [Log, { model: Group, as: "group" }] }
   );
 
 };

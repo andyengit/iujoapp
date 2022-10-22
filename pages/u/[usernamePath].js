@@ -1,8 +1,29 @@
 import styles from "./user.module.css";
 import PostContainer from "../../components/PostContainer";
 import SearchModule from "../../components/SearchModule";
+import usePosts from "../../hooks/usePosts";
+import { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
+import axios from 'axios'
 
 const Username = () => {
+  const { getPosts, RenderPosts, setDefaultParams } = usePosts();
+  const { query: { usernamePath }, push } = useRouter();
+
+  const [user, setUser] = useState(false);
+
+  useEffect(() => {
+    if (usernamePath !== undefined) {
+      axios.get(`/api/users?name=${usernamePath}`)
+        .then(({ data }) => {
+          console.log(data)
+        })
+        .catch(() => {
+          push('/oops')
+        })
+    }
+  }, [usernamePath])
+
   return (
     <div className={styles.grid}>
       <div className={styles.profile}>
@@ -19,14 +40,10 @@ const Username = () => {
         </div>
       </div>
       <div className={styles.posts}>
-        <PostContainer />
-        <PostContainer />
-        <PostContainer />
-        <PostContainer />
-        <PostContainer />
+        <RenderPosts />
       </div>
       <div>
-        <SearchModule />
+        <SearchModule getPosts={getPosts} setDefaultParams={setDefaultParams} />
       </div>
     </div>
   );

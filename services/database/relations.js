@@ -35,20 +35,12 @@ Service.hasMany(Post, { foreignKey: { name: "serviceId", allowNull: true }})
 Post.belongsTo(Service, {foreignKey: {name: "serviceId", allowNull: true }})
 
 //IMAGE - POST
-Image.hasMany(Post, { foreignKey: "imageId"});
-Post.belongsTo(Image, { foreignKey: "imageId"});
+Post.hasMany(Image, { foreignKey: { name: "postId", allowNull: true }, as: "images"});
+Image.belongsTo(Post, { foreignKey: {name: "postId", allowNull: true }, as: "images"});
 
 //USER - LOG
 User.hasMany(Log, { foreignKey: "userId"});
 Log.belongsTo(User, { foreignKey: "userId"});
-
-//IMAGE - SERVICE
-Image.hasMany(Service, { foreignKey: "imageId" });
-Service.belongsTo(Image, { foreignKey: "imageId" });
-
-//IMAGE - EVENT
-Image.hasMany(Event, { foreignKey: "imageId" });
-Event.belongsTo(Image, { foreignKey: "imageId" });
 
 export const sync = async () => {
   return await database

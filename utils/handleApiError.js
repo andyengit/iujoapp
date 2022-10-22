@@ -1,12 +1,16 @@
 import {verifyToken} from './handleToken';
+import multer from "multer";
+import path from "path";
 
-export const handleApiError = {
-  onError: (err, req, res, next) => {
-    res.status(500).end("Something broke!");
-  },
-  onNoMatch: (req, res) => {
-    res.status(404).end("Page is notssssssss found");
-  },
+export const handleApiError = (err, req, res, next) => {
+  err.statusCode = err.statusCode || 500;
+  let error = { ...err };
+  error.message = err.message;
+  res.status(err.statusCode).json({
+    error,
+    message: error.message,
+    stack: error.stack,
+  });
 };
 
 export const onNoMethod = (req, res) => {
@@ -19,15 +23,15 @@ export const notAuthorized = async (req, res, next) => {
     token = await token.slice(7,token.length)
     const verify = await verifyToken(token)
     if (!verify){
-      return res.status(401).end("No tienes permisos para esta accion");
+      return res.status(401).json({message: "1: No tienes permisos para esta accion"});
     }
-    if(req.body !== ""){
-      let filter = JSON.parse(req.body)
-      let body = {...filter, userId: verify.id}
-      req.body = JSON.stringify(body)
+    if(req.body === ""){
+      return res.status(401).json({message: "2: No tienes permisos para esta accion"});
     }
+    const body = {...req.body, userId: verify.id}
+    req.body = body
     next()
   }catch(error){
-    return res.status(401).end("No tienes permisos para esta accion");
+    return res.status(401).json({message: "3: No tienes permisos para esta accion"});
   }
 }

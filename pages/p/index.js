@@ -4,21 +4,21 @@ import usePosts from "../../hooks/usePosts";
 import { useEffect } from "react"
 
 const Posts = () => {
-  
-  const { getPosts, renderPosts } = usePosts();
 
-  useEffect(()=> {
+  const { getPosts, setDefaultParams, RenderPosts } = usePosts();
+
+  useEffect(() => {
     getPosts();
   }, [])
-  
+
   return (
     <div className={styles.container}>
       <div className={styles.leftside}></div>
       <div className={styles.content}>
-        {renderPosts()}
+        <RenderPosts />
       </div>
       <div className={styles.rightside}>
-        <SearchModule />
+        <SearchModule getPosts={getPosts} setDefaultParams={setDefaultParams}/>
       </div>
     </div>
   );

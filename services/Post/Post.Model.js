@@ -1,4 +1,4 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, Op } from "sequelize";
 import database from "../database/index";
 require("../database/relations");
 import User from "../User/User.Model";
@@ -7,53 +7,82 @@ import Tag from "../Tag/Tag.Model";
 import Service from "../Service/Service.Model";
 
 class Post extends Model {
+  static async getPost(id) {
+    return this.findOne({ where: { id: id } })
+  }
+
   static async getPosts(options = { limit: 5, offset: 0 }) {
-    const { limit, offset } = options;
-    const { count, rows } = await this.findAndCountAll({
-      attributes: ["id", "title", "content","updatedAt"],
+    const { limit, offset, search } = options;
+
+    let query = {
+      attributes: ["id", "title", "content", "updatedAt", "anchored"],
       order: [["updatedAt", "DESC"]],
       limit,
       offset,
       include: [
         { model: User, attributes: ["id", "name"], as: "autor" },
-        { model: Image },
-        { model: Tag, attributes: ['name'] , as: 'tags'},
+        { model: Image, attributes: ["id", "path"], as: 'images' },
+        { model: Tag, attributes: ['id', 'name'], as: 'tags' },
         { model: Service, attributes: ['name'] }
       ],
-    });
+    }
+
+    if (search) {
+      query = {
+        ...query, where: {
+          title: {
+            [Op.like]: `%${search}%`,
+          },
+        },
+      }
+    }
+
+    const { count, rows } = await this.findAndCountAll(query);
     return { count, rows };
   }
- 
+
   static async getPostsByService(options = { limit: 5, offset: 0, id }) {
-    const { limit, offset, id } = options;
-    const { count, rows } = await this.findAndCountAll({
-      attributes: ["id", "title", "content","updatedAt"],
-      where: {serviceId: id},
+    const { limit, offset, id, search } = options;
+    let query = {
+      attributes: ["id", "title", "content", "updatedAt", "anchored"],
+      where: { serviceId: id },
       order: [["updatedAt", "DESC"]],
       limit,
       offset,
       include: [
         { model: User, attributes: ["id", "name"], as: "autor" },
-        { model: Image },
-        { model: Tag, attributes: ['name'] , as: 'tags'},
+        { model: Image, attributes: ["id", "path"], as: 'images' },
+        { model: Tag, attributes: ['id', 'name'], as: 'tags' },
         { model: Service, attributes: ['name'] }
       ],
-    });
+    }
+
+    if (search) {
+      query = {
+        ...query, where:
+        {
+          ...query.where,
+          title: { [Op.like]: `%${search}%` }
+        }
+      }
+    }
+
+    const { count, rows } = await this.findAndCountAll(query);
     return { count, rows };
   }
 
   static async getPostsByUser(options = { limit: 5, offset: 0, id }) {
     const { limit, offset, id } = options;
     const { count, rows } = await this.findAndCountAll({
-      attributes: ["id", "title", "content","updatedAt"],
-      where: {userId: id},
+      attributes: ["id", "title", "content", "updatedAt", "anchored"],
+      where: { userId: id },
       order: [["updatedAt", "DESC"]],
       limit,
       offset,
       include: [
         { model: User, attributes: ["id", "name"], as: "autor" },
-        { model: Image },
-        { model: Tag, attributes: ['name'] , as: 'tags'},
+        { model: Image, attributes: ["id", "path"], as: 'images' },
+        { model: Tag, attributes: ['id', 'name'], as: 'tags' },
         { model: Service, attributes: ['name'] }
       ],
     });
@@ -63,7 +92,6 @@ class Post extends Model {
 
   static async createPost(data) {
 
-    const tags = await data.tags.map((el) => {return {name: el}});
 
     return await this.create(
       {
@@ -73,27 +101,48 @@ class Post extends Model {
         imageId: data.imageId || null,
         createAt: new Date(),
         updateAt: new Date(),
-        tags: tags || null,
-        serviceId: data.serviceId || null
+        tags: data.tags || null,
+        serviceId: data.serviceId || null,
+        images: data.image
       },
-        {
-          include: [
-          { model: User, as: "autor"}, 
+      {
+        include: [
+          { model: User, as: "autor" },
           { model: Tag, as: 'tags' },
           { model: Service },
-          { model: Image }] 
-        }
+          { model: Image, as: 'images' }]
+      }
     );
   }
 
   static async updatePost(id, data) {
-      const postData = await this.findOne({ where: { id: id } });
-      if (postData) {
-        const {dataValues} = postData
-        const newData = {...dataValues, ...data, updateAt: new Date()}
-        await this.update(newData, { where: { id: id } });
-        return newData;
+    const postData = await this.findOne({ where: { id: id } });
+    if (postData) {
+      const { dataValues } = postData
+      const newData = { ...dataValues, ...data, updateAt: new Date() }
+      const value = await this.update(newData, { where: { id: id } });
+      if (!!data.tags && data.tags.length > 0) {
+        await data.tags.map(async (el) => {
+          await Tag.create({
+            ...el,
+            postId: id
+          },
+            {
+              include: [{
+                model: Post,
+                as: 'tags'
+              }]
+            })
+        })
       }
+
+      if (!!data.deleteTags && data.deleteTags.length > 0) {
+        await data.deleteTags.map(async (el) => {
+          await Tag.destroy({ where: { id: el } })
+        })
+      }
+      return newData;
+    }
   }
 
   static async deletePost(id) {
@@ -113,7 +162,7 @@ Post.init(
     },
     anchored: {
       type: DataTypes.BOOLEAN(),
-      defaultValue: false
+      defaultValue: false,
     }
   },
   {

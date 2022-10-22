@@ -11,6 +11,14 @@
   overflow: hidden;
 }
 
+.profile2{
+    display:none;
+    padding-bottom: 1rem;
+    border-radius: 0;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #212121ee;
+}
+
 .top {
   display: flex;
   flex-direction: column;
@@ -91,7 +99,7 @@
   }
 
   .profile2{
-    display: none;
+    display: flex;
   }
 
   .search{

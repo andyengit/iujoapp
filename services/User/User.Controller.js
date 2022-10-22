@@ -2,6 +2,16 @@ import User from "./User.Model";
 import { createToken, verifyToken } from '../../utils/handleToken';
 
 class UserController {
+
+  static async getUser({username}){
+    const user = await User.getUser(username);
+    if(!user){
+      return {status: 404, message: "Usuario no encontrado"} 
+    }
+    return {status: 200, user: user.dataValues}
+  }
+
+
   static async login({username,password}){
     const users = await User.getUserPassword(username);
     if (users.length === 0)  {

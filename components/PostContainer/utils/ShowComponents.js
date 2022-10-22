@@ -3,11 +3,9 @@ import { FiEdit } from "react-icons/fi";
 import { AiFillDelete } from "react-icons/ai";
 
 const ShowComponent = ({ data, typePopUp, getPosts, handleEdit }) => {
-  const formatedTags = data.tags.map((tag) => tag.name);
-  const newData = { ...data, tags: formatedTags }
 
   if (typePopUp === "EDIT") {
-    return <CreatePostContainer mode="EDIT" data={newData} getPosts={getPosts} closePopUp={handleEdit} />
+    return <CreatePostContainer mode="EDIT" data={data} getPosts={getPosts} closePopUp={handleEdit} />
   }
   if (typePopUp === "DELETE") {
     return <h2>Desea borrar este post?</h2>
@@ -34,7 +32,7 @@ const ShowAutor = ({ autor, updatedAt, Service, styles }) => {
   )
 }
 
-const formatContent = (content) => {
+const FormatContent = ({content}) => {
   return content.split("\n").map((el, key) => <p key={key}>{el}</p>)
 }
 
@@ -64,4 +62,4 @@ const verifyText = (data) => {
 }
 
 
-export { ShowComponent, ShowAutor, formatContent, ShowOptions, verifyText }
+export { ShowComponent, ShowAutor, FormatContent, ShowOptions, verifyText }

@@ -1,10 +1,24 @@
 import { DataTypes, Model } from "sequelize";
 import database from "../database/index";
+import UsersServices from "../UsersServices/UsersServices.Model";
+import User from "../User/User.Model"
+require('../database/relations')
 
 class Service extends Model {
-  static async getService(name){
-    return await this.findAll({
-      where: {name: name}
+  static async getService(name) {
+    return await this.findOne({
+      where: { name: name },
+      include: [
+        {
+          model: UsersServices,
+          where: { isCoordinator: 1 },
+          attributes: ['userId','isCoordinator'],
+          include: {
+            model: User, as: 'services',
+            attributes: ['name','username']
+          }
+        }
+      ]
     });
   }
 }
@@ -13,10 +27,6 @@ Service.init(
   {
     name: {
       type: DataTypes.STRING(15),
-      allowNull: false,
-    },
-    coordinator: {
-      type: DataTypes.STRING(60),
       allowNull: false,
     },
     phone: {

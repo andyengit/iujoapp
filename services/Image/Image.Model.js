@@ -7,7 +7,6 @@ Image.init(
   {
     path: {
       type: DataTypes.STRING(),
-      allowNull: false,
     },
   },
   {

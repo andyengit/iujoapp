@@ -18,9 +18,7 @@ const Content = () => {
         </div>
         <div className={styles.about}>
           <p className={styles.text}>
-            &quot;Lorem ipsum letir letir saro meri tasmis mdioasdalkasld
-            asdklasdkasdkasjdlas asd asdj askdj lkas kasjlkd asldj lasj kajsdkl
-            asj dslak laksdj lkaslkd alksjd lkasdj lkasj dlk&quot;
+            &quot;aslkd alksjd lkasdj lkasj dlk&quot;
           </p>
           <Link href="/test">
             <a>Conocer mas acerca del IUJO...</a>

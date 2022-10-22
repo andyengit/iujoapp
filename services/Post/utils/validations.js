@@ -20,7 +20,7 @@ export const validatePost = (data) => {
     let moreThanOne = false;
     for(let x = 0; x < tags.length; x++) {
       if (tags[x].length < 3 || tags[x].length > 15){
-	moreThanOne = true;
+	      moreThanOne = true;
       }  
     }
     if (moreThanOne) {
