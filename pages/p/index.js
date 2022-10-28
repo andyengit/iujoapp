@@ -9,6 +9,7 @@ const Posts = () => {
 
   useEffect(() => {
     getPosts();
+    setDefaultParams({ page: 0})
   }, [])
 
   return (

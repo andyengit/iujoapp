@@ -4,15 +4,23 @@ require("../database/relations")
 import User from "../User/User.Model";
 
 class Log extends Model {
-  static async setLog({module, event, entityId , userId}) {
+
+  static async getLogs() {
+    return await this.findAll({ 
+      limit: 100, 
+      order: [['id', 'DESC']], 
+      include: [{ model: User, attributes: ['username'] }] })
+  }
+
+  static async setLog({ module, event, entityId, userId }) {
     return await this.create({
       module,
       event,
       entityId,
       userId,
-    }, { 
-      include: [{model: User}] 
-    })  
+    }, {
+      include: [{ model: User }]
+    })
   }
 }
 

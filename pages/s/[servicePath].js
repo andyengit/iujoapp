@@ -20,7 +20,7 @@ const Service = () => {
 
   useEffect(() => {
     if (servicePath !== undefined) {
-      axios.get(`/api/services?name=${servicePath}`)
+      axios.get(`/api/services/${servicePath}`)
         .then(({ data }) => {
           setService(data.service)
           getPosts({ serviceId: data.service.id })

@@ -1,16 +1,21 @@
 import Service from "./Service.Model"
 
 class ServiceController {
-  static async getService(name){
-    try{
+  static async getServices() {
+    const services = await Service.getServices();
+    if (!services) {
+      return { status: 400, message: "No hay servicios disponibles" }
+    }
+    return { status: 200, services }
+
+  }
+
+  static async getService(name) {
     const services = await Service.getService(name);
-    if (services){
-      return {status: 200, service: await services['dataValues']}
+    if (!services) {
+      return { status: 400, message: "No se ha encontrado" }
     }
-    return {status: 400, message: "No se ha encontrado"}
-    }catch(e){
-      return {status:  400, message: e.message}
-    }
+    return { status: 200, service: await services['dataValues'] }
   }
 }
 

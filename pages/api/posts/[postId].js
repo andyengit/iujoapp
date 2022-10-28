@@ -13,7 +13,7 @@ const handler = nc(handleApiError)
 handler.get(async (req,res) => {
   const id = req.query.postId
   const action = await PostController.getPost(id)
-  res.status(200).json(action)
+  res.status(action.status).json(action)
 })
 handler.use(handleFile)
 handler.use(notAuthorized)

@@ -76,7 +76,7 @@ const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
       return (
         <div className={styles.image}>
           <p class={styles.closeImage}>X</p>
-          <Image src={images[0].path} layout="fill" objectFit="cover" priority alt='seo' />
+          <Image src={images[0].path} layout="fill" objectFit="cover" priority alt={`${title} ${content}`} />
         </div>
       )
   }

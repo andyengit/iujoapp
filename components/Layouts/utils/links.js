@@ -5,7 +5,7 @@ const SlidebarLinks = [
   },
   {
     name: 'CONOCENOS',
-    path: '/test'
+    path: '/aboutus'
   }
 ]
 

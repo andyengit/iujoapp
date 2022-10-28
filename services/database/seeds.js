@@ -3,6 +3,7 @@ import Log from "../Log/Log.Model";
 import Group from "../Group/Group.Model";
 import Service from "../Service/Service.Model";
 import UsersServices from "../UsersServices/UsersServices.Model";
+import Career from "../Career/Career.Model";
 
 require("./relations");
 
@@ -12,6 +13,13 @@ const createData = async () => {
     id: 1,
     name: "Administrador",
     isAdmin: true,
+    postApprover: true,
+  })
+
+  await Group.create({
+    id: 2,
+    name: "Author",
+    isAdmin: false,
     postApprover: true,
   })
 
@@ -50,6 +58,12 @@ const createData = async () => {
     isCoordinator: 1
   })
 
+  UsersServices.create({
+    userId: 2,
+    serviceId: 1,
+    isCoordinator: 0,
+  })
+
   await User.create(
     {
       id: 2,
@@ -60,7 +74,7 @@ const createData = async () => {
       status: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
-      groupId: 1,
+      groupId: 2,
       Logs: {
         module: "USER",
         event: "CREATE",
@@ -71,6 +85,32 @@ const createData = async () => {
     { include: [Log, { model: Group, as: "group" }] }
   );
 
+  await Career.create(
+    {
+      name: "INFORMATICA",
+      coordinator: 1,
+      color: "BLUE",
+      icon: "ICON",
+      description: "DESCRIPCION DE LA CARRERA",
+      profile: "PERFIL DEL EGRESADO ASI YEI",
+      path: "informatica",
+      pensum: "PENSUM",
+    }
+  )
+
+  await Career.create(
+    {
+      name: "ADMINISTRACION",
+      coordinator: 2,
+      color: "RED",
+      icon: "ICON",
+      description: "DESCRIPCION DE LA CARRERA DE ADMINSITRACION",
+      profile: "PERFIL DEL EGRESADO ASI YEI AQUI AQUI",
+      path: "administracion",
+      pensum: "PENSUM",
+    }
+  )
 };
+
 
 export default createData;

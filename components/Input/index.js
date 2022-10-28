@@ -5,6 +5,8 @@ const Input = ({
   description = "Descripcion",
   color = "black",
   type = "text",
+  defaultValue = "",
+  disabled = false,
   onChange,
 }) => {
   const className =
@@ -14,7 +16,7 @@ const Input = ({
   return (
     <div className={className}>
       <label>{title}</label>
-      <input type={type} onChange={onChange} />
+      <input defaultValue={defaultValue} disabled={disabled} type={type} onChange={onChange} />
       <p>{descriptionRender}</p>
     </div>
   );

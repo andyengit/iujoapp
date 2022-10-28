@@ -18,9 +18,10 @@ const Content = () => {
         </div>
         <div className={styles.about}>
           <p className={styles.text}>
-            &quot;aslkd alksjd lkasdj lkasj dlk&quot;
+            Este es un texto de informacion estatica, no puede editarse.
+            Puede utilizarse para informacion acerca de el insituto o que nunca cambie. 
           </p>
-          <Link href="/test">
+          <Link href="/aboutus">
             <a>Conocer mas acerca del IUJO...</a>
           </Link>
         </div>

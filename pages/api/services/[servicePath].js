@@ -4,7 +4,8 @@ import ServiceController from "../../../services/Service/Service.Controller";
 
 const handler = nc(handleApiError)
   .get(async (req, res) => {
-    const response = await ServiceController.getServices();
+    const name = req.query.servicePath
+    const response = await ServiceController.getService(name);
     if (response.status !== 200){
       res.status(response.status).json(response);
     }

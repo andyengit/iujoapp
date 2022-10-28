@@ -44,7 +44,7 @@ const Footer = () => {
           </Link>
         </li>
         <li>
-          <Link href="/u/iujo">
+          <Link href="/u/admin">
             <a>IUJO USER</a>
           </Link>
         </li>

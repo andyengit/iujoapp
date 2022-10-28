@@ -4,3 +4,39 @@
   grid-template-columns: 1fr 4fr;
   gap: 1rem;
 }
+
+.content{
+    display:flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem;
+}
+
+.twoFields{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem; 
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.table{
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+}
+
+.table > thead {
+    background-color: #212121;
+    color: white;
+}
+
+.table > tbody > tr:nth-child(even) {
+	background: #f1f2f3;
+}

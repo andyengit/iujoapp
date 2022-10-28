@@ -5,6 +5,11 @@ const getSettingsUrl = [
     name: "Cuenta",
   },
   {
+    path: "/a/settings/accounts",
+    id: "accounts",
+    name: "Usuarios",
+  },
+  {
     path: "/a/settings/reports",
     id: "reports",
     name: "Reportes",

@@ -8,10 +8,10 @@ class PostController {
   static async getPost(id) {
     try {
       const result = await Post.getPost(id);
-      if (result === null) {
+      if (!result) {
         return { message: "No se ecuentra", status: 404 }
       }
-      return result;
+      return {status: 200, post: result};
     } catch (e) {
       return { message: e.message, status: 400 }
     }
@@ -32,7 +32,7 @@ class PostController {
       }
 
       if (optionsClean.serviceId) {
-        return await Post.getPostsByService({ ...params, id: optionsClean.serviceId});
+        return await Post.getPostsByService({ ...params, id: optionsClean.serviceId });
       }
 
       return await Post.getPosts(params);

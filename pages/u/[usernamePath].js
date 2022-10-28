@@ -5,18 +5,21 @@ import usePosts from "../../hooks/usePosts";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import axios from 'axios'
+import TextLoading from '../../components/TextLoading';
 
 const Username = () => {
-  const { getPosts, RenderPosts, setDefaultParams } = usePosts();
+  const { getPosts, RenderPosts, setDefaultParams, defaultParams } = usePosts();
   const { query: { usernamePath }, push } = useRouter();
 
   const [user, setUser] = useState(false);
 
   useEffect(() => {
     if (usernamePath !== undefined) {
-      axios.get(`/api/users?name=${usernamePath}`)
+      axios.get(`/api/users/${usernamePath}`)
         .then(({ data }) => {
-          console.log(data)
+          setUser(data.user)
+          getPosts({ userId: data.user.id })
+          setDefaultParams({ userId: data.user.id })
         })
         .catch(() => {
           push('/oops')
@@ -24,26 +27,43 @@ const Username = () => {
     }
   }, [usernamePath])
 
+  const ShowProfile = ({ mode }) => {
+    return (<div className={styles.profile}>
+      <div className={styles.top}>
+        <div className={styles.image}></div>
+        <div className={styles.service}>
+          {user ?
+            <>
+              <p>{user.name}</p>
+              <span>@{user.username}</span>
+            </>
+            :
+            <>
+              <TextLoading /><TextLoading />
+            </>}
+        </div>
+      </div>
+      <div className={styles.data}>
+        {user ?
+          <>
+            <p>{user.email}</p>
+          </>
+          :
+          <>
+            <TextLoading /><TextLoading />
+          </>}
+      </div>
+    </div>)
+  }
+
   return (
     <div className={styles.grid}>
-      <div className={styles.profile}>
-        <div className={styles.top}>
-          <div className={styles.image}></div>
-          <div className={styles.service}>
-            <p>IUJO</p>
-            <span>@IUJO</span>
-          </div>
-        </div>
-        <div className={styles.data}>
-          <p>description</p>
-          <p>iujo@iujo.com.ve</p>
-        </div>
-      </div>
+      <ShowProfile />
       <div className={styles.posts}>
-        <RenderPosts />
+        <RenderPosts wait={user} />
       </div>
       <div>
-        <SearchModule getPosts={getPosts} setDefaultParams={setDefaultParams} />
+        <SearchModule getPosts={getPosts} defaultParams={defaultParams} setDefaultParams={setDefaultParams} />
       </div>
     </div>
   );

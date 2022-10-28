@@ -5,6 +5,22 @@ import User from "../User/User.Model"
 require('../database/relations')
 
 class Service extends Model {
+  static async getServices() {
+    return await this.findAndCountAll({
+      include: [
+        {
+          model: UsersServices,
+          where: { isCoordinator: 1 },
+          attributes: ['userId', 'isCoordinator'],
+          include: {
+            model: User, as: 'services',
+            attributes: ['name', 'username']
+          }
+        }
+      ]
+    })
+  }
+
   static async getService(name) {
     return await this.findOne({
       where: { name: name },
@@ -12,10 +28,10 @@ class Service extends Model {
         {
           model: UsersServices,
           where: { isCoordinator: 1 },
-          attributes: ['userId','isCoordinator'],
+          attributes: ['userId', 'isCoordinator'],
           include: {
             model: User, as: 'services',
-            attributes: ['name','username']
+            attributes: ['name', 'username']
           }
         }
       ]

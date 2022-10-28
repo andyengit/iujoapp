@@ -1,25 +1,36 @@
-import {DataTypes, Model} from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import database from "../database/index";
 require("../database/relations");
 import Group from "../Group/Group.Model";
+import Service from '../Service/Service.Model';
 import UsersServices from "../UsersServices/UsersServices.Model";
 
 class User extends Model {
-  static async getUser(username){
+
+  static async getUsers() {
     return await this.findAll({
-      where: {username: username},
-      attributes: ['id', 'name','status', 'email', 'username','groupId'],
+      attributes: ['id', 'name', 'email', 'username', 'groupId'],
+    })
+  }
+
+  static async getUser(username) {
+    return await this.findOne({
+      where: { username: username },
+      attributes: ['id', 'name', 'status', 'email', 'username', 'groupId'],
       include: [
-	      {model: Group ,as: "group"},
-        {model: UsersServices, attributes: ['serviceId']}
+        { model: Group, as: "group" },
+        {
+          model: UsersServices, attributes: ['serviceId', 'isCoordinator'],
+          include: [{ model: Service, attributes: ['name'], as: 'users' }]
+        }
       ]
     });
   }
 
-  static async getUserPassword(username){
+  static async getUserPassword(username) {
     return await this.findAll({
-      where: {username: username}, 
-      attributes: ['id', 'name','status', 'password']
+      where: { username: username },
+      attributes: ['id', 'name', 'status', 'password']
     });
   }
 }

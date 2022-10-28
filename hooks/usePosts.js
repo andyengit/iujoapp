@@ -1,4 +1,5 @@
 import axios from 'axios'
+import styles from "../components/PostContainer/PostContainer.module.css";
 import { useEffect, useState } from 'react'
 import PostContainer from "../components/PostContainer";
 import useAuth from "../hooks/useAuth";
@@ -12,33 +13,59 @@ const usePosts = () => {
   const { token } = useAuth();
   const [rows, setRows] = useState(false);
   const preview = [1, 2, 3];
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
+    setPage(0);
     setPosts([])
     setRows([])
   }, [])
 
   const getPosts = async (reqdata = { page: 0 }) => {
-    setRows(null);
-    const data = { ...reqdata, ...defaultParams };
+    if (reqdata.page === 0 || !reqdata.page) {
+      setRows(null);
+    }
+    const data = { ...defaultParams, ...reqdata };
     let url = '/api/posts?';
     if (data.page !== undefined) url += `page=${data.page}`;
     if (data.search !== undefined) url += `&search=${data.search}`;
     if (data.limit !== undefined) url += `&limit=${data.limit}`;
     if (data.userId !== undefined) url += `&user=${data.userId}`;
     if (data.serviceId !== undefined) url += `&service=${data.serviceId}`;
+    if (data.tags !== undefined) url += `&tags=${data.tags}`;
     axios.get(url)
       .then(res => {
         setPosts(res.data)
       })
       .catch(err => {
-        notification.setNotification(err.response.data.message)
+        notification.setNotification(err.response.message)
       })
   }
 
+  const getPost = (id) => {
+    const url = `/api/posts/${id}`
+    console.log(url)
+    axios.get(url)
+      .then(({data}) => {
+        setRows([data.post])
+      })
+      .catch(err => {
+        notification.setNotification(err.response.message)
+      })
+  }
+
+  const showMorePosts = () => {
+    setPage(page + 1)
+    getPosts({ page: page + 1 })
+  }
+
   useEffect(() => {
-    if(posts !== []){
-      setRows(posts.rows)
+    if (posts !== []) {
+      if (page === 0) {
+        setRows(posts.rows)
+      } else {
+        setRows([...rows, ...posts.rows])
+      }
     }
   }, [posts])
 
@@ -122,27 +149,32 @@ const usePosts = () => {
       })
   }
 
-  const RenderPosts = ({wait = true}) => {
-    
+  const RenderPosts = ({ wait = true, one = false }) => {
+
     if (rows && wait) {
       if (rows.length > 0) {
-        return rows.map((el, key) => (
-          <PostContainer
-            key={key}
-            data={el}
-            deletePost={deletePost}
-            getPosts={getPosts}
-          />))
+        return (<>
+          {rows.map((el, key) => (
+            <PostContainer
+              key={key}
+              data={el}
+              deletePost={deletePost}
+              getPosts={getPosts}
+            />))}
+          {rows.length <= (posts.count - 5) && <div class={styles.showMorePosts} onClick={showMorePosts}>Ver mas</div>}
+        </>)
       }
       return <h2>No hay publicaciones disponibles</h2>
     } else {
-      return preview.map((el, key) => <PostContainer key={key} />)
+      return one ? <PostContainer /> :
+        preview.map((el) => <PostContainer key={el} />)
     }
   }
 
   return {
     posts,
     getPosts,
+    getPost,
     createPost,
     updatePost,
     RenderPosts,

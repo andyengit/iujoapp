@@ -21,7 +21,7 @@ const Top = () => {
       <Link href="/p">
         <a className={styles.link}>NOTICIAS</a>
       </Link>
-      <Link href="/test">
+      <Link href="/aboutus">
         <a className={styles.link}>CONOCENOS</a>
       </Link>
     </div>

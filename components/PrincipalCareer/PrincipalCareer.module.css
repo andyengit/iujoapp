@@ -31,7 +31,7 @@
 }
 
 .career:hover {
-    background-color: #212121aa;
+    opacity: 0.9;
 }
 
 @media (max-width: 1000px) {

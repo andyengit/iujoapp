@@ -8,7 +8,16 @@ import Service from "../Service/Service.Model";
 
 class Post extends Model {
   static async getPost(id) {
-    return this.findOne({ where: { id: id } })
+    return this.findOne({
+      attributes: ["id", "title", "content", "updatedAt", "anchored"],
+      where: { id: id },
+      include: [
+        { model: User, attributes: ["id", "name"], as: "autor" },
+        { model: Image, attributes: ["id", "path"], as: 'images' },
+        { model: Tag, attributes: ['id', 'name'], as: 'tags' },
+        { model: Service, attributes: ['name'] }
+      ],
+    })
   }
 
   static async getPosts(options = { limit: 5, offset: 0 }) {
@@ -62,7 +71,7 @@ class Post extends Model {
         ...query, where:
         {
           ...query.where,
-          title: { [Op.like]: `%${search}%` }
+          title: { [Op.like]: `%${search}%` },
         }
       }
     }
@@ -72,8 +81,8 @@ class Post extends Model {
   }
 
   static async getPostsByUser(options = { limit: 5, offset: 0, id }) {
-    const { limit, offset, id } = options;
-    const { count, rows } = await this.findAndCountAll({
+    const { limit, offset, id, search } = options;
+    let query = {
       attributes: ["id", "title", "content", "updatedAt", "anchored"],
       where: { userId: id },
       order: [["updatedAt", "DESC"]],
@@ -85,7 +94,19 @@ class Post extends Model {
         { model: Tag, attributes: ['id', 'name'], as: 'tags' },
         { model: Service, attributes: ['name'] }
       ],
-    });
+    }
+
+    if (search) {
+      query = {
+        ...query, where:
+        {
+          ...query.where,
+          title: { [Op.like]: `%${search}%` },
+        }
+      }
+    }
+
+    const { count, rows } = await this.findAndCountAll(query)
     return { count, rows };
   }
 
