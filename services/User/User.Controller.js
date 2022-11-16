@@ -1,50 +1,47 @@
 import User from "./User.Model";
 import { createToken, verifyToken } from '../../utils/handleToken';
+import Controller from "../Controller";
 
-class UserController {
+class UserController extends Controller {
 
-  static async getUsers() {
-    const users = await User.getUsers();
-    if (!users) {
-      return { status: 404, message: "No hay usuarios registrados" }
-    }
-    return { status: 200, users: users }
+  constructor(token) {
+    super()
+    this._name = 'usuario'
+    this._nameP = "usuarios"
+    this._model = User
+    this._token = token
   }
 
-  static async getUser({ username }) {
-    const user = await User.getUser(username);
-    if (!user) {
-      return { status: 404, message: "Usuario no encontrado" }
-    }
-    return { status: 200, user: user.dataValues }
-  }
-
-
-  static async login({ username, password }) {
+  async login({ username, password }) {
     const users = await User.getUserPassword(username);
     if (users.length === 0) {
-      return { status: 400, message: "Usuario no registrado" };
+      this._res_status = 400;
+      this._res_message = "Usuario o contraseña incorrecta"
+      return
     }
 
     if (users[0].dataValues.password !== password) {
-      return { status: 401, message: "Contraseña incorrecta" };
+      this._res_status = 400;
+      this._res_message = "Usuario o contraseña incorrecta"
+      return
     }
 
-    const user = await User.getUser(username)
-    const token = await createToken(user.dataValues)
-    if (!token) return { status: 401, message: "Error" }
-    return { status: 201, token: token, user: user.dataValues }
+    const { dataValues } = await User._getEntity({ _path: username })
+    const token = await createToken(dataValues)
+    return { token: token, user: dataValues }
   }
 
-  static async getData(token) {
-    try {
-      const payload = await verifyToken(token)
-      const { username } = await payload;
-      const user = await User.getUser(username)
-      return { status: 200, user: user.dataValues }
-    } catch (error) {
-      return { status: 401, message: error.message }
+  async getData() {
+    this._user = await verifyToken(this._token)
+    if (!this._user) {
+      this._res_status = 404
+      this._res_message = "Token invalido"
     }
+
+    const { dataValues } = await User._getEntity({ _path: this._user.username })
+    this._res_message = "Token correcto."
+    this._res_status = 201
+    return { user: dataValues }
   }
 }
 

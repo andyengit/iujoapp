@@ -16,7 +16,7 @@ class Log extends Model {
     return await this.create({
       module,
       event,
-      entityId,
+      entity : entityId,
       userId,
     }, {
       include: [{ model: User }]
@@ -34,8 +34,8 @@ Log.init(
       type: DataTypes.STRING(10),
       allowNull: false,
     },
-    entityId: {
-      type: DataTypes.INTEGER(),
+    entity: {
+      type: DataTypes.STRING(),
       allowNull: true,
     },
   },

@@ -10,7 +10,7 @@ class Post extends Model {
   static async getPost(id) {
     return this.findOne({
       attributes: ["id", "title", "content", "updatedAt", "anchored"],
-      where: { id: id },
+      where: { id: id, status: true },
       include: [
         { model: User, attributes: ["id", "name"], as: "autor" },
         { model: Image, attributes: ["id", "path"], as: 'images' },
@@ -42,6 +42,7 @@ class Post extends Model {
           title: {
             [Op.like]: `%${search}%`,
           },
+          status: true,
         },
       }
     }
@@ -54,7 +55,7 @@ class Post extends Model {
     const { limit, offset, id, search } = options;
     let query = {
       attributes: ["id", "title", "content", "updatedAt", "anchored"],
-      where: { serviceId: id },
+      where: { serviceId: id, status: true },
       order: [["updatedAt", "DESC"]],
       limit,
       offset,
@@ -84,7 +85,7 @@ class Post extends Model {
     const { limit, offset, id, search } = options;
     let query = {
       attributes: ["id", "title", "content", "updatedAt", "anchored"],
-      where: { userId: id },
+      where: { userId: id, status: true },
       order: [["updatedAt", "DESC"]],
       limit,
       offset,
@@ -112,8 +113,6 @@ class Post extends Model {
 
 
   static async createPost(data) {
-
-
     return await this.create(
       {
         title: data.title,
@@ -141,7 +140,7 @@ class Post extends Model {
     if (postData) {
       const { dataValues } = postData
       const newData = { ...dataValues, ...data, updateAt: new Date() }
-      const value = await this.update(newData, { where: { id: id } });
+      await this.update(newData, { where: { id: id } });
       if (!!data.tags && data.tags.length > 0) {
         await data.tags.map(async (el) => {
           await Tag.create({
@@ -167,7 +166,7 @@ class Post extends Model {
   }
 
   static async deletePost(id) {
-    return await this.destroy({ where: { id } });
+    return await this.update({status: false},{ where: { id } });
   }
 }
 
@@ -184,6 +183,11 @@ Post.init(
     anchored: {
       type: DataTypes.BOOLEAN(),
       defaultValue: false,
+    },
+    status:{
+      type: DataTypes.BOOLEAN(),
+      defaultValue: true,
+      allowNull: false,
     }
   },
   {

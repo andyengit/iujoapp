@@ -17,16 +17,18 @@ const Careers = () => {
   const router = useRouter();
   const { setNotification } = useNotification();
 
-  console.log()
+  const getCareer = () => {
+    axios.get(`/api/careers/${router.query.careerPath}`)
+      .then(({ data }) => {
+        setCareer(data);
+      }).catch(err => {
+        router.push('/oops')
+      })
+  }
 
   useEffect(() => {
     if (router.query.careerPath) {
-      axios.get(`/api/careers/${router.query.careerPath}`)
-        .then(({ data }) => {
-          setCareer(data.career);
-        }).catch(err => {
-          console.log(err);
-        })
+      getCareer()
     }
   }, [router])
 
@@ -66,15 +68,15 @@ const Careers = () => {
     axios.put(`/api/careers/${career.id}`, dataTo)
       .then(({ data }) => {
         setEdit(false)
-        setCareer(data.career)
+        getCareer();
       })
       .catch(err => {
-        setNotification({ type: "ERROR", message: err.response.data.message })
+        setNotification(err.response.data.message, "ERROR")
       })
   }
 
   const ButtonEdit = () => {
-    if(!user || !user.isLogged || !user.dataUser.group.isAdmin){
+    if (!user || !user.isLogged || !user.dataUser || !user.dataUser.group.isAdmin) {
       return true
     }
     if (edit) {
@@ -134,7 +136,7 @@ const Careers = () => {
 
   return (
     <>
-      <div  className={styles.top + " " + getColor[career.color]}>{career.name}</div>
+      <div className={styles.top + " " + getColor[career.color]}>{career.name}</div>
       <div className={styles.pensum}>
         <ButtonEdit />
         <Button title="Descargar pensum" color="white" />

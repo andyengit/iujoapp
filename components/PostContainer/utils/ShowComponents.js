@@ -12,15 +12,16 @@ const ShowComponent = ({ data, typePopUp, getPosts, handleEdit }) => {
   }
 }
 
+
 const ShowOptions = ({ styles, dataUser, data, handleEdit, deletePostButton }) => {
-  if (dataUser && dataUser.id === data.autor.id) {
-    return (
-      <div className={styles.options}>
-        <FiEdit className={styles.edit} onClick={handleEdit} />
-        <AiFillDelete className={styles.delete} onClick={deletePostButton} />
-      </div>)
+  if (!dataUser || (dataUser.id !== data.autor.id || !dataUser.group.isAdmin)) {
+    return true;
   }
-  return true;
+  return (
+    <div className={styles.options}>
+      <FiEdit className={styles.edit} onClick={handleEdit} />
+      <AiFillDelete className={styles.delete} onClick={deletePostButton} />
+    </div>)
 }
 
 const ShowAutor = ({ autor, updatedAt, Service, styles }) => {
@@ -32,7 +33,7 @@ const ShowAutor = ({ autor, updatedAt, Service, styles }) => {
   )
 }
 
-const FormatContent = ({content}) => {
+const FormatContent = ({ content }) => {
   return content.split("\n").map((el, key) => <p key={key}>{el}</p>)
 }
 

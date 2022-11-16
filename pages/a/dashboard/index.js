@@ -42,10 +42,10 @@ const Dashboard = () => {
       <div className={styles.posts}>
         {renderProfile(2)}
         <CreatePostContainer getPosts={getPosts} />
-        <RenderPosts wait={dataUser}/>
+        <RenderPosts wait={dataUser} />
       </div>
       <div className={styles.search}>
-        <SearchModule getPosts={getPosts} setDefaultParams={setDefaultParams} defaultParams={setDefaultParams}/>
+        <SearchModule getPosts={getPosts} setDefaultParams={setDefaultParams} defaultParams={setDefaultParams} />
       </div>
     </div>
   );

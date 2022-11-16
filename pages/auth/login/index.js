@@ -29,7 +29,7 @@ const Login = () => {
 	  title="Nombre de usuario" 
 	  description="" 
 	  color="white" 
-	  onChange={({target}) => setUsername(target.value)}
+	  onChange={setUsername}
 	  value={username}
 	  />
 	  <Input
@@ -37,7 +37,7 @@ const Login = () => {
             description=""
             color="white"
             type="password"
-	    onChange={({target}) => setPassword(target.value)}
+	    onChange={setPassword}
 	    value={password}
           />
 	  <Button color="white" title="Iniciar sesion" onClick={() => logIn({username,password})} />

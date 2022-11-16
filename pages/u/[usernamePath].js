@@ -10,7 +10,6 @@ import TextLoading from '../../components/TextLoading';
 const Username = () => {
   const { getPosts, RenderPosts, setDefaultParams, defaultParams } = usePosts();
   const { query: { usernamePath }, push } = useRouter();
-
   const [user, setUser] = useState(false);
 
   useEffect(() => {

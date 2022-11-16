@@ -4,8 +4,17 @@ import UserController from '../../../services/User/User.Controller';
 
 const handler = nc(handleApiError)
   .get(async (req, res) => {
-    const response = await UserController.getUser({username: req.query.usernamePath});
-    res.status(response.status).json(response);
+    const { sessionJWT } = req.cookies
+    const User = new UserController(sessionJWT)
+    const response = await User.getEntity(req.query.usernamePath);
+    res.status(User._res_status).json({ ...response, message: User._res_message });
+  })
+  .put(async (req, res) => {
+    const usernamePath = req.query.usernamePath;
+    const { sessionJWT } = req.cookies
+    const User = new UserController(sessionJWT)
+    const response = await User._updateEntity(usernamePath, req.body);
+    res.status(User._res_status).json({ ...response, message: User._res_message });
   })
   .use(onNoMethod);
 

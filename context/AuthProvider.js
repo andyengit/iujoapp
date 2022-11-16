@@ -1,26 +1,28 @@
-import {createContext, useState, useEffect} from "react"
-import {useRouter} from "next/router";
+import { createContext, useState, useEffect } from "react"
+import { useRouter } from "next/router";
 import Cookies from 'js-cookie'
 import axios from "axios";
 import useNotification from "../hooks/useNotification";
 
 export const AuthContext = createContext();
 
-const AuthProvider = ({children}) => {
+const AuthProvider = ({ children }) => {
   const router = useRouter();
   const token = Cookies.get('sessionJWT');
   const [sessionJWT, setSessionJWT] = useState(token || null);
   const [dataUser, setDataUser] = useState(null);
-  const {setNotification} = useNotification();
+  const { setNotification } = useNotification();
 
-  useEffect(() =>{
-    if(token && !dataUser){
+  useEffect(() => {
+    if (token && !dataUser) {
       axios.get(`/api/auth/login?token=${sessionJWT}`)
         .then((res) => {
-          setDataUser(res.data.user)})
+          console.log(res)
+          setDataUser(res.data.user)
+        })
         .catch(() => logOut())
     }
-  }, [token,dataUser])
+  }, [token, dataUser])
 
   const test = () => {
     setDataUser(null)
@@ -29,15 +31,11 @@ const AuthProvider = ({children}) => {
   const logIn = (data) => {
     axios.post('/api/auth/login', data)
       .then(res => {
-        if (res.data.status == 201){
-          setNotification("Inicio de Session exitoso!", "MESSAGE")
-          setSessionJWT(res.data.token);
-          Cookies.set('sessionJWT', res.data.token)
-          setDataUser(res.data.user);
-          router.reload();
-        } else {
-          setNotification(res.data.message, "ERROR")
-        }
+        setNotification("Inicio de Session exitoso!", "MESSAGE")
+        Cookies.set('sessionJWT', res.data.token)
+        setDataUser(res.data.user)
+        setSessionJWT(res.data.token)
+        router.reload();
       }).catch(err => {
         setNotification(err.response.data.message, "ERROR")
       })

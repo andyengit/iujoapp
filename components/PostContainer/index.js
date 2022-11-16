@@ -12,9 +12,7 @@ import { ShowComponent, FormatContent, verifyText, ShowAutor, ShowOptions } from
 const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
 
 
-  if (!data) return <TemplateClear styles={styles} />
 
-  const { title, autor, content, images, tags, updatedAt, Service } = data;
   const [showPopUp, setShowPopUp] = useState(false);
   const [typePopUp, setTypePopUp] = useState("");
   const { dataUser } = useAuth();
@@ -23,9 +21,14 @@ const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (verifyText(data)) setShowMore("1");
+    if (!!data  && verifyText(data)) {
+      setShowMore("1");
+    }
   }, [data])
 
+  if (!data) return <TemplateClear styles={styles} />
+
+  const { title, autor, content, images, tags, updatedAt, Service } = data;
 
   const handleEdit = () => {
     setTypePopUp("EDIT");
@@ -58,16 +61,16 @@ const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
   const ShowPopUpComponent = () => {
     if (showPopUp) {
       return (<PopUp
-        children={() =>
-          <ShowComponent
-            data={data}
-            typePopUp={typePopUp}
-            getPosts={getPosts}
-            handleEdit={handleEdit}
-          />}
         type={typePopUp === "EDIT" ? "" : "SELECTION"}
         callback={typePopUp === "DELETE" ? handleDelete : () => true}
-        closePopUp={handleEdit} />)
+        closePopUp={handleEdit}>
+        <ShowComponent
+          data={data}
+          typePopUp={typePopUp}
+          getPosts={getPosts}
+          handleEdit={handleEdit}
+        />
+      </PopUp>)
     }
   }
 
@@ -75,7 +78,7 @@ const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
     if (images && images.length > 0)
       return (
         <div className={styles.image}>
-          <p class={styles.closeImage}>X</p>
+          <p className={styles.closeImage}>X</p>
           <Image src={images[0].path} layout="fill" objectFit="cover" priority alt={`${title} ${content}`} />
         </div>
       )
@@ -122,7 +125,7 @@ const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
       <div className={styles.share}>
         <div className={styles.shareButton}>Compartir</div>
         <div className={styles.tags}>
-          <ShowTags/>
+          <ShowTags />
         </div>
       </div>
     </div>

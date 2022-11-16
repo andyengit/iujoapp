@@ -4,32 +4,70 @@ require("../database/relations");
 import Group from "../Group/Group.Model";
 import Service from '../Service/Service.Model';
 import UsersServices from "../UsersServices/UsersServices.Model";
+import ModelBase from "../ModelBase";
 
-class User extends Model {
+class User extends ModelBase {
 
-  static async getUsers() {
-    return await this.findAll({
-      attributes: ['id', 'name', 'email', 'username', 'groupId'],
+  static async _updateUser({ id, data }) {
+    return await super._updateEntity({
+      id, data, _query: {
+        include: [{ model: Group, as: "group" }],
+      }
     })
   }
 
-  static async getUser(username) {
-    return await this.findOne({
-      where: { username: username },
-      attributes: ['id', 'name', 'status', 'email', 'username', 'groupId'],
-      include: [
-        { model: Group, as: "group" },
-        {
-          model: UsersServices, attributes: ['serviceId', 'isCoordinator'],
-          include: [{ model: Service, attributes: ['name'], as: 'users' }]
-        }
-      ]
+  static async _getEntity({ _path }) {
+    return await super._getEntity({
+      _query: {
+        where: { username: _path },
+        attributes: ['id', 'name', 'status', 'email', 'username', 'groupId'],
+        include: [
+          { model: Group, as: "group" },
+          {
+            model: UsersServices, attributes: ['serviceId', 'isCoordinator'],
+            include: [{ model: Service, attributes: ['name'], as: 'users' }]
+          }
+        ]
+      }
+    })
+  }
+
+  static async _getEntities() {
+    return await super._getEntities({
+      _query: {
+        attributes: ['id', 'name', 'status', 'email', 'username', 'groupId'],
+      }
+    })
+  }
+
+  static async _getEntity({ _path }) {
+    return await super._getEntity({
+      _query: {
+        where: { username: _path },
+        attributes: ['id', 'name', 'status', 'email', 'username', 'groupId'],
+        include: [
+          { model: Group, as: "group" },
+          {
+            model: UsersServices, attributes: ['serviceId', 'isCoordinator'],
+            include: [{ model: Service, attributes: ['name'], as: 'users' }]
+          }
+        ]
+      }
+    })
+  }
+
+  static async _create({data}) {
+    return await super._create({
+      data, _query: {
+        include:
+          [{ model: Group, as: "group" }],
+      }
     });
   }
 
   static async getUserPassword(username) {
     return await this.findAll({
-      where: { username: username },
+      where: { username: username, status: true },
       attributes: ['id', 'name', 'status', 'password']
     });
   }

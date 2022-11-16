@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link'
 import TextLoading from "../../components/TextLoading";
+import Button from "../../components/Button";
 
 const Service = () => {
 
@@ -22,9 +23,9 @@ const Service = () => {
     if (servicePath !== undefined) {
       axios.get(`/api/services/${servicePath}`)
         .then(({ data }) => {
-          setService(data.service)
-          getPosts({ serviceId: data.service.id })
-          setDefaultParams({ serviceId: data.service.id })
+          setService(data)
+          getPosts({ serviceId: data.id })
+          setDefaultParams({ serviceId: data.id })
         })
         .catch(() => {
           push('/oops')
@@ -52,6 +53,7 @@ const Service = () => {
             {service ?
               <p>{service.name}</p> :
               <TextLoading />}
+            <Button title="Editar"/>
           </div>
         </div>
         <div className={styles.data}>
@@ -85,7 +87,7 @@ const Service = () => {
         )}
         <RenderPosts wait={service} />
       </div>
-      <div class={styles.search}>
+      <div className={styles.search}>
         <SearchModule
           getPosts={getPosts}
           setDefaultParams={setDefaultParams}

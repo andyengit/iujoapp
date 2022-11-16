@@ -1,5 +1,6 @@
 import styles from "./PopUp.module.css";
 import Button from "../Button";
+import { Children } from "react";
 
 const PopUp = ({ children, closePopUp, type = "SELECTION" , callback }) => {
   return (
@@ -8,7 +9,7 @@ const PopUp = ({ children, closePopUp, type = "SELECTION" , callback }) => {
 		      <button onClick={closePopUp} className={styles.closeButton}>
 			      X
 		      </button>
-		      {children()}
+          {children}
 		      {type === "SELECTION" && 
 			(<>
 			  <Button title="Cancelar" onClick={closePopUp} />

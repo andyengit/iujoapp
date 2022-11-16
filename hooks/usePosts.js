@@ -1,6 +1,6 @@
 import axios from 'axios'
 import styles from "../components/PostContainer/PostContainer.module.css";
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import PostContainer from "../components/PostContainer";
 import useAuth from "../hooks/useAuth";
 import useNotification from "../hooks/useNotification";
@@ -21,7 +21,8 @@ const usePosts = () => {
     setRows([])
   }, [])
 
-  const getPosts = async (reqdata = { page: 0 }) => {
+
+  const getPosts = useCallback(async (reqdata = { page: 0 }) => {
     if (reqdata.page === 0 || !reqdata.page) {
       setRows(null);
     }
@@ -40,13 +41,12 @@ const usePosts = () => {
       .catch(err => {
         notification.setNotification(err.response.message)
       })
-  }
+  }, [defaultParams, notification])
 
   const getPost = (id) => {
     const url = `/api/posts/${id}`
-    console.log(url)
     axios.get(url)
-      .then(({data}) => {
+      .then(({ data }) => {
         setRows([data.post])
       })
       .catch(err => {

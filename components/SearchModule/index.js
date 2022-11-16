@@ -91,7 +91,7 @@ const SearchModule = ({ getPosts, setDefaultParams, defaultParams }) => {
           onKeyUp={handleSearch}
           onChange={handleChangeInput}
         />
-        <button onClick={handleSearch} class={styles.button}>Buscar</button>
+        <button onClick={handleSearch} className={styles.button}>Buscar</button>
         <ShowAutors />
       </div>
       <div className={styles.suggestions}>

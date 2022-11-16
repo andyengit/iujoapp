@@ -11,7 +11,7 @@ const PrincipalCareer = () => {
   useEffect(() => {
     axios.get(`/api/careers`)
       .then(({ data }) => {
-        setCareers(data.careers.rows);
+        setCareers(data.rows);
       })
       .catch(err => {
         console.log(err);

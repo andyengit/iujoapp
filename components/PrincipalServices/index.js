@@ -10,7 +10,7 @@ const PrincipalServices = () => {
   useEffect(() => {
     axios.get(`/api/services`)
       .then(({ data }) => {
-        setServices(data.services.rows)
+        setServices(data.rows)
       })
       .catch(err => {
         console.log(err)

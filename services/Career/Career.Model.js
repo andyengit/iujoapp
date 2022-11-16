@@ -1,34 +1,9 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes} from "sequelize";
+import ModelBase from "../ModelBase";
 import database from "../database/index";
 
-class Career extends Model {
-  static async getCareers() {
-    const { rows, count } = await this.findAndCountAll()
-    return { rows, count }
-  }
 
-  static async getCareer(path) {
-    const career = await this.findOne({
-      where: { path: path }
-    })
-    return career
-  }
-
-  static async getCareerById(id) {
-    const career = await this.findOne({
-      where: { id: id }
-    })
-    return career
-  }
-
-  static async updateCareer(id, data) {
-    const career = await this.update(data, {
-      where: { id: id }
-    })
-    console.log(career)
-    return career
-  }
-}
+class Career extends ModelBase { }
 
 Career.init(
   {
@@ -36,16 +11,8 @@ Career.init(
       type: DataTypes.STRING(40),
       allowNull: false,
     },
-    coordinator: {
-      type: DataTypes.STRING(40),
-      allowNull: false,
-    },
     color: {
       type: DataTypes.STRING(10),
-      allowNull: false,
-    },
-    icon: {
-      type: DataTypes.STRING(20),
       allowNull: false,
     },
     description: {
@@ -58,6 +25,7 @@ Career.init(
     },
     path: {
       type: DataTypes.STRING(20),
+      unique: true,
       allowNull: false,
     },
     pensum: {

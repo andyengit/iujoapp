@@ -1,30 +1,14 @@
 import Career from "./Career.Model";
+import verifyToken from "../../utils/handleToken";
+import Controller from "../Controller";
 
-class CareerController {
-  static async getCareers() {
-    const careers = await Career.getCareers()
-    if (!careers) {
-      return { status: 404, message: "No hay carreras disponibles" }
-    }
-    return { status: 200, careers: careers }
-  }
-
-  static async getCareer(path) {
-    const career = await Career.getCareer(path)
-    if (!career) {
-      return { status: 404, message: "No existe la carrera" }
-    }
-    return { status: 200, career: career }
-  }
-
-
-  static async updateCareer(id, data){
-    const career = await Career.updateCareer(id,data)
-    if (!career){
-      return {status: 404, message: "No existe la Carrera"}
-    }
-    const newCareer = await Career.getCareerById(id);
-    return {status: 203, career: newCareer}
+class CareerController extends Controller{
+  constructor(token){
+    super()
+    this._name = 'carrera'
+    this._nameP = "carreras"
+    this._model = Career
+    this._token = token
   }
 }
 

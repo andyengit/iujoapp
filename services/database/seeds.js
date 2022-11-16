@@ -37,7 +37,7 @@ const createData = async () => {
       Logs: {
         module: "USER",
         event: "CREATE",
-        entityId: 1,
+        entity: 1,
         createdAt: new Date(),
       },
     },
@@ -47,22 +47,12 @@ const createData = async () => {
   await Service.create({
     id: 1,
     name: "UPP",
+    path: "upp",
     email: "jorge@iujo.com",
     phone: "123456789",
     description: "Servicio de UPP",
   })
 
-  UsersServices.create({
-    userId: 1,
-    serviceId: 1,
-    isCoordinator: 1
-  })
-
-  UsersServices.create({
-    userId: 2,
-    serviceId: 1,
-    isCoordinator: 0,
-  })
 
   await User.create(
     {
@@ -78,7 +68,7 @@ const createData = async () => {
       Logs: {
         module: "USER",
         event: "CREATE",
-        entityId: 1,
+        entity: 1,
         createdAt: new Date(),
       },
     },
@@ -88,9 +78,7 @@ const createData = async () => {
   await Career.create(
     {
       name: "INFORMATICA",
-      coordinator: 1,
       color: "BLUE",
-      icon: "ICON",
       description: "DESCRIPCION DE LA CARRERA",
       profile: "PERFIL DEL EGRESADO ASI YEI",
       path: "informatica",
@@ -101,7 +89,6 @@ const createData = async () => {
   await Career.create(
     {
       name: "ADMINISTRACION",
-      coordinator: 2,
       color: "RED",
       icon: "ICON",
       description: "DESCRIPCION DE LA CARRERA DE ADMINSITRACION",
@@ -110,6 +97,20 @@ const createData = async () => {
       pensum: "PENSUM",
     }
   )
+
+  UsersServices.create({
+    id: 1,
+    userId: 1,
+    serviceId: 1,
+    isCoordinator: 1
+  })
+
+  UsersServices.create({
+    id:2,
+    userId: 2,
+    serviceId: 1,
+    isCoordinator: 0,
+  })
 };
 
 

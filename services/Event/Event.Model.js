@@ -1,7 +1,9 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes } from "sequelize";
 import database from "../database/index";
+import ModelBase from "../ModelBase";
 
-class Event extends Model {}
+class Event extends ModelBase {
+}
 
 Event.init(
   {
@@ -9,26 +11,23 @@ Event.init(
       type: DataTypes.STRING(15),
       allowNull: false,
     },
-    title: {
-      type: DataTypes.STRING(20),
-      allowNull: false,
-    },
     message: {
       type: DataTypes.TEXT(),
       allowNull: false
     },
-    description: {
-      type: DataTypes.TEXT(),
-      allowNull: false,
-    },
-    url:{
+    url: {
       type: DataTypes.STRING(),
-      allowNull: false,  
+      allowNull: false,
     },
     important: {
       type: DataTypes.BOOLEAN(),
       allowNull: false,
       defaultValue: 0,
+    },
+    status: {
+      type: DataTypes.BOOLEAN(),
+      allowNull: false,
+      defaultValue: 1,
     }
   },
   {
