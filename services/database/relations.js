@@ -42,11 +42,11 @@ Image.belongsTo(Post, { foreignKey: {name: "postId", allowNull: true }, as: "ima
 User.hasMany(Log, { foreignKey: "userId"});
 Log.belongsTo(User, { foreignKey: "userId"});
 
-export const sync = async () => {
+export const sync = async (admin) => {
   return await database
     .sync({ force: true })
     .then(() => {
-      createData();
+      createData(admin);
       return {
         status: true,
         message: "Connection has been established successfully.",

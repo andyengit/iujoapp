@@ -14,7 +14,7 @@
 }
 
 .inputBox > .input:focus {
-  outline: none;
+  outline-color: transparent;
   border-color: #212121ff;
 }
 
@@ -29,13 +29,14 @@
   margin-top: 4px;
 }
 
-.white > input {
-  border-bottom: 2px solid #f1f2f3;
+.white > .input {
   color: white;
+  border-bottom: 2px solid #ffffffaa;
 }
 
 .white > .input:focus {
-  border-color: #f1f2f3ff;
+  outline:none;
+  border-bottom: 2px solid #ffffffaa;
 }
 
 .white > p {

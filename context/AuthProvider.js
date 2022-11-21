@@ -17,7 +17,6 @@ const AuthProvider = ({ children }) => {
     if (token && !dataUser) {
       axios.get(`/api/auth/login?token=${sessionJWT}`)
         .then((res) => {
-          console.log(res)
           setDataUser(res.data.user)
         })
         .catch(() => logOut())

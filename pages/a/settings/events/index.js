@@ -8,7 +8,7 @@ import axios from "axios";
 import TextLoading from "../../../../components/TextLoading";
 import useNotification from "../../../../hooks/useNotification"
 
-const Accounts = () => {
+const Events = () => {
 
   const { setNotification } = useNotification()
 
@@ -26,12 +26,6 @@ const Accounts = () => {
     axios.get(`/api/events`)
       .then(({ data }) => {
         setEvents(data.rows.filter(el => el.status ));
-      })
-      .catch(err => {
-        if (err.response.status === 404) {
-          setEvents([])
-        }
-        console.log(err);
       })
   }
 
@@ -58,7 +52,6 @@ const Accounts = () => {
         setNotification(err.response.data.message, "ERROR")
       })
   }
-    console.log(eventSelected)
 
   const handleUpdate = () => {
     let newData = {}
@@ -151,7 +144,7 @@ const Accounts = () => {
       <SettingsLinks />
       <div className={styles.content}>
         <div className={styles.top}>
-          <h3>Usuarios</h3>
+          <h3>Eventos</h3>
           <Button
             title={newEvent ? "-" : "+"}
             color={newEvent ? "-" : "-"}
@@ -202,4 +195,4 @@ const Accounts = () => {
   );
 };
 
-export default Accounts;
+export default Events;

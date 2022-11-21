@@ -151,7 +151,6 @@ const Services = () => {
   }
 
   const putCoordinator = (el) => {
-    console.log(el)
     axios.put(`/api/us?id=${el.id}`, { isCoordinator: !el.isCoordinator })
       .then(({ data }) => {
         getServices()
@@ -160,7 +159,6 @@ const Services = () => {
       })
       .catch(({ response }) => {
         if (response && response.data) {
-          console.log(response)
           setNotification(response.data.message, "ERROR")
         }
       })
@@ -181,7 +179,6 @@ const Services = () => {
   }
 
   const deleteUserService = (el) => {
-    console.log(editMode)
     axios.delete(`/api/us?service=${el.id}`)
       .then(({ data }) => {
         getServices()

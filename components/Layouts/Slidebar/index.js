@@ -36,14 +36,11 @@ const Slidebar = ({ status, handleSlidebar }) => {
           <a className={styles.link} onClick={changeState}>{link.name}</a>
         </Link>))}
       {elements && elements.map((link, index) => (
-        <a key={index} href={link.url} className={styles.url} onClick={changeState}>{link.name}</a>
+        <a key={index} href={link.url} target="_blank" rel="noreferrer" className={styles.url} onClick={changeState}>{link.name}</a>
       ))}
     </div>
     <div className={styles.bottom}>
-      <Link href="/a/settings">
-        <a onClick={changeState}>OPCIONES</a>
-      </Link>
-      <p>© 2022 IUJO. Todos los derechos reservados.</p>
+      <p>© 2022 MARCA. Todos los derechos reservados.</p>
     </div>
   </div>)
 }

@@ -26,7 +26,6 @@ const handler = nc(handleApiError)
   .delete(async (req, res) => {
     const { sessionJWT } = req.cookies
     const User = new USController(sessionJWT)
-    console.log(req.query)
     const response = await User.deleteEntity(req.query.service);
     res.status(User._res_status).json({ ...response, message: User._res_message });
   })

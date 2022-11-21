@@ -12,9 +12,6 @@ const PrincipalServices = () => {
       .then(({ data }) => {
         setServices(data.rows)
       })
-      .catch(err => {
-        console.log(err)
-      })
   }, [])
 
   return (

@@ -139,7 +139,7 @@ const Careers = () => {
       <div className={styles.top + " " + getColor[career.color]}>{career.name}</div>
       <div className={styles.pensum}>
         <ButtonEdit />
-        <Button title="Descargar pensum" color="white" />
+        <Button title="Descargar pensum" onClick={() => router.push(career.pensum) } color="white" />
       </div>
       <ShowContentCareer />
     </>

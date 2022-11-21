@@ -7,7 +7,8 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import TextLoading from "../../../../components/TextLoading";
 import useNotification from "../../../../hooks/useNotification";
-import {useRouter} from "next/router"
+import { useRouter } from "next/router"
+import UploadFile from "../../../../components/UploadFile";
 
 const Careers = () => {
 
@@ -23,14 +24,12 @@ const Careers = () => {
   const [path, setPath] = useState("");
   const [description, setDescription] = useState("");
   const [profile, setProfile] = useState("");
+  const [pensum, setPensum] = useState("");
 
   const getCareers = () => {
     axios.get(`/api/careers`)
       .then(({ data }) => {
         setCareers(data.rows);
-      })
-      .catch(err => {
-        console.log(err);
       })
   }
 
@@ -58,7 +57,7 @@ const Careers = () => {
       color,
       description,
       profile,
-      pensum: "",
+      pensum,
     })
       .then(({ data }) => {
         getCareers()
@@ -68,6 +67,7 @@ const Careers = () => {
         setColor("");
         setDescription("");
         setProfile("");
+        setPensum("");
       })
       .catch((error) => {
         setNotification(error.response.data.message, "ERROR")
@@ -75,7 +75,7 @@ const Careers = () => {
   }
 
   const deleteCareer = (el) => {
-    axios.put(`/api/careers/${el.id}`,{
+    axios.put(`/api/careers/${el.id}`, {
       status: !el.status
     })
       .then(() => {
@@ -102,7 +102,7 @@ const Careers = () => {
       <td>{el.color}</td>
       <td>/c/{el.path}</td>
       <td>
-        <Button title="VER" onClick={() => router.push(`/c/${el.path}`)}/>
+        <Button title="VER" onClick={() => router.push(`/c/${el.path}`)} />
         <Button title={el.status ? "DESACTIVAR" : "ACTIVAR"} color="red" onClick={() => deleteCareer(el)} />
       </td>
     </tr>
@@ -127,9 +127,12 @@ const Careers = () => {
               <Input title="Nombre" value={name} onChange={setName} />
               <Input title="Path" value={path} onChange={setPath} />
             </div>
-            <textarea placeholder="Descripcion"  value={description} type="textarea" onChange={({ target }) => setDescription(target.value)} />
+            <textarea placeholder="Descripcion" value={description} type="textarea" onChange={({ target }) => setDescription(target.value)} />
             <textarea placeholder="Perfil del egresado" value={profile} type="textarea" onChange={({ target }) => setProfile(target.value)} />
-            <Input title="Color" type="selection" valueMap={colors} value={color} onChange={setColor} />
+            <div className={styles.twoFields}>
+              <Input title="Color" type="selection" valueMap={colors} value={color} onChange={setColor} />
+              <UploadFile name="Pensum" setFile={setPensum} />
+            </div>
             <Button title="Crear" color="green" onClick={createCareer} />
           </div>
         }

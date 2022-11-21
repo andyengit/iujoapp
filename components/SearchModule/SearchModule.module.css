@@ -6,6 +6,26 @@
   border-radius: 10px;
 }
 
+.tag{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #21212122;
+}
+
+.tag > div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tag:hover{
+  background-color: #21212144;
+}
+
 .search {
   margin-bottom: 3rem;
   position: relative;

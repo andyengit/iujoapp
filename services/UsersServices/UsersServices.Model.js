@@ -5,7 +5,6 @@ import User from "../User/User.Model";
 
 class UsersServices extends ModelBase {
   static async _getEntities({ _path }) {
-    console.log(_path)
     let obj = false
     if (!!_path) {
       obj = {

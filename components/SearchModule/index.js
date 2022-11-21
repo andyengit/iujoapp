@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import usePosts from "../../hooks/usePosts";
 import TextLoading from "../TextLoading";
 import styles from "./SearchModule.module.css";
 import axios from "axios";
@@ -11,9 +10,27 @@ const SearchModule = ({ getPosts, setDefaultParams, defaultParams }) => {
   const [search, setSearch] = useState();
   const [popVisible, setPopVisible] = useState(false);
   const [autors, setAutors] = useState([]);
+  const [tags, setTags] = useState(false);
   const router = useRouter();
 
-  const tags = false;
+  useEffect(() => {
+    getPosts();
+    axios.get("/api/users/")
+      .then(res => {
+        setAutors(res.data.rows)
+      })
+    axios.get("/api/tags/")
+      .then(res => {
+        setTags(res.data.rows)
+      })
+  }, [search])
+
+
+  const handleSearchTag = (input) => {
+    setDefaultParams({ tags: input })
+    getPosts({ tags: input })
+  }
+
   const ShowTags = () => {
     if (!tags) {
       return (<>
@@ -24,6 +41,11 @@ const SearchModule = ({ getPosts, setDefaultParams, defaultParams }) => {
         <TextLoading />
       </>)
     }
+
+    return tags.map((el, i) => (<div onClick={() => handleSearchTag(el.name)} className={styles.tag} key={i}>
+      <span>{el.name}</span>
+      <div>{el.count}</div>
+    </div>))
   }
 
   const handleChangeInput = (({ target }) => {
@@ -48,19 +70,13 @@ const SearchModule = ({ getPosts, setDefaultParams, defaultParams }) => {
     setSearch({ search: input })
   }
 
-  useEffect(() => {
-    getPosts();
-    axios.get("/api/users/")
-      .then(res => {
-        setAutors(res.data.users)
-      })
-  }, [search])
 
   const ShowAutors = () => {
     if (!autors || !popVisible) return false
 
     return (<ul className={styles.popSearch}>
-      <li>Buscar etiqueta: {input}</li>
+      <li onClick={handleSearch}>Buscar titulo o contenido: {input}</li>
+      <li onClick={() => handleSearchTag(input)}>Buscar etiqueta: {input}</li>
       {autors
         .filter((el) => {
           if (el.name.toLowerCase().startsWith(input.toLowerCase()) ||

@@ -21,11 +21,10 @@ const SettingsLinks = () => {
     );
   };
 
-  if (!dataUser.group.isAdmin) {
+  if (dataUser.group.isAdmin) {
     return <div className={styles.box}>{getSettingsUrl.map(optionRender)}</div>;
   }
-
-  return <div className={styles.box}>{getSettingsUrl.filter(el => el.admin).map(optionRender)}</div>;
+  return <div className={styles.box}>{getSettingsUrl.filter(el => !el.admin).map(optionRender)}</div>;
 };
 
 export default SettingsLinks;

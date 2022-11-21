@@ -13,9 +13,9 @@ const Layouts = ({ children }) => {
         <meta name="description" content="Pagina educacional de Iujo" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {router.asPath === "/" || <Header />}
+      {router.asPath === "/" || router.asPath === '/setup' || <Header />}
       <main className="main">{children}</main>
-      <Footer />
+      {router.asPath === '/setup' || <Footer />}
     </>
   );
 };

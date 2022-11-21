@@ -13,9 +13,6 @@ const PrincipalCareer = () => {
       .then(({ data }) => {
         setCareers(data.rows);
       })
-      .catch(err => {
-        console.log(err);
-      })
   }, [])
 
   const ShowCareers = () => {

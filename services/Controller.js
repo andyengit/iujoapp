@@ -73,7 +73,7 @@ class Controller {
       isAdmin: this._user_adm
     })
 
-    if (!entities || (entities && entities.rows.length === 0)) {
+    if (!entities || (entities && entities.rows && entities.rows.length === 0)) {
       this._res_status = 404
       this._res_message = `No hay ${this._nameP} disponibles`
       return
@@ -148,7 +148,6 @@ class Controller {
   }
 
   async deleteEntity(id) {
-    console.log(id)
     await this._verifyUser()
     if (!this._user) {
       this._res_status = 403

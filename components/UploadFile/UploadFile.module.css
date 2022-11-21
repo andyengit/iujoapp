@@ -1,0 +1,25 @@
+.input{
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.inputs{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.status{
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: red;
+}
+
+.sucess{
+  background-color: green;
+}

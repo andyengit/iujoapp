@@ -15,7 +15,9 @@
 
 # production
 /build
-/public/uploads/
+/public/uploads/files/*
+/public/uploads/img/*
+/public/uploads/base/*
 
 # misc
 .DS_Store
@@ -30,6 +32,9 @@ yarn-error.log*
 # local env files
 .env*.local
 .env*
+
+package-lock.json
+yarn.lock*
 
 # vercel
 .vercel

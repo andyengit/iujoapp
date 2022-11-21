@@ -10,7 +10,6 @@ class ModelBase extends Model {
           where: { id: id }
         }
       }
-      console.log(query)
 
       return await this.update({ status: false }, query)
 
@@ -43,7 +42,6 @@ class ModelBase extends Model {
       const { rows, count } = await this.findAndCountAll(query || {})
       return { rows, count }
     } catch (_e) {
-      console.log(_e)
       return { _e }
     }
   }

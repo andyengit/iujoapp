@@ -20,7 +20,7 @@ class User extends ModelBase {
     return await super._getEntity({
       _query: {
         where: { username: _path },
-        attributes: ['id', 'name', 'status', 'email', 'username', 'groupId'],
+        attributes: ['id', 'name', 'status', 'email', 'username', 'groupId','image'],
         include: [
           { model: Group, as: "group" },
           {
@@ -35,7 +35,7 @@ class User extends ModelBase {
   static async _getEntities() {
     return await super._getEntities({
       _query: {
-        attributes: ['id', 'name', 'status', 'email', 'username', 'groupId'],
+        attributes: ['id', 'name', 'status', 'email', 'username', 'groupId', 'image'],
       }
     })
   }
@@ -44,7 +44,7 @@ class User extends ModelBase {
     return await super._getEntity({
       _query: {
         where: { username: _path },
-        attributes: ['id', 'name', 'status', 'email', 'username', 'groupId'],
+        attributes: ['id', 'name', 'status', 'email', 'username', 'groupId', 'image'],
         include: [
           { model: Group, as: "group" },
           {
@@ -79,6 +79,9 @@ User.init({
     primaryKey: true,
     allowNull: false,
     autoIncrement: true,
+  },
+  image:{
+    type: DataTypes.STRING(255),
   },
   name: {
     type: DataTypes.STRING(20),

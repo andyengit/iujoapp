@@ -21,7 +21,7 @@ const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!!data  && verifyText(data)) {
+    if (!!data && verifyText(data)) {
       setShowMore("1");
     }
   }, [data])
@@ -95,7 +95,13 @@ const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
       <ShowPopUpComponent />
       <div className={styles.top}>
         <div className={styles.about}>
-          <div className={styles.autorImage}></div>
+          {autor.image ? <div className={styles.autorImage}>
+            <Image src={autor.image} layout="fill" objectFit="cover" priority alt={autor.name} />
+          </div> :
+            <div className={styles.autorNoImage}>
+              a
+            </div>
+          }
           <ShowAutor
             autor={autor}
             updatedAt={updatedAt}

@@ -4,7 +4,9 @@ import SearchModule from "../../../components/SearchModule";
 import usePosts from "../../../hooks/usePosts";
 import { useEffect } from "react";
 import useAuth from "../../../hooks/useAuth";
-
+import Link from "next/link";
+import { IoIosOptions } from "react-icons/io";
+import { BiLogOut } from 'react-icons/bi'
 const Dashboard = () => {
 
   const { getPosts, RenderPosts, setDefaultParams } = usePosts();
@@ -17,6 +19,10 @@ const Dashboard = () => {
     }
   }, [dataUser])
 
+  if (!dataUser) {
+    return
+  }
+
   const renderProfile = (type) => {
 
     let styled = styles.profile;
@@ -28,6 +34,14 @@ const Dashboard = () => {
           <div className={styles.image}></div>
           <div className={styles.service}>
             <p>Bienvenido, {dataUser && dataUser.name} </p>
+            <div className={styles.options}>
+              <Link href="/a/settings">
+                <a><IoIosOptions size="1.5rem" /></a>
+              </Link>
+              <Link href="/auth/logout">
+                <a><BiLogOut size="1.5rem" /></a>
+              </Link>
+            </div>
           </div>
         </div>
         <div className={styles.data}>

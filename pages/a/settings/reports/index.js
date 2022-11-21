@@ -36,6 +36,7 @@ const Reports = () => {
       <td>{el.event}</td>
       <td>{el.entity}</td>
       <td>[{el.userId}] @{el.User.username}</td>
+      <td>{el.createdAt.slice(0,10)} {el.createdAt.slice(11,16)}</td>
     </tr>
     )
   }
@@ -48,6 +49,7 @@ const Reports = () => {
           <h3>Bitacora</h3>
           <div className={styles.customSearch}>
             <Input type="date" description="" title="Desde" />
+            <Input type="date" description="" title="hasta" />
             <Button title="Buscar" />
           </div>
         </div>
@@ -56,9 +58,10 @@ const Reports = () => {
             <tr>
               <th>ID</th>
               <th>MODULO</th>
-              <th>EVENTO</th>
+              <th>ACCION</th>
               <th>ENTIDAD</th>
               <th>USUARIO</th>
+              <th>FECHA</th>
             </tr>
           </thead>
           <tbody>

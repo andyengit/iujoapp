@@ -12,7 +12,7 @@ class Post extends Model {
       attributes: ["id", "title", "content", "updatedAt", "anchored"],
       where: { id: id, status: true },
       include: [
-        { model: User, attributes: ["id", "name"], as: "autor" },
+        { model: User, attributes: ["id", "name", "image"], as: "autor" },
         { model: Image, attributes: ["id", "path"], as: 'images' },
         { model: Tag, attributes: ['id', 'name'], as: 'tags' },
         { model: Service, attributes: ['name'] }
@@ -21,28 +21,41 @@ class Post extends Model {
   }
 
   static async getPosts(options = { limit: 5, offset: 0 }) {
-    const { limit, offset, search } = options;
+    const { limit, offset, search, tag } = options;
+
+    let queryTag = {}
+    if (tag) {
+      queryTag = { name: tag }
+    }
 
     let query = {
-      attributes: ["id", "title", "content", "updatedAt", "anchored"],
       order: [["updatedAt", "DESC"]],
+      where: { status: true },
       limit,
       offset,
       include: [
-        { model: User, attributes: ["id", "name"], as: "autor" },
+        { model: User, attributes: ["id", "name", "image"], as: "autor" },
         { model: Image, attributes: ["id", "path"], as: 'images' },
-        { model: Tag, attributes: ['id', 'name'], as: 'tags' },
+        { model: Tag, attributes: ['id', 'name'], as: 'tags', where: queryTag },
         { model: Service, attributes: ['name'] }
       ],
     }
 
+
     if (search) {
       query = {
         ...query, where: {
-          title: {
-            [Op.like]: `%${search}%`,
-          },
-          status: true,
+          ...query.where,
+          [Op.or]: [{
+            title: {
+              [Op.like]: `%${search}%`,
+            }
+          }, {
+            content: {
+              [Op.like]: `%${search}%`,
+            }
+          }
+          ],
         },
       }
     }
@@ -60,7 +73,7 @@ class Post extends Model {
       limit,
       offset,
       include: [
-        { model: User, attributes: ["id", "name"], as: "autor" },
+        { model: User, attributes: ["id", "name", "image"], as: "autor" },
         { model: Image, attributes: ["id", "path"], as: 'images' },
         { model: Tag, attributes: ['id', 'name'], as: 'tags' },
         { model: Service, attributes: ['name'] }
@@ -69,11 +82,19 @@ class Post extends Model {
 
     if (search) {
       query = {
-        ...query, where:
-        {
+        ...query, where: {
           ...query.where,
-          title: { [Op.like]: `%${search}%` },
-        }
+          [Op.or]: [{
+            title: {
+              [Op.like]: `%${search}%`,
+            }
+          }, {
+            content: {
+              [Op.like]: `%${search}%`,
+            }
+          }
+          ],
+        },
       }
     }
 
@@ -90,7 +111,7 @@ class Post extends Model {
       limit,
       offset,
       include: [
-        { model: User, attributes: ["id", "name"], as: "autor" },
+        { model: User, attributes: ["id", "name", "image"], as: "autor" },
         { model: Image, attributes: ["id", "path"], as: 'images' },
         { model: Tag, attributes: ['id', 'name'], as: 'tags' },
         { model: Service, attributes: ['name'] }
@@ -99,11 +120,19 @@ class Post extends Model {
 
     if (search) {
       query = {
-        ...query, where:
-        {
+        ...query, where: {
           ...query.where,
-          title: { [Op.like]: `%${search}%` },
-        }
+          [Op.or]: [{
+            title: {
+              [Op.like]: `%${search}%`,
+            }
+          }, {
+            content: {
+              [Op.like]: `%${search}%`,
+            }
+          }
+          ],
+        },
       }
     }
 
@@ -166,7 +195,7 @@ class Post extends Model {
   }
 
   static async deletePost(id) {
-    return await this.update({status: false},{ where: { id } });
+    return await this.update({ status: false }, { where: { id } });
   }
 }
 
@@ -184,7 +213,7 @@ Post.init(
       type: DataTypes.BOOLEAN(),
       defaultValue: false,
     },
-    status:{
+    status: {
       type: DataTypes.BOOLEAN(),
       defaultValue: true,
       allowNull: false,

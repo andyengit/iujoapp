@@ -51,7 +51,19 @@
   gap: 0.5rem;
 }
 
-.autorImage {
+.autorImage{
+  position: relative;
+  max-width: 2rem;
+  max-height: 2rem;
+  height: 2rem;
+  width: 2rem;
+  min-width: 2rem;
+  max-width: 2rem;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.autorNoImage {
   min-width: 2rem;
   min-height: 2rem;
   border-radius: 50%;

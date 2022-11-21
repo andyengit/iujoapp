@@ -11,20 +11,21 @@ class PostController {
       if (!result) {
         return { message: "No se ecuentra", status: 404 }
       }
-      return {status: 200, post: result};
+      return { status: 200, post: result };
     } catch (e) {
       return { message: e.message, status: 400 }
     }
   }
 
-  static async getPosts(options = { page: 0, limit: 5, userId, serviceId, search }) {
+  static async getPosts(options = { page: 0, limit: 5, tags, userId, serviceId, search }) {
     try {
       const optionsClean = await cleanData(options);
 
       let params = {
         limit: parseInt(optionsClean.limit) || 5,
         offset: !!optionsClean.page ? optionsClean.page * 5 : 0,
-        search: optionsClean.search
+        search: optionsClean.search,
+        tag: optionsClean.tags
       }
 
       if (optionsClean.userId) {

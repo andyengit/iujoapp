@@ -12,8 +12,8 @@ export const config = {
 const handler = nc(handleApiError)
 
 handler.get(async (req, res) => {
-  const { page, search,user, service, limit } = req.query;
-  res.json(await PostController.getPosts({ page: page || 0,search: search || false, userId: user || false, serviceId: service || false, limit: limit || 5 }));
+  const { page, search, user, service, tags, limit } = req.query;
+  res.json(await PostController.getPosts({ page: page || 0, search: search || false, userId: user || false, serviceId: service || false, tags: tags || false, limit: limit || 5 }));
 })
 handler.use(handleFile)
 handler.use(notAuthorized)

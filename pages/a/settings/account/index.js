@@ -7,11 +7,13 @@ import axios from "axios";
 import useNotification from "../../../../hooks/useNotification";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import UploadFile from "../../../../components/UploadFile";
 
 const Account = () => {
 
   const {setNotification} = useNotification();
   const [name, setName] = useState("");
+  const [image, setImage] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const router = useRouter();
@@ -33,6 +35,9 @@ const Account = () => {
     }
     if (passwordConfirm !== "") {
       data.passwordConfirm = passwordConfirm
+    }
+    if(image !== ""){
+      data.image = image
     }
     if(Object.keys(data).length === 0) {
       setNotification("No se han realizado cambios", "ERROR");
@@ -66,7 +71,10 @@ const Account = () => {
           <Input title={"Nombre"} onChange={setName} defaultValue={dataUser.name} />
           <Input title={"Correo"} defaultValue={dataUser.email} disabled={true} />
         </div>
+        <div className={styles.twoFields}>
         <Input title={"Nombre de usuario"} defaultValue={dataUser.username} disabled={true} />
+          <UploadFile setFile={setImage} name="Foto de perfil"/>
+        </div>
         <div className={styles.twoFields}>
           <Input title={"Contraseña nueva"} onChange={setPassword} type={"password"}/>
           <Input title={"Repetir contraseña"} onChange={setPasswordConfirm} type={"password"}/>

@@ -14,7 +14,7 @@ const ShowComponent = ({ data, typePopUp, getPosts, handleEdit }) => {
 
 
 const ShowOptions = ({ styles, dataUser, data, handleEdit, deletePostButton }) => {
-  if (!dataUser || (dataUser.id !== data.autor.id || !dataUser.group.isAdmin)) {
+  if (!dataUser || (dataUser.id !== data.autor.id && !dataUser.group.isAdmin)) {
     return true;
   }
   return (

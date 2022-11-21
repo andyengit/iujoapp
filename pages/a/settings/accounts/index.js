@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import TextLoading from "../../../../components/TextLoading";
 import useNotification from "../../../../hooks/useNotification"
+import UploadFile from "../../../../components/UploadFile";
 
 const Accounts = () => {
 
@@ -24,6 +25,7 @@ const Accounts = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("")
   const [group, setGroup] = useState(2);
+  const [image, setImage] = useState("");
 
   const handleSelect = (username) => {
     axios.get(`/api/users/${username}`)
@@ -35,18 +37,12 @@ const Accounts = () => {
         setEmail(data.email);
         setGroup(data.group.id);
       })
-      .catch(err => {
-        console.log(err);
-      })
   }
 
   const getUsers = () => {
     axios.get(`/api/users`)
       .then(({ data }) => {
         setUsers(data.rows);
-      })
-      .catch(err => {
-        console.log(err);
       })
   }
 
@@ -77,6 +73,9 @@ const Accounts = () => {
     if (group !== userSelected.group.id) {
       newData.groupId = group;
     }
+    if(image !== ""){
+      newData.image = image
+    }
 
     if (password !== passwordConfirm) {
       setNotification("Las contraseñas no coinciden", "ERROR")
@@ -92,6 +91,7 @@ const Accounts = () => {
         setEmail("");
         setPassword("");
         setPasswordConfirm("")
+        setImage("")
         setGroup(2);
         setNewUser(false)
       })
@@ -116,6 +116,7 @@ const Accounts = () => {
       password,
       email,
       username,
+      image,
       groupId: group
     })
       .then(() => {
@@ -125,10 +126,11 @@ const Accounts = () => {
         setPassword("");
         setEmail("");
         setUsername("");
+        setImage("");
         setGroup("");
       })
       .catch((err) => {
-        console.log(err)
+        setNotification(err.response.data.message, "ERROR")
       })
   }
 
@@ -147,7 +149,7 @@ const Accounts = () => {
       </tr>
     }
 
-    return users.filter(el => el.id !== 1).map((el, index) => <tr key={index}>
+    return users.filter(el => el.id !== 1 && el.id !== 2).map((el, index) => <tr key={index}>
       <td>{el.name}</td>
       <td>
         <Button title={"Editar"} onClick={() => { handleSelect(el.username); setNewUser(true) }} />
@@ -173,6 +175,7 @@ const Accounts = () => {
                 setUsername("");
                 setEmail("");
                 setPassword("");
+                setImage("");
                 setGroup(2);
                 setNewUser(false);
                 setUserSelected(false)
@@ -195,6 +198,7 @@ const Accounts = () => {
               <Input title="Correo electronico" value={email} onChange={setEmail} />
               <Input title="Permisos" value={group} onChange={setGroup} type="selection" valueMap={[{ id: 1, name: "Administrador" }, { id: 2, name: "Editor" }].reverse()} />
             </div>
+            <UploadFile name="Foto de perfil" setFile={setImage}/>
             <table className={styles.table}>
               <thead>
                 <tr>
