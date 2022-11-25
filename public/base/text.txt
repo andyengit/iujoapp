@@ -1,1 +1,1 @@
-texto de prueba
+Este texto es de prueba, el contenido que se coloque aca se visualizara en la pagina principal

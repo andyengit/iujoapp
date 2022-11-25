@@ -1,7 +1,10 @@
-import styles from "../styles/Colors.module.css";
-
 const Colors = {
-  "BLUE": styles.BLUE,
+  "BLUE": " BLUE",
+  "PURPLE": " PURPLE",
+  "GREEN": " GREEN",
+  "ORANGE": " ORANGE",
+  "RED": " RED",
+  "YELLOW": " YELLOW",
 }
 
 export default Colors;

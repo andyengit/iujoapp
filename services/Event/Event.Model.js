@@ -8,7 +8,7 @@ class Event extends ModelBase {
 Event.init(
   {
     name: {
-      type: DataTypes.STRING(15),
+      type: DataTypes.STRING(30),
       allowNull: false,
     },
     message: {

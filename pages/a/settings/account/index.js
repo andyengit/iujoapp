@@ -68,11 +68,11 @@ const Account = () => {
       <div className={styles.content}>
         <h3>Cuenta</h3>
         <div className={styles.twoFields}>
-          <Input title={"Nombre"} onChange={setName} defaultValue={dataUser.name} />
+          <Input title={"Nombre"} only="letter" onChange={setName} defaultValue={dataUser.name} />
           <Input title={"Correo"} defaultValue={dataUser.email} disabled={true} />
         </div>
         <div className={styles.twoFields}>
-        <Input title={"Nombre de usuario"} defaultValue={dataUser.username} disabled={true} />
+        <Input title={"Nombre de usuario"} only="letter" defaultValue={dataUser.username} disabled={true} />
           <UploadFile setFile={setImage} name="Foto de perfil"/>
         </div>
         <div className={styles.twoFields}>

@@ -27,6 +27,44 @@ p, h1,h2,h3,h4,h5,h6 {
   margin: 0;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .main {
   min-height: 100vh;
 }
+
+.BLUE{
+    background-color: #0D47A1 !important;
+    color: white;
+}
+
+.RED{
+  background-color: #C0392B !important;
+  color: white;
+}
+
+.PURPLE{
+  background-color: #8E44AD !important;
+  color: white;
+}
+
+.ORANGE{
+  background-color:#D35400 !important;
+  color: white;
+}
+
+.YELLOW{
+  background-color:#229954 !important; 
+  color: white;
+}
+

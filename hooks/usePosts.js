@@ -21,19 +21,20 @@ const usePosts = () => {
     setRows([])
   }, [])
 
-
+  console.log("DEFAULT",defaultParams)
   const getPosts = useCallback(async (reqdata = { page: 0 }) => {
     if (reqdata.page === 0 || !reqdata.page) {
       setRows(null);
     }
     const data = { ...defaultParams, ...reqdata };
     let url = '/api/posts?';
-    if (data.page !== undefined) url += `page=${data.page}`;
-    if (data.search !== undefined) url += `&search=${data.search}`;
-    if (data.limit !== undefined) url += `&limit=${data.limit}`;
-    if (data.userId !== undefined) url += `&user=${data.userId}`;
-    if (data.serviceId !== undefined) url += `&service=${data.serviceId}`;
-    if (data.tags !== undefined) url += `&tags=${data.tags}`;
+    console.log(data)
+    if (data.page !== undefined && data.page !== "") url += `page=${data.page}`;
+    if (data.search !== undefined && data.search !== "") url += `&search=${data.search}`;
+    if (data.limit !== undefined && data.limit !== "") url += `&limit=${data.limit}`;
+    if (data.userId !== undefined && data.userId !== "") url += `&user=${data.userId}`;
+    if (data.serviceId !== undefined && data.serviceId !== "") url += `&service=${data.serviceId}`;
+    if (data.tags !== undefined && data.tags !== "") url += `&tags=${data.tags}`;
     axios.get(url)
       .then(res => {
         setPosts(res.data)
@@ -64,7 +65,11 @@ const usePosts = () => {
       if (page === 0) {
         setRows(posts.rows)
       } else {
-        setRows([...rows, ...posts.rows])
+        if (rows) {
+          setRows([...rows, ...posts.rows])
+        } else {
+          setRows(posts.rows)
+        }
       }
     }
   }, [posts])
@@ -161,7 +166,7 @@ const usePosts = () => {
               deletePost={deletePost}
               getPosts={getPosts}
             />))}
-          {rows.length <= (posts.count - 5) && <div class={styles.showMorePosts} onClick={showMorePosts}>Ver mas</div>}
+          {posts && rows && posts.count - rows.length > 0 && <div class={styles.showMorePosts} onClick={showMorePosts}>Ver mas</div>}
         </>)
       }
       return <h2>No hay publicaciones disponibles</h2>

@@ -1,12 +1,12 @@
 import styles from "./user.module.css";
 import Image from "next/image"
-import PostContainer from "../../components/PostContainer";
 import SearchModule from "../../components/SearchModule";
 import usePosts from "../../hooks/usePosts";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import axios from 'axios'
 import TextLoading from '../../components/TextLoading';
+import Link from "next/link"
 
 const Username = () => {
   const { getPosts, RenderPosts, setDefaultParams, defaultParams } = usePosts();
@@ -50,7 +50,10 @@ const Username = () => {
       <div className={styles.data}>
         {user ?
           <>
+            <p>Email:</p>
             <p>{user.email}</p>
+            <p>Pertenece a:</p>
+            {user.UsersServices.map((el, i) =><p key={i}><Link href={`/s/${el.users.path}`}><a>{el.users.name}</a></Link></p>)}
           </>
           :
           <>

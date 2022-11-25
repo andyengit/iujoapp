@@ -1,6 +1,7 @@
 import CreatePostContainer from "../../CreatePostContainer";
 import { FiEdit } from "react-icons/fi";
 import { AiFillDelete } from "react-icons/ai";
+import Link from "next/link"
 
 const ShowComponent = ({ data, typePopUp, getPosts, handleEdit }) => {
 
@@ -27,8 +28,11 @@ const ShowOptions = ({ styles, dataUser, data, handleEdit, deletePostButton }) =
 const ShowAutor = ({ autor, updatedAt, Service, styles }) => {
   return (
     <div className={styles.autorData}>
-      <span>{!Service ? autor.name : Service.name}</span>
-      <span className={styles.date}>{updatedAt.slice(0, 10)}{Service && " - " + autor.name}</span>
+      <Link href={!Service ? `/u/${autor.username}` : `/s/${Service.path}`}>
+        <a>{!Service ? autor.name : Service.name}</a>
+      </Link>
+      <span></span>
+      <span className={styles.date}>{updatedAt.slice(8,10)} / {updatedAt.slice(5,7)} / {updatedAt.slice(0,4)}{Service && " - " + autor.name}</span>
     </div>
   )
 }

@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { FaUserCog } from 'react-icons/fa';
 import { FiImage } from 'react-icons/fi';
 import useAuth from '../../hooks/useAuth';
-import { AiOutlineClose} from 'react-icons/ai'; 
+import { AiOutlineClose } from 'react-icons/ai';
 import Image from "next/image";
 import useNotification from "../../hooks/useNotification";
 
@@ -58,7 +58,7 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
 
     const newTag = tag.trim().replace(/ /g, "-");
 
-    if (tags.length >= 5){
+    if (tags.length >= 5) {
       setNotification("El limite de etiquetas son 5", "ERROR")
       return true
     }
@@ -72,13 +72,13 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
       return true;
     }
 
-    setTags([...tags, {name: newTag}]);
+    setTags([...tags, { name: newTag }]);
     setTag("");
   }
 
   const handleRemoveTag = (tag) => {
     setTags(tags.filter((t) => t !== tag));
-    if (tag.id !== undefined){
+    if (tag.id !== undefined) {
       setDeleteTags(current => [...current, tag.id])
     }
   }
@@ -141,19 +141,21 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
         name="content"
       />
       {image && (
-        <div className={styles.previewImage}>
+        <div className={styles.imageContainer}>
           <AiOutlineClose
             onClick={() => setImage(null)}
             className={styles.closeImage}
             size={"2rem"}
             color={"white"}
           />
-          <Image
-            src={firstImage ? image : URL.createObjectURL(image)}
-            layout="fill"
-            objectFit={"cover"}
-            alt={"Preview"}
-          />
+          <div className={styles.previewImage}>
+            <Image
+              src={firstImage ? image : URL.createObjectURL(image)}
+              layout="fill"
+              objectFit={"cover"}
+              alt={"Preview"}
+            />
+          </div>
         </div>
       )}
       <div className={styles.moreInfo}>

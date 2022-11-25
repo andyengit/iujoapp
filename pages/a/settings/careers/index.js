@@ -12,7 +12,13 @@ import UploadFile from "../../../../components/UploadFile";
 
 const Careers = () => {
 
-  const colors = [{ name: 'AZUL', id: "BLUE" }, { name: 'ROJO', id: "RED" }]
+  const colors = [
+    { name: 'Azul', id: "BLUE" },
+    { name: 'Rojo', id: "RED" },
+    { name: "Purpura", id: "PURPLE" },
+    { name: "Naranja", id: "ORANGE" },
+    { name: "Amarillo", id: "YELLOW" },
+  ]
 
   const router = useRouter();
   const { setNotification } = useNotification();
@@ -30,6 +36,9 @@ const Careers = () => {
     axios.get(`/api/careers`)
       .then(({ data }) => {
         setCareers(data.rows);
+      })
+      .catch(() => {
+        setCareers([])
       })
   }
 
@@ -125,7 +134,7 @@ const Careers = () => {
           <div className={styles.newObject}>
             <div className={styles.twoFields}>
               <Input title="Nombre" value={name} onChange={setName} />
-              <Input title="Path" value={path} onChange={setPath} />
+              <Input title="Path" only="letter" value={path} onChange={setPath} />
             </div>
             <textarea placeholder="Descripcion" value={description} type="textarea" onChange={({ target }) => setDescription(target.value)} />
             <textarea placeholder="Perfil del egresado" value={profile} type="textarea" onChange={({ target }) => setProfile(target.value)} />

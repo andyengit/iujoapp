@@ -52,9 +52,10 @@ const Accounts = () => {
   }, [])
 
   const handleStatus = (el) => {
-    axios.put(`/api/users/${el.username}`, { status: !el.status })
+    axios.put(`/api/users/${el.id}`, { status: !el.status })
       .then(({ data }) => {
         getUsers();
+        setNotification("Usuario desabilitado correctamente")
       })
       .catch(err => {
         setNotification(err.response.data.message, "ERROR")
@@ -187,12 +188,12 @@ const Accounts = () => {
         {newUser &&
           <div className={styles.newObject}>
             <div className={styles.twoFields}>
-              <Input title="Nombre" value={name} onChange={setName} />
-              <Input title="Nombre de usuario" disabled={!!userSelected} value={username} onChange={setUsername} />
+              <Input title="Nombre" only="letter+" value={name} onChange={setName} />
+              <Input title="Nombre de usuario" only="letter" disabled={!!userSelected} value={username} onChange={setUsername} />
             </div>
             <div className={styles.twoFields}>
-              <Input title="Contraseña" value={password} onChange={setPassword} />
-              <Input title="Repetir Contraseña" value={passwordConfirm} onChange={setPasswordConfirm} />
+              <Input title="Contraseña" type="password" value={password} onChange={setPassword} />
+              <Input title="Repetir Contraseña" type="password" value={passwordConfirm} onChange={setPasswordConfirm} />
             </div>
             <div className={styles.twoFields}>
               <Input title="Correo electronico" value={email} onChange={setEmail} />

@@ -2,9 +2,10 @@ import styles from "./Input.module.css";
 
 const Input = ({
   title = "Titulo",
-  description = "Descripcion",
+  description = "",
   color = "black",
   type = "text",
+  only = "",
   defaultValue,
   disabled = false,
   onChange,
@@ -13,12 +14,24 @@ const Input = ({
 }) => {
 
   const event = (e) => {
+    if (e.target.value === "") {
+      onChange && onChange(e.target.value)
+      return
+    }
+    if (only === "letter+") {
+      if (/^[A-Za-z ]+$/.test(e.target.value)) onChange && onChange(e.target.value); // Match with regex 
+      return
+    }
+    if (only === "letter") {
+      if (/^[A-Za-z]+$/.test(e.target.value)) onChange && onChange(e.target.value); // Match with regex 
+      return
+    }
     onChange && onChange(e.target.value)
   }
 
-  let newMap = [{id: false, name: ""}]
-  if(valueMap){
-    newMap = [...newMap,...valueMap]
+  let newMap = [{ id: false, name: "" }]
+  if (valueMap) {
+    newMap = [...newMap, ...valueMap]
   }
 
   const className =
@@ -44,6 +57,7 @@ const Input = ({
     <div className={className}>
       <label>{title}</label>
       <input
+
         className={styles.input}
         value={value}
         defaultValue={defaultValue}

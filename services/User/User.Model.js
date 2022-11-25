@@ -5,29 +5,19 @@ import Group from "../Group/Group.Model";
 import Service from '../Service/Service.Model';
 import UsersServices from "../UsersServices/UsersServices.Model";
 import ModelBase from "../ModelBase";
+import { hashPassword } from "../../utils/handleCrypt";
 
 class User extends ModelBase {
 
   static async _updateUser({ id, data }) {
+    let newData = { ...data }
+    if(data.password) {
+      let newPassword = await hashPassword(data.password); 
+      newData = { ...data, password: newPassword }
+    }
     return await super._updateEntity({
-      id, data, _query: {
+      id, data: newData, _query: {
         include: [{ model: Group, as: "group" }],
-      }
-    })
-  }
-
-  static async _getEntity({ _path }) {
-    return await super._getEntity({
-      _query: {
-        where: { username: _path },
-        attributes: ['id', 'name', 'status', 'email', 'username', 'groupId','image'],
-        include: [
-          { model: Group, as: "group" },
-          {
-            model: UsersServices, attributes: ['serviceId', 'isCoordinator'],
-            include: [{ model: Service, attributes: ['name'], as: 'users' }]
-          }
-        ]
       }
     })
   }
@@ -49,16 +39,18 @@ class User extends ModelBase {
           { model: Group, as: "group" },
           {
             model: UsersServices, attributes: ['serviceId', 'isCoordinator'],
-            include: [{ model: Service, attributes: ['name'], as: 'users' }]
+            include: [{ model: Service, attributes: ['name','path'], as: 'users' }]
           }
         ]
       }
     })
   }
 
-  static async _create({data}) {
+  static async _create({ data }) {
+    let newPassword = await hashPassword(data.password);
+    let newData = { ...data, password: newPassword }
     return await super._create({
-      data, _query: {
+      data: newData, _query: {
         include:
           [{ model: Group, as: "group" }],
       }
@@ -80,8 +72,9 @@ User.init({
     allowNull: false,
     autoIncrement: true,
   },
-  image:{
+  image: {
     type: DataTypes.STRING(255),
+    dafaultValue: '/base/logoplus.png'
   },
   name: {
     type: DataTypes.STRING(20),

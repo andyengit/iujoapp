@@ -19,7 +19,7 @@ const PrincipalServices = () => {
       <div className={styles.goBack}></div>
       <div className={styles.servicesList}>
         {services && services.map((el, index) => (
-          <Link key={index} href={`/s/${el.name.toLowerCase()}`}>
+          <Link key={index} href={`/s/${el.path}`}>
             <a className={styles.service}>{el.name}</a>
           </Link>
         ))}

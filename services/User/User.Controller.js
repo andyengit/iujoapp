@@ -1,6 +1,7 @@
 import User from "./User.Model";
 import { createToken, verifyToken } from '../../utils/handleToken';
 import Controller from "../Controller";
+import { comparePassword } from "../../utils/handleCrypt";
 
 class UserController extends Controller {
 
@@ -20,7 +21,9 @@ class UserController extends Controller {
       return
     }
 
-    if (users[0].dataValues.password !== password) {
+    const result = await comparePassword(password, users[0].dataValues.password)
+
+    if (!result) {
       this._res_status = 400;
       this._res_message = "Usuario o contraseña incorrecta"
       return

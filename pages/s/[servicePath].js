@@ -53,7 +53,6 @@ const Service = () => {
             {service ?
               <p>{service.name}</p> :
               <TextLoading />}
-            <Button title="Editar"/>
           </div>
         </div>
         <div className={styles.data}>

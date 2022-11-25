@@ -27,8 +27,9 @@ const SearchModule = ({ getPosts, setDefaultParams, defaultParams }) => {
 
 
   const handleSearchTag = (input) => {
-    setDefaultParams({ tags: input })
-    getPosts({ tags: input })
+    console.log(input)
+    setDefaultParams({ ...defaultParams, tags: input })
+    getPosts({ ...defaultParams, tags: input })
   }
 
   const ShowTags = () => {
@@ -57,6 +58,12 @@ const SearchModule = ({ getPosts, setDefaultParams, defaultParams }) => {
     }
   })
 
+  const handleFocus = () => {
+    if (input.length > 2) {
+      setPopVisible(true)
+    }
+  }
+
   const handleSearch = (e) => {
     if (e.key !== "Enter" && e.type !== "click") {
       return false;
@@ -66,8 +73,14 @@ const SearchModule = ({ getPosts, setDefaultParams, defaultParams }) => {
       return false;
     }
 
-    setDefaultParams({ ...defaultParams, search: input })
-    setSearch({ search: input })
+    if (input.startsWith("#")) {
+      console.log("AQUI")
+      handleSearchTag(input.slice(1, input.length))
+    } else {
+      setDefaultParams({ ...defaultParams, search: input, tags: "" })
+      setSearch({ ...defaultParams, search: input, tags: "" })
+    }
+
   }
 
 
@@ -75,8 +88,11 @@ const SearchModule = ({ getPosts, setDefaultParams, defaultParams }) => {
     if (!autors || !popVisible) return false
 
     return (<ul className={styles.popSearch}>
-      <li onClick={handleSearch}>Buscar titulo o contenido: {input}</li>
-      <li onClick={() => handleSearchTag(input)}>Buscar etiqueta: {input}</li>
+      {input.startsWith('#') ?
+        <li onClick={() => handleSearchTag(input)}>Buscar etiqueta: {input}</li>
+        :
+        <li onClick={handleSearch}>Buscar titulo o contenido: {input}</li>
+      }
       {autors
         .filter((el) => {
           if (el.name.toLowerCase().startsWith(input.toLowerCase()) ||
@@ -106,6 +122,8 @@ const SearchModule = ({ getPosts, setDefaultParams, defaultParams }) => {
           placeholder="Buscar..."
           onKeyUp={handleSearch}
           onChange={handleChangeInput}
+          onFocus={handleFocus}
+          onBlur={() => setPopVisible(false)}
         />
         <button onClick={handleSearch} className={styles.button}>Buscar</button>
         <ShowAutors />

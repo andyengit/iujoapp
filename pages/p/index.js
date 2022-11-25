@@ -5,7 +5,7 @@ import { useEffect } from "react"
 
 const Posts = () => {
 
-  const { getPosts, setDefaultParams, RenderPosts } = usePosts();
+  const { getPosts, setDefaultParams, RenderPosts, defaultParams } = usePosts();
 
   useEffect(() => {
     getPosts();
@@ -19,7 +19,7 @@ const Posts = () => {
         <RenderPosts />
       </div>
       <div className={styles.rightside}>
-        <SearchModule getPosts={getPosts} setDefaultParams={setDefaultParams}/>
+        <SearchModule getPosts={getPosts} defaultParams={defaultParams} setDefaultParams={setDefaultParams}/>
       </div>
     </div>
   );

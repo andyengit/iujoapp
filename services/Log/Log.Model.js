@@ -1,4 +1,4 @@
-import { DataTypes, Model } from "sequelize";
+import sequelize, { DataTypes, Model, Op } from "sequelize";
 import database from "../database/index";
 require("../database/relations")
 import User from "../User/User.Model";
@@ -6,17 +6,42 @@ import User from "../User/User.Model";
 class Log extends Model {
 
   static async getLogs() {
-    return await this.findAll({ 
-      limit: 100, 
-      order: [['id', 'DESC']], 
-      include: [{ model: User, attributes: ['username'] }] })
+    return await this.findAll({
+      limit: 100,
+      order: [['id', 'DESC']],
+      include: [{ model: User, attributes: ['username'] }]
+    })
+  }
+
+  static async getReport(dateStart, dateEnd) {
+    dateEnd += " 23:59:59"
+    let where = {
+      createdAt: { [Op.between]: [dateStart, dateEnd] }
+    }
+    if (dateStart === dateEnd) {
+      where = { createdAt: dateEnd }
+    }
+    try {
+      return await this.findAll({
+        where: where,
+        attributes: [
+          "module",
+          "event",
+          [sequelize.fn("COUNT", sequelize.col("event")), "count"],
+        ],
+        group: ["module", 'event'],
+        order: [[sequelize.fn("COUNT", sequelize.col("event")), "DESC"]],
+      });
+    } catch (_e) {
+      return { _e }
+    }
   }
 
   static async setLog({ module, event, entityId, userId }) {
     return await this.create({
       module,
       event,
-      entity : entityId,
+      entity: entityId,
       userId,
     }, {
       include: [{ model: User }]

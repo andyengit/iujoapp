@@ -1,6 +1,7 @@
 import nc from "next-connect";
 import { handleApiError, onNoMethod } from "../../../utils/handleApiError";
 import { createToken } from "../../../utils/handleToken"
+import { hashPassword } from "../../../utils/handleCrypt";
 
 const handler = nc(handleApiError)
   .post(async (req, res) => {
@@ -13,16 +14,23 @@ const handler = nc(handleApiError)
         message: "Ha ingresado la clave de producto incorrecta, porfavor contacta con el soporte."
       });
     }
-    if (!user) {
-      return res.status(400).json({
-        message: "No se ha ingresado los datos del administrador."
-      });
+
+    let newUser = {}
+    if (user) {
+      if (!user.name || !user.email || !user.password) {
+        return res.status(400).json({
+          message: "Debe ingresar todos los campos para crear el usuario administrador."
+        });
+      }
+      let passwordHashed = await hashPassword(user.password);
+      newUser = { ...user, password: passwordHashed }
     }
-    const token = await createToken({ password, user: {} })
+
+    const token = await createToken({ password, user: newUser })
     return res.status(200).json({
-      token: token,
-      user
+      token: token
     })
+
   })
   .use(onNoMethod);
 

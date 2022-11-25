@@ -19,13 +19,16 @@ const Events = () => {
 
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
-  const [important, setImportant] = useState(0);
+  const [important, setImportant] = useState(false);
   const [url, setUrl] = useState("https://");
 
   const getEvents = () => {
     axios.get(`/api/events`)
       .then(({ data }) => {
         setEvents(data.rows.filter(el => el.status ));
+      })
+      .catch(() => {
+        setEvents([])
       })
   }
 
@@ -170,7 +173,7 @@ const Events = () => {
             </div>
             <div className={styles.twoFields}>
               <Input title="Mensaje" value={message} onChange={setMessage} />
-              <input type="checkbox" onChange={() => setImportant(!important)}/>
+              <input type="checkbox" checked={important ? true : false} onChange={() => setImportant(!important)}/>
             </div>
             {eventSelected ?
               <Button title={"Guardar Cambios"} color="green" onClick={handleUpdate} />

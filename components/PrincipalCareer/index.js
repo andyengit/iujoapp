@@ -26,7 +26,7 @@ const PrincipalCareer = () => {
 
     return careers.map((el, index) => (
       <Link href={`/c/${el.path}`} key={index}>
-        <a className={styles.career + " " + getColor[el.color]}>{el.name}</a>
+        <a className={styles.career + getColor[el.color]}>{el.name}</a>
       </Link>
     ))
   }

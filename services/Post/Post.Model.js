@@ -23,9 +23,9 @@ class Post extends Model {
   static async getPosts(options = { limit: 5, offset: 0 }) {
     const { limit, offset, search, tag } = options;
 
-    let queryTag = {}
+    let queryTag = { model: Tag, attributes: ['id', 'name'], as: 'tags' }
     if (tag) {
-      queryTag = { name: tag }
+      queryTag = { model: Tag, attributes: ['id', 'name'], as: 'tags', where: { name: tag } }
     }
 
     let query = {
@@ -34,10 +34,10 @@ class Post extends Model {
       limit,
       offset,
       include: [
-        { model: User, attributes: ["id", "name", "image"], as: "autor" },
+        { model: User, attributes: ["id", "name", "image", "username"], as: "autor" },
         { model: Image, attributes: ["id", "path"], as: 'images' },
-        { model: Tag, attributes: ['id', 'name'], as: 'tags', where: queryTag },
-        { model: Service, attributes: ['name'] }
+        queryTag,
+        { model: Service, attributes: ['name','path'] }
       ],
     }
 
@@ -65,7 +65,14 @@ class Post extends Model {
   }
 
   static async getPostsByService(options = { limit: 5, offset: 0, id }) {
-    const { limit, offset, id, search } = options;
+    const { limit, offset, id, search, tag } = options;
+
+
+    let queryTag = { model: Tag, attributes: ['id', 'name'], as: 'tags' }
+    if (tag) {
+      queryTag = { model: Tag, attributes: ['id', 'name'], as: 'tags', where: { name: tag } }
+    }
+
     let query = {
       attributes: ["id", "title", "content", "updatedAt", "anchored"],
       where: { serviceId: id, status: true },
@@ -73,10 +80,10 @@ class Post extends Model {
       limit,
       offset,
       include: [
-        { model: User, attributes: ["id", "name", "image"], as: "autor" },
+        { model: User, attributes: ["id", "name", "image", "username"], as: "autor" },
         { model: Image, attributes: ["id", "path"], as: 'images' },
-        { model: Tag, attributes: ['id', 'name'], as: 'tags' },
-        { model: Service, attributes: ['name'] }
+        queryTag,
+        { model: Service, attributes: ['name','path'] }
       ],
     }
 
@@ -103,7 +110,14 @@ class Post extends Model {
   }
 
   static async getPostsByUser(options = { limit: 5, offset: 0, id }) {
-    const { limit, offset, id, search } = options;
+    const { limit, offset, id, search, tag } = options;
+
+
+    let queryTag = { model: Tag, attributes: ['id', 'name'], as: 'tags' }
+    if (tag) {
+      queryTag = { model: Tag, attributes: ['id', 'name'], as: 'tags', where: { name: tag } }
+    }
+
     let query = {
       attributes: ["id", "title", "content", "updatedAt", "anchored"],
       where: { userId: id, status: true },
@@ -111,10 +125,10 @@ class Post extends Model {
       limit,
       offset,
       include: [
-        { model: User, attributes: ["id", "name", "image"], as: "autor" },
+        { model: User, attributes: ["id", "name", "image", "username"], as: "autor" },
         { model: Image, attributes: ["id", "path"], as: 'images' },
-        { model: Tag, attributes: ['id', 'name'], as: 'tags' },
-        { model: Service, attributes: ['name'] }
+        queryTag,
+        { model: Service, attributes: ['name','path'] }
       ],
     }
 

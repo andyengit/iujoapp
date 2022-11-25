@@ -15,6 +15,23 @@
   outline: none;
   border-bottom: 1px solid #21212133;
 }
+.imageContainer{
+  position:relative;
+}
+
+.closeImage{
+  margin: 0.5rem;
+  background-color:#212121;
+  color: white;
+  border-radius: 10px;
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.closeImage:hover{
+  background-color: #212121aa;
+}
 
 .previewImage{
   position: relative;
@@ -22,7 +39,6 @@
   height: 10rem;
   border-radius: 1rem;
   overflow: hidden;
-  object-position: top;
 }
 
 .tags{

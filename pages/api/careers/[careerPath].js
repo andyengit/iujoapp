@@ -14,8 +14,15 @@ handler.put(async (req, res) => {
   const id = req.query.careerPath
   const body = req.body
   const { sessionJWT } = req.cookies
-  const Career = new CareerController(sessionJWT)
+ const Career = new CareerController(sessionJWT)
   const response = await Career._updateEntity(id,body)
+  res.status(Career._res_status).json({ ...response, message: Career._res_message });
+})
+handler.delete(async (req, res) => {
+  const id = req.query.careerPath
+  const { sessionJWT } = req.cookies
+ const Career = new CareerController(sessionJWT)
+  const response = await Career.deleteEntity(id)
   res.status(Career._res_status).json({ ...response, message: Career._res_message });
 })
 handler.use(onNoMethod);

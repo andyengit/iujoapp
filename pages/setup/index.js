@@ -24,11 +24,7 @@ const Setup = () => {
 
   const handleLogin = () => {
     axios.post('/api/auth/setup/', {
-      password, user: {
-        name,
-        password: passwordAdmin,
-        email,
-      }
+      password,
     })
       .then(({ data }) => {
         setToken(data.token)
@@ -37,6 +33,11 @@ const Setup = () => {
         getDB()
       })
       .catch(() => {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
         setMesssage("Ha ingresado la clave de producto incorrecta, porfavor contacta con el soporte.")
       })
   };
@@ -46,8 +47,27 @@ const Setup = () => {
       setMesssage("Debe ingresar la clave de producto primero.")
       return
     }
-
-    router.push(`/setup/success?token=${token}`)
+    axios.post('/api/auth/setup/', {
+      password, user: {
+        name,
+        password: passwordAdmin,
+        email,
+      }
+    })
+      .then(({ data }) => {
+        setEnable(true);
+        setMesssage(false)
+        getDB()
+        router.push(`/setup/success?token=${data.token}`)
+      })
+      .catch((e) => {
+        setMesssage(e.response.data.message)
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
+      })
   }
 
 
@@ -61,12 +81,14 @@ const Setup = () => {
         <div className={enable ? styles.show : styles.disable}>
           <Input title="Nombre Administrador" onChange={setName} />
           <Input title="Correo Administrador" onChange={setEmail} />
-          <Input title="Contraseña Administrador" onChange={setPasswordAdmin} />
+          <Input title="Contraseña Administrador" type="password" onChange={setPasswordAdmin} />
           <UploadFile name="Logo + text (png)" filename="logo.png" />
           <UploadFile name="Logo (png)" filename="logoplus.png" />
           <UploadFile name="Favicon (ico)" filename="favicon.ico" />
           <UploadFile name="Fondo (png)" filename="background.png" />
           <UploadFile name="Foto Mensaje (png)" filename="principal.png" />
+          <UploadFile name="Texto Bienvenida" filename="text.txt" />
+          <UploadFile name="Acerca de" filename="about.txt" />
           <Button onClick={RestoreDB} title={isDb ? "REINICIAR BASE DE DATOS" : "CREAR BASE DE DATOS"} />
         </div>
       </div>

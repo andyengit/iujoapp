@@ -7,9 +7,10 @@ import useAuth from "../../../hooks/useAuth";
 import Link from "next/link";
 import { IoIosOptions } from "react-icons/io";
 import { BiLogOut } from 'react-icons/bi'
+import Image from "next/image";
 const Dashboard = () => {
 
-  const { getPosts, RenderPosts, setDefaultParams } = usePosts();
+  const { getPosts, RenderPosts, setDefaultParams, defaultParams } = usePosts();
   const { dataUser } = useAuth();
 
   useEffect(() => {
@@ -31,21 +32,22 @@ const Dashboard = () => {
     return (
       <div className={styled}>
         <div className={styles.top}>
-          <div className={styles.image}></div>
+          <div className={styles.autorImage}>
+            <Image src={'/base/background.png'} layout="fill" objectFit="cover" priority alt={'background'} />
+          </div>
           <div className={styles.service}>
             <p>Bienvenido, {dataUser && dataUser.name} </p>
             <div className={styles.options}>
               <Link href="/a/settings">
-                <a><IoIosOptions size="1.5rem" /></a>
+                <a><IoIosOptions size="2rem" color="#212121" /></a>
               </Link>
               <Link href="/auth/logout">
-                <a><BiLogOut size="1.5rem" /></a>
+                <a><BiLogOut size="2rem" color="#212121" /></a>
               </Link>
             </div>
           </div>
-        </div>
-        <div className={styles.data}>
-          <p>description</p>
+          <p>Servicios asociados:</p>
+          {dataUser.UsersServices.map((el, i) => <Link key={i} href={`/s/${el.users.path}`}><a>{el.users.name}</a></Link>)}
         </div>
       </div>)
   }
@@ -59,7 +61,7 @@ const Dashboard = () => {
         <RenderPosts wait={dataUser} />
       </div>
       <div className={styles.search}>
-        <SearchModule getPosts={getPosts} setDefaultParams={setDefaultParams} defaultParams={setDefaultParams} />
+        <SearchModule getPosts={getPosts} setDefaultParams={setDefaultParams} defaultParams={defaultParams} />
       </div>
     </div>
   );

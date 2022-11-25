@@ -53,13 +53,13 @@ const Services = () => {
         setServices(data.rows);
       })
       .catch(({ response }) => {
-        if (response && response.data) {
-          setNotification(response.data.message, "ERROR")
+        if (response) {
+          setServices([])
         }
       })
     axios.get(`/api/users`)
       .then(({ data }) => {
-        setUsers(data.rows);
+        setUsers(data.rows.filter((el) => el.id !== 1 ));
       })
       .catch(({ response }) => {
         setNotification(response.data.message, "ERROR");
@@ -91,6 +91,7 @@ const Services = () => {
     axios
       .post('/api/services/', { name, email, phone, coordinator, description, path })
       .then(({ data }) => {
+        getServices();
         setNotification(data.message)
         setName("")
         setPhone("")
@@ -99,7 +100,6 @@ const Services = () => {
         setCoordinator("1")
         setPath("")
         newService(false)
-        getServices();
       })
       .catch(({ response }) => {
         if (response && response.data) {
@@ -147,6 +147,17 @@ const Services = () => {
         if (response && response.data) {
           setNotification(response.data.message, "ERROR")
         }
+      })
+  }
+
+  const deleteService = (el) => {
+    axios.delete(`/api/services/${el.id}`)
+      .then(() => {
+        getServices()
+        setNotification("Servicio eliminado correctamente")
+      })
+      .catch((error) => {
+        setNotification(error.response.data.response, "ERROR")
       })
   }
 
@@ -213,9 +224,9 @@ const Services = () => {
       <td>{el.UsersServices[0].services.name}</td>
       <td>/c/{el.path.toLowerCase()}</td>
       <td>
-        <Button title="VER" onClick={() => router.push(`/s/${el.name.toLowerCase()}`)} />
+        <Button title="VER" onClick={() => router.push(`/s/${el.path}`)} />
         <Button title="EDITAR" color="orange" onClick={() => handleEdit(el)} />
-        <Button title="ELIMINAR" color="red" />
+        <Button title="ELIMINAR" color="red" onClick={() => deleteService(el)} />
       </td>
     </tr>
     )
@@ -254,6 +265,7 @@ const Services = () => {
               <Input
                 title="Telefono"
                 value={phone}
+                type="number"
                 onChange={setPhone} />
             </div>
             <div className={styles.twoFields}>
@@ -274,6 +286,7 @@ const Services = () => {
             <div className={styles.twoFields}>
               <Input
                 title="Path"
+                only="letter"
                 value={path}
                 onChange={setPath} />
             </div>

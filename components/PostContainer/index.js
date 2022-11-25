@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import Image from 'next/image'
 import TemplateClear from "./utils/TemplateClear";
 import { ShowComponent, FormatContent, verifyText, ShowAutor, ShowOptions } from "./utils/ShowComponents";
+import { MdZoomOutMap } from "react-icons/md"
 
 
 const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
@@ -18,6 +19,7 @@ const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
   const { dataUser } = useAuth();
   const [showMore, setShowMore] = useState("0");
   const [mode, setMode] = useState(modeParam || false)
+  const [image, setImage] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -49,6 +51,22 @@ const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
     })
   }
 
+  const handleImage = ({ image = false }) => {
+    setImage(image)
+  }
+
+  const ShowImageSelected = () => {
+    if (!image) {
+      return
+    }
+    return <div className={styles.popImage}>
+      <span onClick={handleImage} className={styles.closePopImage}>Cerrar</span>
+      <div className={styles.imagePop}>
+        <Image src={image} layout="fill" objectFit="contain" alt={`${title} ${content}`}/>
+      </div>
+    </div>
+  }
+
   const handleShowMore = () => {
     if (mode) {
       router.push(`/p/${data.id}`);
@@ -77,9 +95,14 @@ const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
   const ShowImage = () => {
     if (images && images.length > 0)
       return (
-        <div className={styles.image}>
-          <p className={styles.closeImage}>X</p>
-          <Image src={images[0].path} layout="fill" objectFit="cover" priority alt={`${title} ${content}`} />
+        <div className={styles.imageContainer}>
+          <div className={styles.showMax} onClick={() => handleImage({ image: images[0].path })}>
+            <MdZoomOutMap size={"2rem"} />
+            <span>Aumentar</span>
+          </div>
+          <div className={styles.image}>
+            <Image src={images[0].path} layout="fill" objectFit="cover" priority alt={`${title} ${content}`} />
+          </div>
         </div>
       )
   }
@@ -92,6 +115,7 @@ const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
 
   return (
     <div className={styles.postContainer}>
+      <ShowImageSelected />
       <ShowPopUpComponent />
       <div className={styles.top}>
         <div className={styles.about}>
