@@ -8,7 +8,7 @@ class LogController {
       return { status: 400, message: "No hay logs disponibles" }
     }
 
-    let newData = {}
+    let newData = []
     for (let data in report) {
       let value = report[data].dataValues
       newData = { ...newData }
@@ -16,7 +16,7 @@ class LogController {
       newData[value.module][value.event] = value.count
     }
 
-    const logs = await Log.getLogs()
+    const logs = await Log.getLogs(dstart,dend)
     if (!logs) {
       return { status: 404, message: "No hay logs disponibles" }
     }

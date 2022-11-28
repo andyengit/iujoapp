@@ -1,6 +1,7 @@
 import sequelize, { DataTypes } from "sequelize";
 import ModelBase from "../ModelBase";
 import database from "../database/index";
+import Post from "../Post/Post.Model";
 
 class Tag extends ModelBase {
   static async _getEntities() {
@@ -13,8 +14,10 @@ class Tag extends ModelBase {
         group: "name",
         order: [[sequelize.fn("COUNT", sequelize.col("name")), "DESC"]],
         limit: 5,
+        include: [{ model: Post, attributes: [], where: { status: true }, as: "tags" }]
       });
     } catch (_e) {
+      console.log(_e)
       return { _e }
     }
   }

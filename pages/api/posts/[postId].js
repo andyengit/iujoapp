@@ -19,7 +19,7 @@ handler.use(handleFile)
 handler.use(notAuthorized)
 handler.put(async (req, res) => {
     const id = req.query.postId;
-    const action = await PostController.updatePost(id, req.body)
+    const action = await PostController.updatePost(id, req.body, req.file)
     res.status(action.status).json(action)
   })
 handler.delete(async (req,res) => {

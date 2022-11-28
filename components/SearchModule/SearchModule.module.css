@@ -1,7 +1,6 @@
 .container {
   padding: 1rem;
   width: 100%;
-  min-height: 20rem;
   border: 1px solid #21212122;
   border-radius: 10px;
 }
@@ -27,7 +26,7 @@
 }
 
 .search {
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   position: relative;
   display: grid;
   grid-template-columns: 4fr 1fr;
@@ -99,3 +98,8 @@
     border-bottom: none;
 }
 
+@media (max-width: 768px) {
+.suggestions {
+  display:none;
+}
+}

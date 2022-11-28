@@ -74,7 +74,7 @@ const Accounts = () => {
     if (group !== userSelected.group.id) {
       newData.groupId = group;
     }
-    if(image !== ""){
+    if (image !== "") {
       newData.image = image
     }
 
@@ -112,19 +112,26 @@ const Accounts = () => {
       return false;
     }
 
-    axios.post(`/api/users`, {
+    let dataTo = {
       name,
       password,
       email,
       username,
       image,
       groupId: group
-    })
+    }
+
+    if (image === "") {
+      dataTo['image'] = '/base/logoplus.png'
+    }
+
+    axios.post(`/api/users`, dataTo)
       .then(() => {
         getUsers();
         setNewUser(false);
         setName("");
         setPassword("");
+        setPasswordConfirm("")
         setEmail("");
         setUsername("");
         setImage("");
@@ -199,7 +206,7 @@ const Accounts = () => {
               <Input title="Correo electronico" value={email} onChange={setEmail} />
               <Input title="Permisos" value={group} onChange={setGroup} type="selection" valueMap={[{ id: 1, name: "Administrador" }, { id: 2, name: "Editor" }].reverse()} />
             </div>
-            <UploadFile name="Foto de perfil" setFile={setImage}/>
+            <UploadFile name="Foto de perfil" setFile={setImage} />
             <table className={styles.table}>
               <thead>
                 <tr>

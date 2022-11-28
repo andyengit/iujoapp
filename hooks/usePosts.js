@@ -21,14 +21,12 @@ const usePosts = () => {
     setRows([])
   }, [])
 
-  console.log("DEFAULT",defaultParams)
   const getPosts = useCallback(async (reqdata = { page: 0 }) => {
     if (reqdata.page === 0 || !reqdata.page) {
       setRows(null);
     }
     const data = { ...defaultParams, ...reqdata };
     let url = '/api/posts?';
-    console.log(data)
     if (data.page !== undefined && data.page !== "") url += `page=${data.page}`;
     if (data.search !== undefined && data.search !== "") url += `&search=${data.search}`;
     if (data.limit !== undefined && data.limit !== "") url += `&limit=${data.limit}`;
@@ -88,6 +86,7 @@ const usePosts = () => {
     const form = new FormData();
     data.title && form.append("title", data.title);
     data.content && form.append("content", data.content);
+    data.image && form.append("file", data.image)
     data.deleteTags && form.append("deleteTags", JSON.stringify(data.deleteTags));
     data.tags && form.append("tags", JSON.stringify(await data.tags.filter(el => {
       if (el.id === undefined) {
@@ -166,7 +165,7 @@ const usePosts = () => {
               deletePost={deletePost}
               getPosts={getPosts}
             />))}
-          {posts && rows && posts.count - rows.length > 0 && <div class={styles.showMorePosts} onClick={showMorePosts}>Ver mas</div>}
+          {posts && rows && posts.count - rows.length > 1 && <div class={styles.showMorePosts} onClick={showMorePosts}>Ver mas</div>}
         </>)
       }
       return <h2>No hay publicaciones disponibles</h2>

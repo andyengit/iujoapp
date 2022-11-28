@@ -5,6 +5,7 @@ import styles from "../Settings.module.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import TextLoading from "../../../../components/TextLoading";
+import { useRouter } from "next/router"
 
 const Reports = () => {
 
@@ -12,6 +13,7 @@ const Reports = () => {
   const [report, setReport] = useState();
   const [dateStart, setDateStart] = useState(new Date(new Date().setDate(new Date().getDate() - 30)).toJSON().slice(0, 10));
   const [dateEnd, setDateEnd] = useState(new Date().toJSON().slice(0, 10));
+  const router = useRouter();
 
 
   const getReport = () => {
@@ -64,7 +66,7 @@ const Reports = () => {
             <Input type="date" description="" value={dateStart} onChange={setDateStart} title="Desde" />
             <Input type="date" description="" value={dateEnd} onChange={setDateEnd} title="hasta" />
             <Button title="Buscar" onClick={getReport} />
-            <Button title="Descargar" color="orange" />
+            <Button title="Descargar" onClick={()  => router.push('/base/report.pdf')} color="orange" />
           </div>
           <div className={styles.reportBoxes}>
             {report && report['POST'] && <>

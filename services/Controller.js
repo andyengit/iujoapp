@@ -155,7 +155,7 @@ class Controller {
     }
     const entity = await this._model._delete({ id })
 
-    if (!entity[0]) {
+    if (!entity[0] && entity !== 1) {
       this._res_status = 404;
       this._res_message = `La ${this._name} no existe.`
       return

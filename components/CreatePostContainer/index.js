@@ -1,4 +1,5 @@
 import styles from "./CreatePostContainer.module.css";
+import axios from "axios"
 import styleLoading from "../TextLoading/TextLoading.module.css";
 import { useRouter } from 'next/router'
 import Button from "../Button";
@@ -31,8 +32,8 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
   const [tag, setTag] = useState("");
   const [serviceId, setServiceId] = useState(service ? service.id : null)
   const [deleteTags, setDeleteTags] = useState([]);
-  const [image, setImage] = useState(null);
-  const [firstImage, setFirstImage] = useState(data && data.image ? true : false)
+  const [image, setImage] = useState(data ? data.images.length > 0 ? data.images[0].path : null : null);
+  const [firstImage, setFirstImage] = useState(data && !data.image ? true : false)
 
   const router = useRouter();
   const auth = useAuth();
@@ -48,6 +49,23 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
   const handleImage = ({ target }) => {
     setFirstImage(false);
     setImage(target.files[0]);
+  }
+
+  const deleteImage = (image) => {
+    if (image) {
+      axios.delete(`/api/image/${image.id}`)
+        .then(() => {
+          setImage(null)
+          getPosts()
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+
+    } else {
+      setImage(null)
+    }
+
   }
 
   const handleAddTag = () => {
@@ -85,7 +103,7 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
 
   const handleUpdate = async () => {
     setStatus(STATUS.WAITING)
-    updatePost(data.id, { title, content, deleteTags, tags }, () => {
+    updatePost(data.id, { title, content, deleteTags, tags, image }, () => {
       setTitle("");
       setContent("");
       setTags([]);
@@ -143,7 +161,7 @@ const CreatePostContainer = ({ getPosts, mode = "CREATE", data, closePopUp, serv
       {image && (
         <div className={styles.imageContainer}>
           <AiOutlineClose
-            onClick={() => setImage(null)}
+            onClick={() => deleteImage(data && data.images[0] || false)}
             className={styles.closeImage}
             size={"2rem"}
             color={"white"}

@@ -27,7 +27,6 @@ const SearchModule = ({ getPosts, setDefaultParams, defaultParams }) => {
 
 
   const handleSearchTag = (input) => {
-    console.log(input)
     setDefaultParams({ ...defaultParams, tags: input })
     getPosts({ ...defaultParams, tags: input })
   }
@@ -74,7 +73,6 @@ const SearchModule = ({ getPosts, setDefaultParams, defaultParams }) => {
     }
 
     if (input.startsWith("#")) {
-      console.log("AQUI")
       handleSearchTag(input.slice(1, input.length))
     } else {
       setDefaultParams({ ...defaultParams, search: input, tags: "" })
@@ -114,7 +112,9 @@ const SearchModule = ({ getPosts, setDefaultParams, defaultParams }) => {
   }
 
   return (
-    <div className={styles.container}>
+    <div
+      onFocus={handleFocus}
+      className={styles.container}>
       <div className={styles.search}>
         <input
           type="text"
@@ -122,13 +122,12 @@ const SearchModule = ({ getPosts, setDefaultParams, defaultParams }) => {
           placeholder="Buscar..."
           onKeyUp={handleSearch}
           onChange={handleChangeInput}
-          onFocus={handleFocus}
-          onBlur={() => setPopVisible(false)}
         />
         <button onClick={handleSearch} className={styles.button}>Buscar</button>
         <ShowAutors />
       </div>
-      <div className={styles.suggestions}>
+      <div
+        className={styles.suggestions}>
         <ShowTags />
       </div>
     </div>

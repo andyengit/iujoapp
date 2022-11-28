@@ -16,6 +16,7 @@ const AboutUs = (props) => {
       <div>
         <h3>{data.name}</h3>
         <p><strong>Correo:</strong> {data.email}</p>
+        <p><strong>Dirección:</strong> {data.address}</p>
         <p><strong>Tlf:</strong> {data.phone}</p>
         <p><strong>Faceboook:</strong> <a href={`https://facebook.com/${data.facebook}`}>{data.facebook}</a></p>
         <p><strong>Twitter:</strong> <a href={`https://twitter.com/${data.twitter}`}>{data.twitter}</a></p>
@@ -47,13 +48,14 @@ export async function getServerSideProps() {
       data: {
         text: {
           name: text[0],
-          content: text[1],
-          history: text[2],
-          email: text[3],
-          phone: text[4],
-          facebook: text[5],
-          twitter: text[6],
-          instagram: text[7],
+          address: text[1],
+          content: text[2],
+          history: text[3],
+          email: text[4],
+          phone: text[5],
+          facebook: text[6],
+          twitter: text[7],
+          instagram: text[8],
         }
       }
     }

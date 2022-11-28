@@ -53,7 +53,7 @@ const Username = () => {
             <p>Email:</p>
             <p>{user.email}</p>
             <p>Pertenece a:</p>
-            {user.UsersServices.map((el, i) =><p key={i}><Link href={`/s/${el.users.path}`}><a>{el.users.name}</a></Link></p>)}
+            {user.UsersServices.map((el, i) => <p key={i}><Link href={`/s/${el.users.path}`}><a>{el.users.name}</a></Link></p>)}
           </>
           :
           <>
@@ -65,11 +65,20 @@ const Username = () => {
 
   return (
     <div className={styles.grid}>
-      <ShowProfile />
+      <div className={styles.leftside}>
+        <ShowProfile />
+      </div>
       <div className={styles.posts}>
+        <div className={styles.toppos}>
+          <ShowProfile />
+        </div>
+        <div className={styles.searchTop}>
+
+          <SearchModule getPosts={getPosts} defaultParams={defaultParams} setDefaultParams={setDefaultParams} />
+        </div>
         <RenderPosts wait={user} />
       </div>
-      <div>
+      <div className={styles.rightside}>
         <SearchModule getPosts={getPosts} defaultParams={defaultParams} setDefaultParams={setDefaultParams} />
       </div>
     </div>

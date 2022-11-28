@@ -2,6 +2,7 @@ import Post from "./Post.Model";
 import { validatePost } from "./utils/validations";
 import { cleanData } from "./utils/cleanData";
 import Log from "../Log/Log.Model";
+import Image from "../Image/Image.Model"
 
 class PostController {
 
@@ -62,12 +63,18 @@ class PostController {
     }
   }
 
-  static async updatePost(id, data) {
+  static async updatePost(id, data, file) {
     try {
       const newData = cleanData({ ...data });
       const check = validatePost(newData);
       if (check.length > 0) {
         return { message: check, status: 401 };
+      }
+      if (file) {
+        data.image = [{ path: file.path.slice(6, file.path.length) }];
+        Image._create({ data: { postId: id, path: data.image[0].path } })
+      } else {
+        data.image = []
       }
       const value = await Post.updatePost(id, newData);
       await Log.setLog({ module: "POST", event: "UPDATE", userId: value.userId, entityId: id })

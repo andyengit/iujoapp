@@ -7,20 +7,34 @@ import TextLoading from "../../components/TextLoading";
 import getColor from "../../utils/getColor";
 import useNotification from "../../hooks/useNotification";
 import useAuth from "../../hooks/useAuth";
+import UploadFile from "../../components/UploadFile";
+import Input from "../../components/Input"
 
 const Careers = () => {
   const user = useAuth();
   const [career, setCareer] = useState(false);
-  const [edit, setEdit] = useState(false)
+  const [edit, setEdit] = useState(false);
+  const [pensum, setPensum] = useState("");
+  const [color, setColor] = useState("");
   const description = useRef();
   const profile = useRef();
   const router = useRouter();
   const { setNotification } = useNotification();
 
+
+  const colors = [
+    { name: 'Azul', id: "BLUE" },
+    { name: 'Rojo', id: "RED" },
+    { name: "Purpura", id: "PURPLE" },
+    { name: "Naranja", id: "ORANGE" },
+    { name: "Amarillo", id: "YELLOW" },
+  ]
+
   const getCareer = () => {
     axios.get(`/api/careers/${router.query.careerPath}`)
       .then(({ data }) => {
         setCareer(data);
+        setColor(data.color)
       }).catch(err => {
         router.push('/oops')
       })
@@ -35,13 +49,13 @@ const Careers = () => {
   if (!career) {
     return (
       <>
-        <div className={styles.top}>CARRERA</div>
+        <div className={styles.top}>...</div>
         <div className={styles.pensum}>
           <Button title="Descargar pensum" color="white" />
         </div>
         <div className={styles.content}>
           <div className={styles.description}>
-            <h3 className={styles.subtitle}>Descripcion</h3>
+            <h3 className={styles.subtitle}>Descripción</h3>
             <TextLoading />
           </div>
           <div className={styles.profile}>
@@ -55,14 +69,22 @@ const Careers = () => {
 
 
   const handleEdit = () => {
-    if (description.current.value === career.description && profile.current.value === career.profile) {
+    if (description.current.value === career.description && profile.current.value === career.profile && (pensum === "" || pensum === career.pensum) && color === career.color) {
       setEdit(false)
       return true;
     }
 
-    const dataTo = {
+    let dataTo = {
       description: description.current.value,
       profile: profile.current.value
+    }
+
+    if (pensum) {
+      dataTo['pensum'] = pensum
+    }
+
+    if(color){
+      dataTo['color'] = color
     }
 
     axios.put(`/api/careers/${career.id}`, dataTo)
@@ -100,6 +122,8 @@ const Careers = () => {
         <>
           <div className={styles.content}>
             <div className={styles.description}>
+              <Input title="Color" type="selection" valueMap={colors} value={color} onChange={setColor} />
+              <UploadFile name="Pensum (pdf)" setFile={setPensum} />
               <h3 className={styles.subtitle}>Descripcion</h3>
               <textarea
                 className={styles.textarea}
@@ -139,7 +163,7 @@ const Careers = () => {
       <div className={styles.top + getColor[career.color]}>{career.name}</div>
       <div className={styles.pensum}>
         <ButtonEdit />
-        <Button title="Descargar pensum" onClick={() => router.push(career.pensum) } color="white" />
+        <Button title="Descargar pensum" onClick={() => router.push(career.pensum)} color="white" />
       </div>
       <ShowContentCareer />
     </>

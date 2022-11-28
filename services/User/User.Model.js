@@ -74,7 +74,8 @@ User.init({
   },
   image: {
     type: DataTypes.STRING(255),
-    dafaultValue: '/base/logoplus.png'
+    dafaultValue: '/base/logoplus.png',
+    allowNull: false,
   },
   name: {
     type: DataTypes.STRING(20),

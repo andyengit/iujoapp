@@ -33,13 +33,18 @@ const Footer = () => {
             <a>CMS - Sistema</a>
           </Link>
         </li>
-      </ul>
-      <ul>
         <li>
           <Link href="/p">
             <a>Noticias</a>
           </Link>
         </li>
+        <li>
+          <Link href="/aboutus">
+            <a>Conocenos</a>
+          </Link>
+        </li>
+      </ul>
+      <ul>
         {elements.length > 0 && elements.map((el, index) => (
           <li key={index}>
             <Link href={el.url}>

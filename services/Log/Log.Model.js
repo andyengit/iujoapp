@@ -5,8 +5,16 @@ import User from "../User/User.Model";
 
 class Log extends Model {
 
-  static async getLogs() {
+  static async getLogs(dateStart,dateEnd) {
+    dateEnd += " 23:59:59"
+    let where = {
+      createdAt: { [Op.between]: [dateStart, dateEnd] }
+    }
+    if (dateStart === dateEnd) {
+      where = { createdAt: dateEnd }
+    }
     return await this.findAll({
+      where: where,
       limit: 100,
       order: [['id', 'DESC']],
       include: [{ model: User, attributes: ['username'] }]

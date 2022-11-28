@@ -56,7 +56,9 @@ const Careers = () => {
       || path === ""
       || description === ""
       || profile === ""
-      || color === "") {
+      || color === ""
+      || pensum === ""
+    ) {
       setNotification("Todos los campos son obligatorios", "ERROR")
       return true
     }
@@ -77,6 +79,7 @@ const Careers = () => {
         setDescription("");
         setProfile("");
         setPensum("");
+        setNewCareer(false);
       })
       .catch((error) => {
         setNotification(error.response.data.message, "ERROR")

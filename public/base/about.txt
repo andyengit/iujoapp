@@ -1,1 +1,1 @@
-Nombre|Aqui va el contenido de del acerca de nosótros|Aqui va la historia de el instituto|example@service.com|+583125119913|facebook|twitter|instagram
+Nombre|Calle 2, con carrera 2, edf. Anderson Armeya|Aqui va el contenido de del acerca de nosótros|Aqui va la historia de el instituto|example@service.com|+583125119913|facebook|twitter|instagram

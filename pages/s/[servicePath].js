@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Image from "next/image"
 import styles from "./service.module.css";
 import SearchModule from "../../components/SearchModule";
 import CreatePostContainer from "../../components/CreatePostContainer";
@@ -12,7 +13,7 @@ import Button from "../../components/Button";
 
 const Service = () => {
 
-  const { getPosts, RenderPosts, defaultParams,setDefaultParams } = usePosts();
+  const { getPosts, RenderPosts, defaultParams, setDefaultParams } = usePosts();
   const { query: { servicePath }, push } = useRouter();
   const auth = useAuth();
 
@@ -48,7 +49,9 @@ const Service = () => {
         styles.profile :
         styles.profile + " " + styles.profile2}>
         <div className={styles.top}>
-          <div className={styles.image}></div>
+          <div className={styles.autorImage}>
+            <Image src={'/base/background.png'} layout="fill" objectFit="cover" priority alt={'background'} />
+          </div>
           <div className={styles.service}>
             {service ?
               <p>{service.name}</p> :
@@ -84,6 +87,12 @@ const Service = () => {
             getPosts={getPosts}
             service={{ name: service.name, id: service.id }} />
         )}
+        <div className={styles.searchTop}>
+          <SearchModule
+            getPosts={getPosts}
+            setDefaultParams={setDefaultParams}
+            defaultParams={defaultParams} />
+        </div>
         <RenderPosts wait={service} />
       </div>
       <div className={styles.search}>

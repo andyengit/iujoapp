@@ -153,7 +153,7 @@ const PostContainer = ({ data, getPosts, deletePost, modeParam }) => {
       </div>
       <ShowImage />
       <div className={styles.share}>
-        <div className={styles.shareButton}>Compartir</div>
+        <div className={styles.shareButton} onClick={() => router.push(`/p/${data.id}`)}>Compartir</div>
         <div className={styles.tags}>
           <ShowTags />
         </div>

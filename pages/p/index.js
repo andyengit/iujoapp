@@ -16,6 +16,9 @@ const Posts = () => {
     <div className={styles.container}>
       <div className={styles.leftside}></div>
       <div className={styles.content}>
+        <div className={styles.searchTop}>
+          <SearchModule getPosts={getPosts} defaultParams={defaultParams} setDefaultParams={setDefaultParams}/>
+        </div>
         <RenderPosts />
       </div>
       <div className={styles.rightside}>
