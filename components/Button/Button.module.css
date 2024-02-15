@@ -1,5 +1,7 @@
 .button {
   border: 1px solid #212121;
+  max-width: 15rem;
+  min-width: 8rem;
   border-radius: 5px;
   background-color: transparent;
   color: #212121;
@@ -12,6 +14,12 @@
   transition: 0.3s;
   cursor: pointer;
   margin: 0.3rem;
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 .button:hover {

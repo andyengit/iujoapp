@@ -8,14 +8,14 @@ const Layouts = ({ children }) => {
   return (
     <>
       <Head>
-        <title>Iujo | Barquisimeto</title>
+        <title>CMS System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="Pagina educacional de Iujo" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/base/favicon.ico" />
       </Head>
-      {router.asPath === "/" || <Header />}
+      {router.asPath === "/" || router.asPath === '/setup' || <Header />}
       <main className="main">{children}</main>
-      <Footer />
+      {router.asPath === '/setup' || <Footer />}
     </>
   );
 };

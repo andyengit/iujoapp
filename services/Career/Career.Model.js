@@ -1,7 +1,9 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes} from "sequelize";
+import ModelBase from "../ModelBase";
 import database from "../database/index";
 
-class Career extends Model {}
+
+class Career extends ModelBase { }
 
 Career.init(
   {
@@ -9,20 +11,25 @@ Career.init(
       type: DataTypes.STRING(40),
       allowNull: false,
     },
-    coordinator:{
-      type: DataTypes.STRING(40),
-      allowNull: false,
-    },
     color: {
       type: DataTypes.STRING(10),
       allowNull: false,
     },
-    icon: {
-      type: DataTypes.STRING(20),
-      allowNull: false,
-    },
     description: {
       type: DataTypes.TEXT(),
+      allowNull: false,
+    },
+    profile: {
+      type: DataTypes.TEXT(),
+      allowNull: false,
+    },
+    path: {
+      type: DataTypes.STRING(20),
+      unique: true,
+      allowNull: false,
+    },
+    pensum: {
+      type: DataTypes.STRING(),
       allowNull: false,
     },
     status: {

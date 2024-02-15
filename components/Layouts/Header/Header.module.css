@@ -1,13 +1,25 @@
 .header {
+  position: relative;
   width: 100%;
-  height: 6rem;
+  height: 4rem;
   background-color: #212121;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 1rem 0px 0.5rem;
+}
+
+.principal{
+  width: 100%;
   display: flex;
   flex-direction: row;
   gap: 1rem;
   align-items: center;
   justify-content: flex-start;
 }
+
 .headerHero {
   width: 100%;
   height: 5rem;
@@ -34,7 +46,13 @@
 
 .image {
   cursor: pointer;
-  min-width: 208.25px;
+  width: 160px;
+}
+
+.menu {
+  display: flex;
+  justify-self: flex-end;
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 600px) {

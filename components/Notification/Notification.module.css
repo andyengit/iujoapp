@@ -1,0 +1,36 @@
+.notification{
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  min-width: 10rem;
+  max-width: 20rem;
+  min-height: 5rem;
+  background-color: #4CAF50;
+  border-radius: 0.5rem;
+  color: white;
+  padding: 15px;
+  font-size: 18px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  z-index: 1000000000000000000;
+}
+
+.error{
+  background-color: #C0392B;
+}
+
+.close{
+  text-align: right;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .notification {
+    max-width: 90vw;
+  }
+}

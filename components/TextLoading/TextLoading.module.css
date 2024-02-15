@@ -1,6 +1,26 @@
+.animation{
+  animation-name: animate; 
+  animation-duration: 2s; 
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;   
+  background: -webkit-gradient(linear, left top, right top, color-stop(8%, #eeeeee20), color-stop(18%, #dddddd10), color-stop(33%, #dddddd20));
+  background: -webkit-linear-gradient(left, #eeeeeeee 8%, #dddddd10 18%, #eeeeeeee 33%);
+  background: linear-gradient(to right, #eeeeeeee 8%, #dddddd10 18%, #eeeeeeee 33%);
+  -webkit-background-size: 800px 104px; 
+}
+
 .loading {
   height: 2rem;
   width: 100%;
   background-color: #00000022;
   border-radius: 6px;
+}
+
+@keyframes animate {
+  0% {
+     background-position: -468px 0
+  }
+  100% {
+     background-position: 468px 0
+  }
 }

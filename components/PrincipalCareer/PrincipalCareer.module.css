@@ -1,31 +1,44 @@
 .content {
-  margin-top: 1rem;
-  width: 100%;
-  background-color: #212121ee;
-  color: white;
+    display: flex;
+    margin-top: 1rem;
+    width: 100%;
+    background-color: #212121ee;
+    color: white;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .careerList {
-  padding: 2rem;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 2rem;
+    padding: 2rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 2rem;
 }
 
 .career {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  background-color: #212121;
-  border-radius: 10px;
-  min-height: 5rem;
-  word-wrap: wrap;
-  text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: #212121;
+    border-radius: 10px;
+    min-height: 5rem;
+    word-wrap: wrap;
+    text-align: center;
 }
 
 .career:hover {
-  background-color: #212121aa;
+    opacity: 0.9;
 }
+
+@media (max-width: 1000px) {
+    .careerList{
+        display: flex;
+        flex-wrap: wrap;
+        align-items:center;
+        justify-content: space-around;
+    }
+} 

@@ -1,48 +1,57 @@
 import Link from "next/link";
 import styles from "./Footer.module.css";
+import Image from "next/image";
+import { useState, useEffect } from "react"
+import axios from 'axios'
 
 const Footer = () => {
+
+  const [elements, setElements] = useState([])
+
+  useEffect(() => {
+    axios.get(`/api/events`)
+      .then(({ data }) => {
+        setElements(data.rows.filter(el => el.status).slice(0, 3));
+      })
+  }, [])
+
   return (
     <footer className={styles.footer}>
-      <h2>Footer</h2>
+      <div>
+        <Image
+          src={"/base/logo.png"}
+          priority
+          objectFit="contain"
+          height="65.25"
+          width={"208,25"}
+          alt="Marca Logo"
+        />
+      </div>
       <ul>
-        <li>
-          <Link href="/test">
-            <a>Test Page</a>
-          </Link>
-        </li>
         <li>
           <Link href="/auth/login">
-            <a>Login</a>
+            <a>CMS - Sistema</a>
           </Link>
         </li>
-        <li>
-          <Link href="/a/dashboard">
-            <a>Dashboard</a>
-          </Link>
-        </li>
-      </ul>
-      <ul>
         <li>
           <Link href="/p">
             <a>Noticias</a>
           </Link>
         </li>
         <li>
-          <Link href="/c/Informatica">
-            <a>Informatica</a>
+          <Link href="/aboutus">
+            <a>Conocenos</a>
           </Link>
         </li>
-        <li>
-          <Link href="/s/upp">
-            <a>UPP</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/u/iujo">
-            <a>IUJO USER</a>
-          </Link>
-        </li>
+      </ul>
+      <ul>
+        {elements.length > 0 && elements.map((el, index) => (
+          <li key={index}>
+            <Link href={el.url}>
+              <a>{el.name}</a>
+            </Link>
+          </li>
+        ))}
       </ul>
     </footer>
   );

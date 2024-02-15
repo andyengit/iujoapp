@@ -1,11 +1,17 @@
 import Layouts from "../components/Layouts";
+import AuthProvider from "../context/AuthProvider";
+import NotificationProvider from "../context/NotificationProvider";
 import "../styles/globals.css";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps}) {
   return (
-    <Layouts>
-      <Component {...pageProps} />
-    </Layouts>
+    <NotificationProvider>
+      <AuthProvider>
+        <Layouts>
+           <Component {...pageProps} />
+        </Layouts>
+      </AuthProvider>
+    </NotificationProvider>
   );
 }
 

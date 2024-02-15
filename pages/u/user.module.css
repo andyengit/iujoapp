@@ -7,7 +7,9 @@
 }
 
 .profile {
+  padding-top: 1rem;
   border-radius: 10px;
+  width: 100%;
   overflow: hidden;
 }
 
@@ -16,6 +18,23 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.toppos{
+  display:none
+}
+
+.searchTop{
+  display:none;
+}
+
+.autorImage{
+  position: relative;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  overflow: hidden;
+  object-position: top;
 }
 
 .image {
@@ -58,4 +77,42 @@
 
 .data > p {
   color: #212121cc;
+}
+
+@media (max-width: 1000px) {
+  .grid{
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .leftside{
+    display: none;
+  }
+  .toppos{
+    display: flex
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    padding: 0;
+  }
+
+  .content {
+    gap: 0;
+  }
+
+  .leftside{
+    display: none;
+  }
+
+  .rightside{
+    display: none;
+  }
+
+  .searchTop{
+    display:flex;
+  }
+
+  
 }

@@ -5,7 +5,7 @@
   margin-top: 1rem;
 }
 
-.inputBox > input {
+.inputBox > .input {
   background-color: transparent;
   margin: 0;
   font-size: 18px;
@@ -13,27 +13,30 @@
   border-bottom: 2px solid #212121aa;
 }
 
-.inputBox > input:focus {
-  outline: none;
+.inputBox > .input:focus {
+  outline-color: transparent;
   border-color: #212121ff;
 }
 
 .inputBox > label {
   margin-bottom: 5px;
+  font-weight: 600;
 }
 
 .inputBox > p {
-  color: #212121ee;
+  color: #212121aa;
+  font-size: 13px;
   margin-top: 4px;
 }
 
-.white > input {
-  border-bottom: 2px solid #f1f2f3;
+.white > .input {
   color: white;
+  border-bottom: 2px solid #ffffffaa;
 }
 
-.white > input:focus {
-  border-color: #f1f2f3ff;
+.white > .input:focus {
+  outline:none;
+  border-bottom: 2px solid #ffffffaa;
 }
 
 .white > p {

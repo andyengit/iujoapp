@@ -1,16 +1,40 @@
 .container {
   padding: 1rem;
   width: 100%;
-  min-height: 20rem;
   border: 1px solid #21212122;
   border-radius: 10px;
 }
 
+.tag{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #21212122;
+}
+
+.tag > div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tag:hover{
+  background-color: #21212144;
+}
+
 .search {
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
+  position: relative;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
   border: 1px solid #212121;
   border-radius: 25px;
   padding: 3px 8px 3px 8px;
+  background-color: #fff;
+  z-index: 101;
 }
 
 .inputSearch {
@@ -18,10 +42,64 @@
   border: 0 solid transparent;
   outline: none;
   font-size: 18px;
+  background-color: transparent;
 }
 
 .suggestions {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.button{
+    width: 100%;
+    height: 100%;
+    border: 0px solid transparent;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.popSearch{
+    padding:0;
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    width: 100%;
+    top: 1rem;
+    background-color: #f1f2f3;
+    border-radius: 10px;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.popSearch li{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-bottom: 1px solid #21212122;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    gap: 0.2rem;
+}
+
+.username{
+    font-size: 14px;
+    color: #212121;
+}
+
+.popSearch li:hover{
+    background-color: #21212122;
+}
+
+.popSearch li:last-child{
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+.suggestions {
+  display:none;
+}
 }

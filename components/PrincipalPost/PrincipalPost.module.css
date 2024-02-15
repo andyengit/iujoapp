@@ -11,6 +11,7 @@
   padding: 2rem;
   width: 100%;
   display: grid;
+  align-items: center;
   gap: 1rem;
   grid-template-columns: 4fr 1fr;
 }
@@ -29,8 +30,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 5rem;
 }
 
 .more:hover {
   background-color: #f1f2f3;
 }
+
+@media (max-width: 1000px) {
+    .grid{
+        display: flex;
+        flex-direction: column;
+        padding:0;
+    }
+
+    .posts{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .more {
+        max-width: 90%;
+    }
+}
+
